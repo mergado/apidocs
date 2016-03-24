@@ -1,0 +1,1359 @@
+FORMAT: 1A9
+HOST: https://app.mergado.com/api/
+
+# Mergado
+The Mergado API is based on REST principles. The request/response format is JSON.
+
+>**Note:** IDs are strings. Even if they seem to be numbers at the first sight,
+ in fact they can be anything alphanumeric. Trust me.
+
+## Allowed HTTPs requests:
+
+| Method | Description                                |
+|--------|--------------------------------------------|
+| GET    | Retrieves a resource or list of resources. |
+| POST   | Creates or updates a resource.             |
+| PATCH  | Updates a resource.                        |
+| DELETE | Deletes a resource.                        |
+
+## Typical Server Responses
+
+| Code | Status             | Description |
+|------|--------------------|-------------|
+| 200  | OK                 | The request was successful (some API calls may return 201 instead). |
+| 201  | Created            | The request was successful and a resource was created. |
+| 204  | No Content         | The request was successful but there is no representation to return (that is, the response is empty). |
+| 400  | Bad Request        | The request could not be understood or was missing required parameters. |
+| 401  | Unauthorized       | Authentication failed or user does not have permissions for the requested operation. |
+| 403  | Forbidden          | Access denied. |
+| 404  | Not Found          | Resource was not found. |
+| 405  | Method Not Allowed | Requested method is not supported for the specified resource. |
+| 409  | Conflict           | Resource already exists and could not be created. |
+
+## Additional GET parameters
+
+| Parameter                    | Example                                        | Description |
+|------------------------------|------------------------------------------------|-------------|
+| **fields**                   | `?fields=uri,shop.id`                          | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
+| **limit**, **offset**        | `?limit=5&offset=2`                            | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
+| **start_date**, **end_date** | `?start_date=2013-12-24&end_date=2013-12-26`   | Works for only for some special arrays. In the example, it will return results corresponding only to Christmas time period of 2013.
+| **filter_by**                | `?filter_by={"validator": "heureka_is_alone"}` | Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
+| **order_by**                 | `?order_by=validator,-verdict`                 | Orders the result in ascending or descending order. |
+
+## OAuth2 Scopes
+
+
+| Scope                       | Description                                           |
+|-----------------------------|-------------------------------------------------------|
+| **user.read**               | Client is authorized to access user information.      |
+| **user.write**              | Client is authorized to modify a user.                |
+| **user.shops.read**         | Client is authorized to access user's eshops.         |
+| **user.shops.write**        | Client is authorized to modify user's eshops.         |
+| **shop.read**               | Client is authorized to access eshop's information.   |
+| **shop.write**              | Client is authorized to modify an eshop.              |
+| **shop.projects.read**      | Client is authorized to access eshop's projects.      |
+| **shop.projects.write**     | Client is authorized to modify eshop's projects.      |
+| **project.read**            | Client is authorized to access project's information. |
+| **project.write**           | Client is authorized to modify a project.             |
+| **project.rules.read**      | Client is authorized to access project's rules.       |
+| **project.rules.write**     | Client is authorized to modify project's rules.       |
+| **project.queries.read**    | Client is authorized to access project's queries.     |
+| **project.queries.write**   | Client is authorized to modify project's queries.     |
+| **project.elements.read**   | Client is authorized to access project's elements.    |
+| **project.elements.write**  | Client is authorized to modify project's elements.    |
+| **project.variables.read**  | Client is authorized to access project's variables.   |
+| **project.variables.write** | Client is authorized to modify project's variables.   |
+
+
+## Info [/]
+### Show API Version [GET]
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "version": "0.2"
+            }
+
+
+# Group Management
+Management of users, eshops, projects and other resources.
+
+## Users [/users/{?limit,offset,fields}]
+### List Users [GET]
+Lists all users the authenticated client has access to.
+
+**OAuth2 Scope:** user.read
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "limit": 10,
+                "offset": 0,
+                "data": [
+                    {
+                        "id": "6",
+                        "first_name": "Lorem",
+                        "last_name": "Ipsum",
+                        "name": "Lorem Ipsum",
+                        "email": "lorem.ipsum@example.com",
+                        "city": "Brno",
+                        "company": "Mergado",
+                        "country": "cz",
+                        "dic": "00000000",
+                        "ico": "00000000",
+                        "fakturoid_id": null,
+                        "invoice_months": 1,
+                        "last_access": "2016-03-21T16:32:32+00:00",
+                        "locale": "cs-CZ",
+                        "postcode": "61200",
+                        "promotion_code": null,
+                        "registered_at": "2015-11-03T16:08:17+00:00",
+                        "street": "Palackého 123/456",
+                        "timezone": "Europe/Prague",
+                        "timezone_offset": null,
+                        "send_summary": false
+                    }
+                ]
+            }
+
+### Authenticated User [GET /me/{?fields}]
+Returns currently authenticated user.
+
+**OAuth2 Scope:** user.read
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "6",
+                "first_name": "Lorem",
+                "last_name": "Ipsum",
+                "name": "Lorem Ipsum",
+                "email": "lorem.ipsum@example.com",
+                "city": "Brno",
+                "company": "Mergado",
+                "country": "cz",
+                "dic": "00000000",
+                "ico": "00000000",
+                "fakturoid_id": null,
+                "invoice_months": 1,
+                "last_access": "2016-03-21T16:32:32+00:00",
+                "locale": "cs-CZ",
+                "postcode": "61200",
+                "promotion_code": null,
+                "registered_at": "2015-11-03T16:08:17+00:00",
+                "street": "Palackého 123/456",
+                "timezone": "Europe/Prague",
+                "timezone_offset": null,
+                "send_summary": false
+            }
+
+### Get User [GET /users/{id}/{?fields}]
+Returns a user.
+
+**OAuth2 Scope:** user.read
+
++ Parameters
+
+    + id (string) - ID of a user.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "6",
+                "first_name": "Lorem",
+                "last_name": "Ipsum",
+                "name": "Lorem Ipsum",
+                "email": "lorem.ipsum@example.com",
+                "city": "Brno",
+                "company": "Mergado",
+                "country": "cz",
+                "dic": "00000000",
+                "ico": "00000000",
+                "fakturoid_id": null,
+                "invoice_months": 1,
+                "last_access": "2016-03-21T16:32:32+00:00",
+                "locale": "cs-CZ",
+                "postcode": "61200",
+                "promotion_code": null,
+                "registered_at": "2015-11-03T16:08:17+00:00",
+                "street": "Palackého 123/456",
+                "timezone": "Europe/Prague",
+                "timezone_offset": null,
+                "send_summary": false
+            }
+
+### Get User's Permissions [GET /users/{id}/permissions/{?limit,offset,fields}]
+Lists all permissions (accesses to eshops) of a specific user.
+
+**OAuth2 Scope:** user.shops.read
+
++ Parameters
+
+    + id (string) - ID of a user.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "role": "writer",
+                        "shop_id": "1"
+                    },
+                    {
+                        "role": "writer",
+                        "shop_id": "10"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+## Eshops [/users/{id}/shops/{?limit,offset,fields}]
+### List User's Eshops [GET]
+Returns eshops the user can access.
+
+**OAuth2 Scope:** user.shops.read
+
++ Parameters
+
+    + id (string) - ID of a user.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "limit": 10,
+                "offset": 0,
+                "data": [
+                    {
+                        "id": "1",
+                        "owner_id": "1",
+                        "tariff_id": "7",
+                        "name": "Example.com",
+                        "web": "http://1dplakaty.cz/",
+                        "xml_domain": "1dplakaty.cz",
+                        "exported_items": 256,
+                        "created_at": "2015-11-04T12:31:18+00:00",
+                        "permissions": [
+                            {
+                                "role": "reader",
+                                "user_id": "2"
+                            }
+                        ]
+                    }
+                ]
+            }
+
+### Get an Eshop [GET /shops/{id}/{?fields}]
+Returns an eshop with the given ID.
+
+**OAuth2 Scope:** shop.read
+
++ Parameters
+
+    + id (string) - ID of a shop.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "1",
+                "owner_id": "1",
+                "tariff_id": "7",
+                "name": "Example.com",
+                "web": "http://1dplakaty.cz/",
+                "xml_domain": "1dplakaty.cz",
+                "exported_items": 256,
+                "created_at": "2015-11-04T12:31:18+00:00",
+                "permissions": [
+                    {
+                        "role": "reader",
+                        "user_id": "2"
+                    }
+                ]
+            }
+
+## Projects [/shops/{id}/projects/{?limit,offset,fields}]
+### List Shop's Projects [GET]
+Returns projects of an eshop.
+
+**OAuth2 Scope:** shop.projects.read
+
++ Parameters
+
+    + id (string) - ID of a shop.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "limit": 10,
+                "offset": 0,
+                "data": [
+                    {
+                        "id": "8",
+                        "shop_id": "1",
+                        "creator_id": "1",
+                        "name": "Billiger.de",
+                        "url": "https://dummy.mergado.com/1dplakaty.xml",
+                        "activated": true,
+                        "created": "2015-11-11T15:42:33+00:00",
+                        "exported_items": 0,
+                        "input_format": "zbozi.cz",
+                        "output_format": "billiger.de",
+                        "pairing_elements": "URL",
+                        "readonly": false,
+                        "rules_changed_at": "2015-11-11T15:43:07+00:00",
+                        "sklik_context": null,
+                        "sklik_search": null,
+                        "slug": "1dplakaty-cz-billiger-de-3dc7b45ffb682e54d989cbfc4f9c5978",
+                        "turned_off": true,
+                        "update_period": 14400,
+                        "last_access": "2015-12-10T12:51:59+00:00",
+                        "xml_synced_at": "2015-11-18T13:19:59+00:00",
+                        "xml_updated_at": "2015-11-11T15:42:50+00:00"
+                    }
+                ]
+            }
+
+### Get a Project [GET /shops/{id}/{?fields}]
+Returns a project with the given ID.
+
+**OAuth2 Scope:** project.read
+
++ Parameters
+
+    + id (string) - ID of a shop.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "8",
+                "shop_id": "1",
+                "creator_id": "1",
+                "name": "Billiger.de",
+                "url": "https://dummy.mergado.com/1dplakaty.xml",
+                "activated": true,
+                "created": "2015-11-11T15:42:33+00:00",
+                "exported_items": 0,
+                "input_format": "zbozi.cz",
+                "output_format": "billiger.de",
+                "pairing_elements": "URL",
+                "readonly": false,
+                "rules_changed_at": "2015-11-11T15:43:07+00:00",
+                "sklik_context": null,
+                "sklik_search": null,
+                "slug": "1dplakaty-cz-billiger-de-3dc7b45ffb682e54d989cbfc4f9c5978",
+                "turned_off": true,
+                "update_period": 14400,
+                "last_access": "2015-12-10T12:51:59+00:00",
+                "xml_synced_at": "2015-11-18T13:19:59+00:00",
+                "xml_updated_at": "2015-11-11T15:42:50+00:00"
+            }
+
+## Elements [/project/{id}/elements/]
+API for project's elements management.
+
+### Create an Element [POST]
+Creates an element inside a project.
+
+**OAuth2 Scope:** project.elements.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "name": "SHIPPING",
+                "hidden": false
+            }
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/elements/123"
+
+    + Body
+    
+            {
+                "id": "123",
+                "project_id": "1",
+                "name": "SHIPPING",
+                "type": "output",
+                "hidden": false
+            }
+
+### List Project's Elements [GET /projects/{id}/elements/{?limit,offset,fields}]
+Lists all project's elements.
+
+**OAuth2 Scope:** project.elements.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "hidden": false,
+                        "id": "1",
+                        "name": "PRODUCT",
+                        "project_id": "33",
+                        "type": "input"
+                    },
+                    {
+                        "hidden": false,
+                        "id": "2",
+                        "name": "DESCRIPTION",
+                        "project_id": "33",
+                        "type": "input"
+                    },
+                    {
+                        "hidden": false,
+                        "id": "4",
+                        "name": "URL",
+                        "project_id": "33",
+                        "type": "input"
+                    },
+                    {
+                        "hidden": false,
+                        "id": "5",
+                        "name": "CATEGORYTEXT",
+                        "project_id": "33",
+                        "type": "input"
+                    },
+                    {
+                        "hidden": false,
+                        "id": "6",
+                        "name": "PRICE",
+                        "project_id": "33",
+                        "type": "input"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get an Element [GET /elements/{id}/{?fields}]
+Returns an element.
+
+**OAuth2 Scope:** project.elements.read
+
++ Parameters
+
+    + id (string) - ID of an element.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "hidden": false,
+                "id": "6",
+                "name": "PRICE",
+                "project_id": "33",
+                "type": "input"
+            }
+
+### Delete an Element [DELETE /elements/{id}/{?fields}]
+Delete the specified element.
+
+**OAuth2 Scope:** project.elements.write
+
++ Parameters
+
+    + id (string) - ID of an element.
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 204
+
+    + Headers
+
+            Content-Type: application/json
+
+### Update an Element [PATCH /elements/{id}/]
+Performes update of element's attributes.
+
+**OAuth2 Scope:** project.elements.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "hidden": true
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/elements/123"
+
+    + Body
+    
+            {
+                "id": "123",
+                "project_id": "1",
+                "name": "SHIPPING",
+                "type": "output",
+                "hidden": true
+            }
+
+
+## Variables [/project/{id}/variables/]
+API for management of project's variables.
+
+### Create a Variable [POST]
+Creates a new variable inside a project.
+
+**OAuth2 Scope:** project.variables.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "name": "DESCRIPTION_A",
+                "project_element_id": "1",
+                "regular_expression": "(\\-|\\* )?(.*)",
+                "sample_text": null,
+                "fragment_number": 2
+            }
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/variables/1521/"
+
+    + Body
+    
+            {
+                "id": "1521",
+                "name": "DESCRIPTION_A",
+                "project_element_id": "1",
+                "project_id": "33",
+                "regular_expression": "(\\-|\\* )?(.*)",
+                "fragment_number": 2,
+                "sample_text": null,
+                "type": "manual"
+            }
+
+### List Project's Variables [GET /projects/{id}/variables/{?limit,offset,fields}]
+Lists all project's variables.
+
+**OAuth2 Scope:** project.variables.read
+
++ Parameters
+
+    + id (string) - ID of a variable.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "1521",
+                        "name": "DESCRIPTION_A",
+                        "project_element_id": "1",
+                        "project_id": "33",
+                        "regular_expression": "(\\-|\\* )?(.*)",
+                        "fragment_number": 2,
+                        "sample_text": null,
+                        "type": "manual"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get a Variable [GET /variables/{id}/{?fields}]
+Returns a variable.
+
+**OAuth2 Scope:** project.variables.read
+
++ Parameters
+
+    + id (string) - ID of a variable.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "1521",
+                "name": "DESCRIPTION_A",
+                "project_element_id": "1",
+                "project_id": "33",
+                "regular_expression": "(\\-|\\* )?(.*)",
+                "fragment_number": 2,
+                "sample_text": null,
+                "type": "manual"
+            }
+
+### Delete an Variable [DELETE /variables/{id}/{?fields}]
+Delete the specified variable.
+
+**OAuth2 Scope:** project.variables.write
+
++ Parameters
+
+    + id (string) - ID of a variable.
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 204
+
+    + Headers
+
+            Content-Type: application/json
+
+### Update a Variable [PATCH /variables/{id}/]
+Performes update of variable's attributes.
+
+**OAuth2 Scope:** project.variables.write
+
++ Parameters
+
+    + id (string) - ID of a variable.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "name": "DESCRIPTION_OMG"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/variables/1521"
+
+    + Body
+    
+            {
+                "id": "1521",
+                "name": "DESCRIPTION_OMG",
+                "project_element_id": "1",
+                "project_id": "33",
+                "regular_expression": "(\\-|\\* )?(.*)",
+                "fragment_number": 2,
+                "sample_text": null,
+                "type": "manual"
+            }
+
+
+# Group Rules
+API for rule management, definition and application.
+
+## Definitions [/rules/definitions/{?limit,offset,fields}]
+### List Defined Rules [GET]
+Returns definitions of all rules and required data for their instantiation.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "type": "format_converter",
+                        "relationship": "1:1",
+                        "fields": []
+                    },
+                    {
+                        "type": "rewriting",
+                        "relationship": "1:1",
+                        "fields": [
+                            {
+                                "name": "new_content",
+                                "required": true,
+                                "type": "STRING"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "replacing",
+                        "relationship": "1:1",
+                        "fields": [
+                            {
+                                "name": "search",
+                                "required": true,
+                                "type": "STRING"
+                            },
+                            {
+                                "name": "replacement",
+                                "required": true,
+                                "type": "STRING"
+                            },
+                            {
+                                "name": "regex",
+                                "required": true,
+                                "type": "BOOLEAN"
+                            },
+                            {
+                                "name": "case_sensitive",
+                                "required": true,
+                                "type": "BOOLEAN"
+                            }
+                        ]
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+## Rule Instances [/projects/{id}/rules/]
+### Create a Rule [POST]
+Creates a new rule inside the specified project.
+
+**OAuth2 Scope:** project.rules.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "name": "Cena",
+                "project_element_id": "5",
+                "applies": true,
+                "deletable": true,
+                "priority": 3,
+                "type": "rewriting",
+                "data": {
+                    "new_content": "%CATEGORYTEXT%"
+                }
+            }
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/rules/15/"
+
+    + Body
+    
+            {
+                "id": "15",
+                "project_id": "1",
+                "project_element_id": "5",
+                "applies": true,
+                "deletable": true,
+                "name": "Cena",
+                "priority": 3,
+                "type": "rewriting",
+                "data": {
+                    "new_content": "%CATEGORYTEXT%"
+                }
+            }
+
++ Request
+
+    + Headers
+    
+            Content-Type: application/json
+    
+    + Body
+    
+            {
+                "name": "Cena 2 BATCH",
+                "project_element_id": "5",
+                "applies": true,
+                "deletable": true,
+                "priority": 3,
+                "type": "batch_rewriting",
+                "data": [
+                    {
+                        "position": 1,
+                        "query_id": "4",
+                        "value": "2.00"
+                    },
+                    {
+                        "position": 2,
+                        "query_id": "3",
+                        "value": "1.00"
+                    }
+                ]
+            }
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/rules/16/"
+
+    + Body
+    
+            {
+                "applies": true,
+                "data": [
+                    {
+                        "position": 1,
+                        "query_id": "4",
+                        "value": "2.00"
+                    },
+                    {
+                        "position": 2,
+                        "query_id": "3",
+                        "value": "1.00"
+                    }
+                ],
+                "deletable": true,
+                "id": "39",
+                "name": "Cena 2 BATCH",
+                "priority": 3,
+                "project_element_id": "5",
+                "project_id": "33",
+                "type": "batch_rewriting"
+            }
+
+### List Project's Rules [GET /projects/{id}/rules/{?limit,offset,fields}]
+Lists all rules' instances that were created inside the specified project.
+
+**OAuth2 Scope:** project.rules.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "1",
+                        "project_id": "1",
+                        "project_element_id": null,
+                        "applies": true,
+                        "deletable": true,
+                        "name": null,
+                        "priority": 0,
+                        "type": "format_converter"
+                    },
+                    {
+                        "id": "15",
+                        "project_id": "1",
+                        "project_element_id": "5",
+                        "applies": true,
+                        "deletable": true,
+                        "name": "Cena",
+                        "priority": 3,
+                        "type": "batch_rewriting"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get a Rule [GET /rules/{id}/{?fields}]
+Returns a specific rule instance.
+
+**OAuth2 Scope:** project.rules.read
+
++ Parameters
+
+    + id (string) - ID of a rule.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "15",
+                "project_id": "1",
+                "project_element_id": "5",
+                "applies": true,
+                "deletable": true,
+                "name": "Cena",
+                "priority": 3,
+                "type": "rewriting",
+                "data": {
+                    "new_content": "%CATEGORYTEXT%"
+                }
+            }
+
+### Delete a Rule [DELETE /rules/{id}/{?fields}]
+Delete the specified rule.
+
+**OAuth2 Scope:** project.rules.write
+
++ Parameters
+
+    + id (string) - ID of a rule.
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 204
+
+    + Headers
+
+            Content-Type: application/json
+
+### Update a Rule [PATCH /rules/{id}/]
+Performes update of rule's attributes.
+
+**OAuth2 Scope:** project.rules.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "name": "PRODUCTNAME: Added Free Car",
+                "data": {
+                    "new_content": "%PRODUCTNAME% + Car"
+                }
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/rules/112"
+
+    + Body
+    
+            {
+                "id": "112",
+                "project_id": "2",
+                "project_element_id": "50",
+                "applies": true,
+                "deletable": true,
+                "name": "PRODUCTNAME: Added Free Car",
+                "priority": 3,
+                "type": "rewriting",
+                "data": {
+                    "new_content": "%CATEGORYTEXT% + Car"
+                }
+            }
+
+### Get Rule's Data [GET /rules/{id}/data/{?limit,offset,fields}]
+Returns only the data of a specific rule instance. This can be helpful
+for one to many (O2M) rules with a lot of records.
+
+**OAuth2 Scope:** project.rules.read
+
++ Parameters
+
+    + id (string) - ID of a rule.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "position": 1,
+                        "query_id": "28",
+                        "value": "2.00"
+                    },
+                    {
+                        "position": 2,
+                        "query_id": "30",
+                        "value": "1.00"
+                    }
+                ],
+                "type": "batch_rewriting",
+                "rule_id": "15"
+            }
+
+## Queries [/projects/{id}/queries/]
+MQL query management.
+
+### Create A Query [POST]
+Creates a new query inside the specified project.
+
+**OAuth2 Scope:** project.queries.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "name": "PRICE less then 200 Kč",
+                "query": "PRICE < 200",
+                "read_only": false,
+                "search_output": true
+            }
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/queries/d3o9v/"
+
+    + Body
+    
+            {
+                "id": "d3o9v",
+                "name": "PRICE less then 200 Kč",
+                "project_id": "21",
+                "advanced_interface": false,
+                "created_at": "2016-03-22T09:02:42+00:00",
+                "query": "PRICE < 200",
+                "read_only": false,
+                "search_output": false
+            }
+
+### Get a Query [GET /queries/{id}/{?fields}]
+Returns the requrested query.
+
+**OAuth2 Scope:** project.queries.read
+
++ Parameters
+
+    + id (string) - ID of a query.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "2",
+                "name": null,
+                "project_id": "33",
+                "advanced_interface": false,
+                "created_at": "2016-03-22T09:05:14+00:00",
+                "query": "CATEGORYTEXT = \"Spotřební materiál | Ostatní spotřební materiál | Pásky a filmy\"",
+                "read_only": false,
+                "search_output": false
+            }
+
+### Delete a Query [DELETE /queries/{id}/]
+Deletes a specific query.
+
+**OAuth2 Scope:** project.queries.write
+
++ Parameters
+
+    + id (string) - ID of a query.
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 204
+
+    + Headers
+
+            Content-Type: application/json
+
+### Update a Query [PATCH /queries/{id}/]
+Performes update of the specified query.
+
+**OAuth2 Scope:** project.queries.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "query": "PRICE > 200"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/queries/d3o9v/"
+
+    + Body
+    
+            {
+                "id": "d3o9v",
+                "name": "PRICE more then 200 Kč",
+                "project_id": "21",
+                "advanced_interface": false,
+                "created_at": "2016-03-22T09:02:42+00:00",
+                "query": "PRICE > 200",
+                "read_only": false,
+                "search_output": false
+            }
+
+### List Project's Queries [GET /projects/{id}/queries/{?limit,offset,fields}]
+Lists all queries that were created inside the specified project.
+
+**OAuth2 Scope:** project.queries.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "2",
+                        "name": null,
+                        "project_id": "33",
+                        "advanced_interface": false,
+                        "created_at": "2016-03-22T09:05:14+00:00",
+                        "query": "CATEGORYTEXT = \"Spotřební materiál | Ostatní spotřební materiál | Pásky a filmy\"",
+                        "read_only": false,
+                        "search_output": false
+                    },
+                    {
+                        "id": "1",
+                        "name": "ALLPRODUCTS",
+                        "project_id": "33",
+                        "advanced_interface": false,
+                        "created_at": "2016-03-22T09:02:42+00:00",
+                        "query": "",
+                        "read_only": true,
+                        "search_output": false
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### List Rule's Queries [GET /rules/{id}/queries/{?limit,offset,fields}]
+Lists all queries that were created for the specified rule.
+
+**OAuth2 Scope:** project.queries.read
+
++ Parameters
+
+    + id (string) - ID of a rule.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "2",
+                        "name": null,
+                        "project_id": "33",
+                        "advanced_interface": false,
+                        "created_at": "2016-03-22T09:05:14+00:00",
+                        "query": "CATEGORYTEXT = \"Spotřební materiál | Ostatní spotřební materiál | Pásky a filmy\"",
+                        "read_only": false,
+                        "search_output": false
+                    },
+                    {
+                        "id": "1",
+                        "name": "ALLPRODUCTS",
+                        "project_id": "33",
+                        "advanced_interface": false,
+                        "created_at": "2016-03-22T09:02:42+00:00",
+                        "query": "",
+                        "read_only": true,
+                        "search_output": false
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+
+# Group Notifications
+Notifications in Mergado.
+
+# Group Store
+Mergado Store for the management of third-party applications.
+
+# Group Scheduling
+Management of scheduled tasks.
+
+# Group Import
+Import of products feeds.
+
+# Group Export
+Export of products feeds.
