@@ -42,7 +42,6 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ## OAuth2 Scopes
 
-
 | Scope                       | Description                                           |
 |-----------------------------|-------------------------------------------------------|
 | **user.read**               | Client is authorized to access user information.      |
@@ -698,7 +697,7 @@ Returns a variable.
                 "type": "manual"
             }
 
-### Delete an Variable [DELETE /variables/{id}/{?fields}]
+### Delete a Variable [DELETE /variables/{id}/{?fields}]
 Delete the specified variable.
 
 **OAuth2 Scope:** project.variables.write
@@ -1120,7 +1119,7 @@ for one to many (O2M) rules with a lot of records.
 ## Queries [/projects/{id}/queries/]
 MQL query management.
 
-### Create A Query [POST]
+### Create a Query [POST]
 Creates a new query inside the specified project.
 
 **OAuth2 Scope:** project.queries.write
@@ -1279,7 +1278,7 @@ Lists all queries that were created inside the specified project.
                         "project_id": "33",
                         "advanced_interface": false,
                         "created_at": "2016-03-22T09:05:14+00:00",
-                        "query": "CATEGORYTEXT = \"Spotřební materiál | Ostatní spotřební materiál | Pásky a filmy\"",
+                        "query": "CATEGORYTEXT = \"Spotřební materiál | Pásky a filmy\"",
                         "read_only": false,
                         "search_output": false
                     },
@@ -1323,7 +1322,7 @@ Lists all queries that were created for the specified rule.
                         "project_id": "33",
                         "advanced_interface": false,
                         "created_at": "2016-03-22T09:05:14+00:00",
-                        "query": "CATEGORYTEXT = \"Spotřební materiál | Ostatní spotřební materiál | Pásky a filmy\"",
+                        "query": "CATEGORYTEXT = \"Spotřební materiál | Pásky a filmy\"",
                         "read_only": false,
                         "search_output": false
                     },
@@ -1341,6 +1340,75 @@ Lists all queries that were created for the specified rule.
                 "limit": 10,
                 "offset": 0
             }
+
+
+### Assign a Query to a Rule [PATCH /rules/{id}/queries/]
+Assigns a Query to a Rule. The query must exist, otherwise 400 (bad request) status is returned.
+The body parameters also must uniquely identify a query. If the query is already assigned to the rule,
+409 (conflict) status is returned.
+
+**OAuth2 Scope:** project.rules.write
+
++ Parameters
+
+    + id (string) - ID of a rule.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "name": "PRICE more then 200 Kč",
+                "query": "PRICE > 200"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/rules/d3o9v/queries/"
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "2",
+                        "name": "PRICE more then 200 Kč,
+                        "project_id": "33",
+                        "advanced_interface": false,
+                        "created_at": "2016-03-22T09:05:14+00:00",
+                        "query": "PRICE > 200",
+                        "read_only": false,
+                        "search_output": false
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Retract a Query from a Rule [DELETE /rules/{rid}/queries/{qid}]
+Retract a Query from a Rule.
+
+**OAuth2 Scope:** project.rules.write
+
++ Parameters
+
+    + rid (string) - ID of a rule.
+    + qid (string) - ID of a query.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
++ Response 204
 
 
 # Group Notifications
