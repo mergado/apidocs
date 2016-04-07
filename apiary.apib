@@ -1362,6 +1362,44 @@ The body parameters also must uniquely identify a query. If the query is already
     + Body
     
             {
+                "id": "d3o9v"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/rules/d3o9v/queries/"
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "d3o9v",
+                        "name": "PRICE more then 200 Kč",
+                        "project_id": "21",
+                        "advanced_interface": false,
+                        "created_at": "2016-03-22T09:02:42+00:00",
+                        "query": "PRICE > 200",
+                        "read_only": false,
+                        "search_output": false
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
                 "name": "PRICE more then 200 Kč",
                 "query": "PRICE > 200"
             }
@@ -1379,7 +1417,7 @@ The body parameters also must uniquely identify a query. If the query is already
                 "data": [
                     {
                         "id": "2",
-                        "name": "PRICE more then 200 Kč,
+                        "name": "PRICE more then 200 Kč",
                         "project_id": "33",
                         "advanced_interface": false,
                         "created_at": "2016-03-22T09:05:14+00:00",
@@ -1391,6 +1429,7 @@ The body parameters also must uniquely identify a query. If the query is already
                 "limit": 10,
                 "offset": 0
             }
+
 
 ### Retract a Query from a Rule [DELETE /rules/{rid}/queries/{qid}]
 Retract a Query from a Rule.
