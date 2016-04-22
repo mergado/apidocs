@@ -205,7 +205,7 @@ Returns a user.
                 "send_summary": false
             }
 
-### Get User's Permissions [GET /users/{id}/permissions/{?limit,offset,fields}]
+### Get User Permissions [GET /users/{id}/permissions/{?limit,offset,fields}]
 Lists all permissions (accesses to eshops) of a specific user.
 
 **OAuth2 Scope:** user.shops.read
@@ -238,7 +238,7 @@ Lists all permissions (accesses to eshops) of a specific user.
             }
 
 ## Eshops [/users/{id}/shops/{?limit,offset,fields}]
-### List User's Eshops [GET]
+### List User Eshops [GET]
 Returns eshops the user can access.
 
 **OAuth2 Scope:** user.shops.read
@@ -312,8 +312,29 @@ Returns an eshop with the given ID.
                 ]
             }
 
+### Show Eshop Info [GET /shops/{id}/info/]
+Show additional eshop information and statistics.
+
+**Oauth2 Scope:** shop.read
+
++ Parameters
+
+    + id (string) - ID of an eshop.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+    
+    + Body
+    
+            {
+                "number_of_projects": 3
+            }
+
 ## Projects [/shops/{id}/projects/{?limit,offset,fields}]
-### List Shop's Projects [GET]
+### List Shop Projects [GET]
 Returns projects of an eshop.
 
 **OAuth2 Scope:** shop.projects.read
@@ -360,7 +381,7 @@ Returns projects of an eshop.
                 ]
             }
 
-### Get a Project [GET /shops/{id}/{?fields}]
+### Get a Project [GET /projects/{id}/{?fields}]
 Returns a project with the given ID.
 
 **OAuth2 Scope:** project.read
@@ -401,7 +422,28 @@ Returns a project with the given ID.
                 "xml_updated_at": "2015-11-11T15:42:50+00:00"
             }
 
-## Elements [/project/{id}/elements/]
+### Show Project Info [GET /projects/{id}/info/]
+Show additional project information and statistics.
+
+**Oauth2 Scope:** project.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+    
+    + Body
+    
+            {
+                "number_of_elements": 17
+            }
+
+## Elements [/projects/{id}/elements/]
 API for project's elements management.
 
 ### Create an Element [POST]
@@ -443,7 +485,7 @@ Creates an element inside a project.
                 "hidden": false
             }
 
-### List Project's Elements [GET /projects/{id}/elements/{?limit,offset,fields}]
+### List Project Elements [GET /projects/{id}/elements/{?limit,offset,fields}]
 Lists all project's elements.
 
 **OAuth2 Scope:** project.elements.read
@@ -635,7 +677,7 @@ Creates a new variable inside a project.
                 "type": "manual"
             }
 
-### List Project's Variables [GET /projects/{id}/variables/{?limit,offset,fields}]
+### List Project Variables [GET /projects/{id}/variables/{?limit,offset,fields}]
 Lists all project's variables.
 
 **OAuth2 Scope:** project.variables.read
@@ -844,14 +886,22 @@ Creates a new rule inside the specified project.
     
             {
                 "name": "Cena",
+                "type": "rewriting",
                 "project_element_id": "5",
                 "applies": true,
-                "deletable": true,
                 "priority": 3,
-                "type": "rewriting",
+                "is_deletable": true,
+                "is_movable": true,
+                "is_editable": true,
+                "is_pausable": true,
                 "data": {
                     "new_content": "%CATEGORYTEXT%"
-                }
+                },
+                "queries": [
+                    {
+                        "id": "2"
+                    }
+                ]
             }
 
 + Response 201
@@ -865,16 +915,31 @@ Creates a new rule inside the specified project.
     
             {
                 "id": "15",
+                "name": "Cena",
+                "type": "rewriting",
                 "project_id": "1",
                 "project_element_id": "5",
                 "applies": true,
-                "deletable": true,
-                "name": "Cena",
+                "is_deletable": true,
+                "is_movable": true,
+                "is_editable": true,
+                "is_pausable": true,
                 "priority": 3,
-                "type": "rewriting",
                 "data": {
                     "new_content": "%CATEGORYTEXT%"
-                }
+                },
+                "queries": [
+                    {
+                        "advanced_interface": false,
+                        "created_at": "2016-03-22T09:05:14+00:00",
+                        "id": "2",
+                        "name": null,
+                        "project_id": "33",
+                        "query": "PRICE > 20",
+                        "read_only": false,
+                        "search_output": false
+                    }
+                ]
             }
 
 + Request
@@ -917,6 +982,13 @@ Creates a new rule inside the specified project.
     
             {
                 "applies": true,
+                "deletable": true,
+                "id": "39",
+                "name": "Cena 2 BATCH",
+                "priority": 3,
+                "project_element_id": "5",
+                "project_id": "33",
+                "type": "batch_rewriting",
                 "data": [
                     {
                         "position": 1,
@@ -929,16 +1001,21 @@ Creates a new rule inside the specified project.
                         "value": "1.00"
                     }
                 ],
-                "deletable": true,
-                "id": "39",
-                "name": "Cena 2 BATCH",
-                "priority": 3,
-                "project_element_id": "5",
-                "project_id": "33",
-                "type": "batch_rewriting"
+                "queries": [
+                    {
+                        "id": "1",
+                        "advanced_interface": false,
+                        "created_at": "2016-03-22T09:02:42+00:00",
+                        "name": "♥ALLPRODUCTS♥",
+                        "project_id": "33",
+                        "query": "",
+                        "read_only": true,
+                        "search_output": false
+                    }
+                ]
             }
 
-### List Project's Rules [GET /projects/{id}/rules/{?limit,offset,fields}]
+### List Project Rules [GET /projects/{id}/rules/{?limit,offset,fields}]
 Lists all rules' instances that were created inside the specified project.
 
 **OAuth2 Scope:** project.rules.read
@@ -1081,7 +1158,7 @@ Performes update of rule's attributes.
                 }
             }
 
-### Get Rule's Data [GET /rules/{id}/data/{?limit,offset,fields}]
+### Get Rule Data [GET /rules/{id}/data/{?limit,offset,fields}]
 Returns only the data of a specific rule instance. This can be helpful
 for one to many (O2M) rules with a lot of records.
 
@@ -1253,7 +1330,7 @@ Performes update of the specified query.
                 "search_output": false
             }
 
-### List Project's Queries [GET /projects/{id}/queries/{?limit,offset,fields}]
+### List Project Queries [GET /projects/{id}/queries/{?limit,offset,fields}]
 Lists all queries that were created inside the specified project.
 
 **OAuth2 Scope:** project.queries.read
@@ -1297,7 +1374,7 @@ Lists all queries that were created inside the specified project.
                 "offset": 0
             }
 
-### List Rule's Queries [GET /rules/{id}/queries/{?limit,offset,fields}]
+### List Rule Queries [GET /rules/{id}/queries/{?limit,offset,fields}]
 Lists all queries that were created for the specified rule.
 
 **OAuth2 Scope:** project.queries.read
