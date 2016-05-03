@@ -1529,3 +1529,237 @@ Retract a Query from a Rule.
 
 # Group Notifications
 Notifications in Mergado.use
+
+# Group Statistics
+API for statistics acquisition
+
+### List Eshop's Stats [GET /shops/<id>/stats/{?limit,offset,fields}]
+List eshop's stats the authenticated user has access to.
+
++ Parameters
+
+    + id (string) - ID of the eshop.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "date": "2016-04-23",
+                        "heureka_contact_email": "prodej@mironet.cz",
+                        "heureka_contact_phone": "234 700 800",
+                        "heureka_credit_amount": 61324.82,
+                        "heureka_credit_status": "ok",
+                        "heureka_follows_questions": true,
+                        "heureka_has_active_ppc": true,
+                        "heureka_has_certificate": true,
+                        "heureka_logo_url": "http://im9.cz/iR/importobchod-orig/4896_logo--mm130x40.png",
+                        "heureka_subsidiaries_count": 101,
+                        "heureka_total_clicks": 937,
+                        "heureka_total_cost": 1788.12,
+                        "heureka_xml_available": true,
+                        "hledejceny_credit_amount": null,
+                        "hledejceny_total_clicks": null,
+                        "hledejceny_total_cost": null,
+                        "srovname_credit_amount": null,
+                        "srovname_total_clicks": null,
+                        "srovname_total_cost": null,
+                        "zbozi_credit_amount": null,
+                        "zbozi_total_clicks": null,
+                        "zbozi_total_cost": null
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### List Stats of Single Product [GET /products/<id>/stats/]
+Lists stats of single product the authenticated user has access to.
+
++ Parameters
+
+    + id (string) - ID of the product.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "product_id": "4191",
+                "stats": {
+                    "categorytext": "Elektronika | Počítače a kancelář | Tiskárny a příslušenství | Barvící pásky",
+                    "cost": 80.9,
+                    "delivery_date": 0,
+                    "heureka_avg_position": 1,
+                    "heureka_category": "Barvící pásky",
+                    "heureka_cpc": 1.55,
+                    "heureka_cpc_status": "ok",
+                    "heureka_is_alone": false,
+                    "heureka_is_paired": true,
+                    "heureka_margin_status": "ok",
+                    "heureka_max_prices": [
+                        280.7,
+                        128,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ],
+                    "heureka_min_cpc": 1,
+                    "heureka_min_price": 128,
+                    "heureka_min_prices": [
+                        128,
+                        280.7,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    ],
+                    "heureka_name": "STAR RC-700B, kazeta s černou páskou pro SP712/742 - 30980730",
+                    "heureka_popularity": 4,
+                    "heureka_position_status": "ok",
+                    "heureka_price_position": 2,
+                    "heureka_price_status": "ok",
+                    "heureka_profit": 0,
+                    "heureka_segment": null,
+                    "heureka_shops_count": 2,
+                    "heureka_stats_clicks": 0,
+                    "heureka_stats_cost_of_sales": 0,
+                    "heureka_stats_cpc": 0,
+                    "heureka_stats_sales": 0,
+                    "heureka_stats_total_cost": 0,
+                    "heureka_stats_total_orders": 0,
+                    "heureka_url": "http://barvici-pasky.heureka.cz/star-rc-700b-kazeta-s-cernou-paskou-pro-sp712-742-30980730_6/",
+                    "imgurl": "https://www.mironet.cz/Foto/99207700.jpg",
+                    "is_starter": null,
+                    "is_topseller": null,
+                    "item_id": "99207700",
+                    "manufacturer": "Biostar",
+                    "name": "STAR RC-700B, kazeta s černou páskou pro SP712/742 (30980730)",
+                    "price": 232,
+                    "price_vat": 280.7,
+                    "url": "https://www.mironet.cz/star-rc700b-kazeta-s-cernou-paskou-pro-sp712742+dp124278/#4908143"
+                }
+            }
+
+### List Stats of All Products [GET /projects/<id>/stats/products/]
+Lists stats of products the authenticated user has access to.
+
++ Parameters
+
+    + id (string) - ID of the project.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                {
+                    "product_id": null,
+                    "stats": {
+                        "categorytext": "Náhradní díly | LCD Display pro notebook | 10\"-10,2\"",
+                        "cost": 1070.4,
+                        "delivery_date": 0,
+                        "heureka_avg_position": 1,
+                        "heureka_cpc": 2.05,
+                        "heureka_min_cpc": 1.5,
+                        "heureka_min_price": 2621,
+                        "heureka_name": "10.1 LCD LED Display univerzální notebook 1024x600 40pin",
+                        "heureka_price_position": 1,
+                        "heureka_stats_clicks": 0,
+                        "heureka_stats_cost_of_sales": 0,
+                        "heureka_stats_cpc": 0,
+                        "heureka_stats_sales": 0,
+                        "heureka_stats_total_cost": 0,
+                        "heureka_stats_total_orders": 0,
+                        "heureka_url": "http://displeje-pro-notebooky.heureka.cz/10_1-lcd-led-display-univerzalni-notebook-1024x600-40pin_5/",
+                        "imgurl": "https://www.mironet.cz/Foto/99000870.jpg",
+                        "is_starter": null,
+                        "is_topseller": null,
+                        "item_id": "99000870",
+                        "manufacturer": "Samsung / Samsung LTN",
+                        "name": "10.1 LCD LED Display univerzální notebook 1024x600 40pin",
+                        "price": 2166,
+                        "price_vat": 2620.9,
+                        "url": "https://www.mironet.cz/101quot-lcd-led-display-univerzalni-notebook-1024x600-40pin-hloubka-4mm-leskly+dp201193/#28049424"
+                    }
+                },
+                {
+                    "product_id": null,
+                    "stats": {
+                        "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
+                        "cost": 1500.7,
+                        "delivery_date": 0,
+                        "heureka_cpc": null,
+                        "imgurl": "https://www.mironet.cz/Foto/92424963.jpg",
+                        "is_starter": null,
+                        "is_topseller": null,
+                        "item_id": "92424963",
+                        "manufacturer": "Aqua Computer",
+                        "name": "Aqua Computer Cuplex Kryos XT - LGA 2011 (4260073414722)",
+                        "price": 1651,
+                        "price_vat": 1997.7,
+                        "url": "https://www.mironet.cz/aqua-computer-cuplex-kryos-xt-lga-2011+dp265971/#144435071"
+                    }
+                }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### List Stats of Categories [GET /projects/<id>/stats/categories/]
+Lists category stats the authenticated user has access to.
+
++ Parameters
+
+    + id (string) - ID of the project.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                  {
+                  "categorytext": "Elektronika | Foto | Foto doplňky a příslušenství | Fotopapíry",
+                  "date": "2016-04-19",
+                  "paired_products": 5,
+                  "unpaired_products": 0
+                },
+                {
+                  "categorytext": "Elektronika | Foto | Dalekohledy",
+                  "date": "2016-04-19",
+                  "paired_products": 20,
+                  "unpaired_products": 10
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
