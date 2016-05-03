@@ -1533,8 +1533,12 @@ Notifications in Mergado.use
 # Group Statistics
 API for statistics acquisition
 
-### List Eshop's Stats [GET /shops/<id>/stats/{?limit,offset,fields}]
+## Eshop stats [/shops/<id>/stats/{?limit,offset,fields}]
+
+### List Eshop's Stats [GET]
 List eshop's stats the authenticated user has access to.
+
+**OAuth2 Scope:** shop.stats.read
 
 + Parameters
 
@@ -1579,8 +1583,12 @@ List eshop's stats the authenticated user has access to.
                 "offset": 0
             }
 
-### List Stats of Single Product [GET /products/<id>/stats/]
+## Product Stats [/products/<id>/stats/]
+
+### List Stats of Single Product [GET]
 Lists stats of single product the authenticated user has access to.
+
+**OAuth2 Scope:** shop.stats.read
 
 + Parameters
 
@@ -1659,9 +1667,12 @@ Lists stats of single product the authenticated user has access to.
                     "url": "https://www.mironet.cz/star-rc700b-kazeta-s-cernou-paskou-pro-sp712742+dp124278/#4908143"
                 }
             }
-
+ 
+ 
 ### List Stats of All Products [GET /projects/<id>/stats/products/]
 Lists stats of products the authenticated user has access to.
+
+**OAuth2 Scope:** shop.stats.read
 
 + Parameters
 
@@ -1730,8 +1741,12 @@ Lists stats of products the authenticated user has access to.
                 "offset": 0
             }
 
-### List Stats of Categories [GET /projects/<id>/stats/categories/]
+## Categories Stats [/projects/<id>/stats/categories/]
+
+### List Stats of Categories [GET]
 Lists category stats the authenticated user has access to.
+
+**OAuth2 Scope:** shop.stats.read
 
 + Parameters
 
