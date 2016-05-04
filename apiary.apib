@@ -2010,3 +2010,76 @@ Returns list of issues of an audit.
                 "limit": 10,
                 "offset": 0
             }
+            
+# Group Google
+API for google.
+
+## Analytics [/projects/{id}/google/analytics/]
+
+### Request Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions,source}]
+Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
+value in ascending order. Groups of results can be created using `dimensions` query string.
+
+**OAuth2 Scope:** projects.ga.read
+
++ Parameters
+
+    + id (string) - ID of the shop.
+    + source (string, required) - identifier of the source.
+    + metrics (enum[string], optional) - Comma sepparated list of metrics to use.
+        + Members
+            + `sales_sum` - total sales of all products in the group.
+            + `orders_sum` - number of orders of all products in the group.
+            + `clicks_sum` - number of clicks of all products in the group.
+    + dimensions (enum[string], optional) - Comma sepparated list of dimensions to use.
+        + Default: `date`
+        + Members
+            + `date` - groups each product by the date the product has been collected.
+            + `day_of_week` - groups the products by the day of the week.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+    
+    + Body
+    
+            {
+              "data": [
+                {
+                  "clicks_sum": 861,
+                  "group": {
+                    "date": "2016-05-04"
+                  },
+                  "orders_sum": 50,
+                  "sales_sum": 129852
+                },
+                {
+                  "clicks_sum": 1661,
+                  "group": {
+                    "date": "2016-05-03"
+                  },
+                  "orders_sum": 69,
+                  "sales_sum": 225298
+                },
+                {
+                  "clicks_sum": 1523,
+                  "group": {
+                    "date": "2016-05-02"
+                  },
+                  "orders_sum": 70,
+                  "sales_sum": 141676
+                },
+                {
+                  "clicks_sum": 1095,
+                  "group": {
+                    "date": "2016-05-01"
+                  },
+                  "orders_sum": 54,
+                  "sales_sum": 113470
+                }
+              ],
+              "limit": 110,
+              "offset": 1
+            }
