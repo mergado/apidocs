@@ -388,7 +388,7 @@ Returns a project with the given ID.
 
 + Parameters
 
-    + id (string) - ID of a shop.
+    + id (string) - ID of a project.
 
 + Response 200
 
@@ -441,6 +441,96 @@ Show additional project information and statistics.
     
             {
                 "number_of_elements": 17
+            }
+
+## Products [/projects/{id}/products/{?limit,offset,fields}]
+### List Products [GET]
+Returns project's products.
+
+**OAuth2 Scope:** project.products.read
+
++ Parameters
+
+    + id (string) - ID of a shop.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            "data": [
+                {
+                    "id": "1693",
+                    "output_changed_at": null,
+                    "updated_at": "2016-04-28T17:18:50+00:00",
+                    "data": {
+                        "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
+                        "DELIVERY_DATE": "0",
+                        "DESCRIPTION": "Toner HP Q7551X",
+                        "DUES": "0",
+                        "IMGURL": "http://www.example.com/img/755.jpg",
+                        "MANUFACTURER": "PIRANHA",
+                        "PRICE": "808.18",
+                        "PRODUCT": "Toner HP Q7551X",
+                        "URL": "http://www.comps.cz/toner-hp-755",
+                        "VAT": "21.0"
+                    }
+                },
+                {
+                    "id": "1694",
+                    "output_changed_at": null,
+                    "updated_at": "2016-04-28T17:18:50+00:00",
+                    "data": {
+                        "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
+                        "DELIVERY_DATE": "0",
+                        "DESCRIPTION": "Toner HP Q7532X",
+                        "DUES": "0",
+                        "IMGURL": "http://www.example.com/img/7532.jpg",
+                        "MANUFACTURER": "PIRANHA",
+                        "PRICE": "848.18",
+                        "PRODUCT": "Toner HP Q7532X",
+                        "URL": "http://www.comps.cz/toner-hp-7532",
+                        "VAT": "21.0"
+                    }
+                }
+            ]
+
+### Get a Product [GET /products/{id}/{?fields}]
+Returns a product with the given ID.
+
+**OAuth2 Scope:** project.products.read
+
++ Parameters
+
+    + id (string) - ID of a product.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "1693",
+                "output_changed_at": null,
+                "updated_at": "2016-04-28T17:18:50+00:00",
+                "data": {
+                    "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
+                    "DELIVERY_DATE": "0",
+                    "DESCRIPTION": "Toner HP Q7551X",
+                    "DUES": "0",
+                    "IMGURL": "http://www.example.com/img/755.jpg",
+                    "MANUFACTURER": "PIRANHA",
+                    "PRICE": "808.18",
+                    "PRODUCT": "Toner HP Q7551X",
+                    "URL": "http://www.comps.cz/toner-hp-755",
+                    "VAT": "21.0"
+                }
             }
 
 ## Elements [/projects/{id}/elements/]
