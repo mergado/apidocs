@@ -495,7 +495,9 @@ Returns project's products.
                         "URL": "http://www.comps.cz/toner-hp-7532",
                         "VAT": "21.0"
                     }
-                }
+                },
+                "limit": 10,
+                "offset": 0
             ]
 
 ### Get a Product [GET /products/{id}/{?fields}]
@@ -1620,7 +1622,7 @@ Retract a Query from a Rule.
 # Group Statistics
 API for statistics, their acquisition and aggregation.
 
-## Eshop Statistics [/shops/<id>/stats/{?limit,offset,fields}]
+## Eshops [/shops/{id}/stats/{?limit,offset,fields}]
 
 ### Eshop Statistics [GET]
 Returns latest summarized statistics and other information of en eshop.
@@ -1670,7 +1672,7 @@ Returns latest summarized statistics and other information of en eshop.
                 "offset": 0
             }
 
-## Product Statistics [/products/<id>/stats/]
+## Products [/products/{id}/stats/]
 
 ### Statistics of a Product [GET /products/<id>/stats/{?fields,date}]
 Retruns statistics of a product, by default only the latest statistics (usualy from yesterday)
@@ -1737,7 +1739,7 @@ are returned. This can be changed by the query string parameter `date`.
             }
  
  
-### Statistics of All Products [GET /projects/<id>/stats/products/{?fields,limit,offset,date}]
+### Statistics of All Products [GET /projects/{id}/stats/products/{?fields,limit,offset,date}]
 Returns statistics of all products, by default only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`
 
@@ -1813,7 +1815,7 @@ are returned. This can be changed by the query string parameter `date`
                 "offset": 0
             }
 
-## Category Statistics [/projects/<id>/stats/categories/]
+## Categories [/projects/{id}/stats/categories/]
 
 ### Statistics of Categories [GET /projects/<id>/stats/categories/{?fields,limit,offset}]
 Returns latest statistics of feed's categories (for example number of paired products
@@ -1834,20 +1836,177 @@ for given `CATEGORYTEXT`).
     + Body
     
             {
-              "data": [
-                  {
-                  "categorytext": "Elektronika | Foto | Foto doplňky a příslušenství | Fotopapíry",
-                  "date": "2016-04-19",
-                  "paired_products": 5,
-                  "unpaired_products": 0
-                },
-                {
-                  "categorytext": "Elektronika | Foto | Dalekohledy",
-                  "date": "2016-04-19",
-                  "paired_products": 20,
-                  "unpaired_products": 10
+                "data": [
+                    {
+                        "categorytext": "Elektronika | Foto | Foto doplňky a příslušenství | Fotopapíry",
+                        "date": "2016-04-19",
+                        "paired_products": 5,
+                        "unpaired_products": 0
+                    },
+                    {
+                        "categorytext": "Elektronika | Foto | Dalekohledy",
+                        "date": "2016-04-19",
+                        "paired_products": 20,
+                        "unpaired_products": 10
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+## Audits [/projects/{id}/stats/audits/]
+
+### List of Audits [GET /projects/{id}/stats/audits/{?fields,limit,offset}]
+Returns list of performed audits.
+
+**OAuth2 Scope:** shop.stats.read
+
++ Parameters
+
+    + id (string) - ID of the project.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "date": "2016-05-03",
+                        "error": null,
+                        "finished_at": null,
+                        "id": "163-160503",
+                        "started_at": "2016-05-04 04:50:06+0000",
+                        "status": "in_progress"
+                    },
+                    {
+                        "date": "2016-05-02",
+                        "error": "required_stats_unavailable",
+                        "finished_at": "2016-05-03 20:57:09+0000",
+                        "id": "163-160502",
+                        "started_at": "2016-05-03 04:50:06+0000",
+                        "status": "error"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get an Audit [GET /stats/audits/{id}/{?fields}]
+Returns a performed audit.
+
+**OAuth2 Scope:** shop.stats.read
+
++ Parameters
+
+    + id (string) - ID of the audit.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "163-160419",
+                "date": "2016-04-19",
+                "error": null,
+                "status": "done",
+                "finished_at": "2016-04-20 12:22:49+0000",
+                "product_count": 24989,
+                "started_at": "2016-04-20 11:56:50+0000",
+                "issues": {
+                    "heureka_category_name": {
+                        "ok": {
+                            "count": 144,
+                            "items": 383
+                        },
+                        "wrong": {
+                            "count": 239,
+                            "items": 383
+                        }
+                    },
+                    "heureka_cpc_status": {
+                        "decreased": {
+                            "count": 238,
+                            "items": 24989
+                        },
+                        "low": {
+                            "count": 147,
+                            "items": 24989
+                        },
+                        "ok": {
+                            "count": 24604,
+                            "items": 24989
+                        }
+                    },
+                    "heureka_is_paired": {
+                        "ok": {
+                            "count": 20758,
+                            "items": 24989
+                        },
+                        "wrong": {
+                            "count": 4231,
+                            "items": 24989
+                        }
+                    },
+                    "heureka_margin_status": {
+                        "ok": {
+                            "count": 24989,
+                            "items": 24989
+                        }
+                    },
+                    "heureka_not_alone": {
+                        "alone": {
+                            "count": 13411,
+                            "items": 24989
+                        },
+                        "ok": {
+                            "count": 11578,
+                            "items": 24989
+                        }
+                    }
                 }
-              ],
-              "limit": 10,
-              "offset": 0
+            }
+
+### List Issues [GET /stats/audits/{id}/issues/{?fields,limit,offset,filter_by,order_by}]
+Returns list of issues of an audit.
+
+**OAuth2 Scope:** shop.stats.read
+
++ Parameters
+
+    + id (string) - ID of the audit.
+    + filter_by (string, optional) - Filters to apply to the response.
+    + order_by (string, optional) - order to apply to the response.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "audit_id": "163-160419",
+                        "item_id": "1835",
+                        "product_id": null,
+                        "validator": "heureka_is_paired",
+                        "verdict": "wrong",
+                        "info": {
+                            "price_vat": 199
+                        }
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
