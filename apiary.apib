@@ -54,6 +54,7 @@ The Mergado API is based on REST principles. The request/response format is JSON
 | **shop.projects.write**     | Client is authorized to modify eshop's projects.      |
 | **project.read**            | Client is authorized to access project's information. |
 | **project.write**           | Client is authorized to modify a project.             |
+| **project.ga.read**         | Client is authorized to access Google Analytics.      |
 | **project.rules.read**      | Client is authorized to access project's rules.       |
 | **project.rules.write**     | Client is authorized to modify project's rules.       |
 | **project.queries.read**    | Client is authorized to access project's queries.     |
@@ -62,6 +63,10 @@ The Mergado API is based on REST principles. The request/response format is JSON
 | **project.elements.write**  | Client is authorized to modify project's elements.    |
 | **project.variables.read**  | Client is authorized to access project's variables.   |
 | **project.variables.write** | Client is authorized to modify project's variables.   |
+| **project.products.read**   | Client is authorized to access project's products.    |
+| **project.products.write**  | Client is authorized to modify project's products.    |
+| **project.stats.read**      | Client is authorized to access project's statistics.  |
+| **project.stats.write**     | Client is authorized to modify project's statistics.  |
 
 
 ## Info [/]
@@ -1633,7 +1638,7 @@ export (project) formats:
 ### Eshop Statistics [GET]
 Returns latest summarized statistics and other information of en eshop.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** project.stats.read
 
 + Parameters
 
@@ -1684,7 +1689,7 @@ Returns latest summarized statistics and other information of en eshop.
 Retruns statistics of a product, by default only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** project.stats.read
 
 + Parameters
 
@@ -1749,7 +1754,7 @@ are returned. This can be changed by the query string parameter `date`.
 Returns statistics of all products, by default only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** project.stats.read
 
 + Parameters
 
@@ -1827,7 +1832,7 @@ are returned. This can be changed by the query string parameter `date`
 Returns latest statistics of feed's categories (for example number of paired products
 for given `CATEGORYTEXT`).
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** project.stats.read
 
 + Parameters
 
@@ -1865,7 +1870,7 @@ for given `CATEGORYTEXT`).
 ### List of Audits [GET /projects/{id}/stats/audits/{?fields,limit,offset}]
 Returns list of performed audits.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** project.stats.read
 
 + Parameters
 
@@ -1905,7 +1910,7 @@ Returns list of performed audits.
 ### Get an Audit [GET /stats/audits/{id}/{?fields}]
 Returns a performed audit.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** project.stats.read
 
 + Parameters
 
@@ -1984,7 +1989,7 @@ Returns a performed audit.
 ### List Issues [GET /stats/audits/{id}/issues/{?fields,limit,offset,filter_by,order_by}]
 Returns list of issues of an audit.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** project.stats.read
 
 + Parameters
 
