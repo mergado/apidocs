@@ -2027,7 +2027,7 @@ API for google.
 
 ## Analytics [/projects/{id}/google/analytics/]
 
-### Request Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions,source}]
+### Request Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions}]
 Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
 
@@ -2036,7 +2036,6 @@ value in ascending order. Groups of results can be created using `dimensions` qu
 + Parameters
 
     + id (string) - ID of the shop.
-    + source (string, required) - identifier of the source.
     + metrics (enum[string], optional) - Comma sepparated list of metrics to use.
         + Members
             + `sales_sum` - total sales of all products in the group.
@@ -2057,40 +2056,32 @@ value in ascending order. Groups of results can be created using `dimensions` qu
     + Body
     
             {
-              "data": [
-                {
-                  "clicks_sum": 861,
-                  "group": {
-                    "date": "2016-05-04"
-                  },
-                  "orders_sum": 50,
-                  "sales_sum": 129852
-                },
-                {
-                  "clicks_sum": 1661,
-                  "group": {
-                    "date": "2016-05-03"
-                  },
-                  "orders_sum": 69,
-                  "sales_sum": 225298
-                },
-                {
-                  "clicks_sum": 1523,
-                  "group": {
-                    "date": "2016-05-02"
-                  },
-                  "orders_sum": 70,
-                  "sales_sum": 141676
-                },
-                {
-                  "clicks_sum": 1095,
-                  "group": {
-                    "date": "2016-05-01"
-                  },
-                  "orders_sum": 54,
-                  "sales_sum": 113470
-                }
-              ],
-              "limit": 110,
-              "offset": 1
+                "data": [
+                    {
+                        "group": {"date": "2016-05-04"},
+                        "clicks_sum": 861,
+                        "orders_sum": 50,
+                        "sales_sum": 129852
+                    },
+                    {
+                        "group": {"date": "2016-05-03"},
+                        "clicks_sum": 1661,
+                        "orders_sum": 69,
+                        "sales_sum": 225298
+                    },
+                    {
+                        "group": {"date": "2016-05-02"},
+                        "clicks_sum": 1523,
+                        "orders_sum": 70,
+                        "sales_sum": 141676
+                    },
+                    {
+                        "group": {"date": "2016-05-01"},
+                        "clicks_sum": 1095,
+                        "orders_sum": 54,
+                        "sales_sum": 113470
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
