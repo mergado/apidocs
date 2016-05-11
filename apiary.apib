@@ -2085,3 +2085,295 @@ value in ascending order. Groups of results can be created using `dimensions` qu
                 "limit": 10,
                 "offset": 0
             }
+            
+# Group Feed Audits
+Audit of product feed.
+
+- Issues are checks with non-ok verdicts. Some issues are feed-wide, so
+  they are bound only to an audit resource. Most issues are product-specific,
+  so they are bound to audit and also to product resource.
+- Every validator provides specific additional info to check. It is accessible
+  in `info` field of issues and it can have various forms - its schema is
+  validator-dependent.
+- Web hook URL is requested with POST (audit's JSON resource sent in data)
+  right in the moment when audit is finished.
+- Progress is raised by every check, there is no information about *total*
+  number of progress units.
+- Feed type is optional. In case it's missing, it is detected before audit
+  starts.
+- Error field of audits and issues has nothing to do with checking itself -
+  is is used only in case mergado3 application fails and raises an exception.
+  This generic error field is rather for debugging API than for being consumed
+  by API clients.
+- Product's data is parsed and saved just *as is* into data field. No semantic
+  analysis is performed, validators take it raw and do whatever they want
+  with it. This means the data field also has no fixed schema.
+- Audits can be scheduled.
+
+## Audits [/projects/{id}/feedaudits/]
+### Create a New Audit [POST]
+Creates and starts an audit. Feed type, web hook and shop id are optional.
+
++ Parameters
+
+    + id (string) - ID of the project.
+    
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "types": ["supply"],
+                "shop_id": "20",
+                "parser_type": "heureka.cz",
+                "feed_types": ["heureka.cz"],
+                "feed_url": "https://www.example.com/feed.xml",
+                "webhook_url": "http://www.example.com/ping.php"
+            }
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://mergado.apiary.io/v0//projects/57334061ba4989170e78dbf3/feedaudits/"
+
+    + Body
+    
+            {
+                "id": "51768ba7ed14f444772d6137"
+                "error": null,
+                "types": ["supply"],
+                "status": "in_progress",
+                "feed_url": "https://www.example.com/feed.xml",
+                "webhook_url": "http://www.example.com/ping.php",
+                "parser_type": "heureka.cz",
+                "feed_types": ["heureka.cz"],
+                "encoding": "utf-8",
+                "shop_id": "20",
+                "time": 254,
+                "expired_at": null,
+                "product_count": 8367,
+                "progress": 512,
+                "started_at": "2013-04-23 13:24:55+0000",
+                "finished_at": null,
+            }
+
+### List Audits [GET /projects/{id}/feedaudits/{?limit,offset,fields}]
+Returns list of all audits.
+
++ Parameters
+
+    + id (string) - ID of the project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            [
+                {
+                    "id": "51768ba7ed14f444772d6137"
+                    "error": null,
+                    "types": ["xml"],
+                    "status": "in_progress",
+                    "feed_url": "https://www.example.com/feed.xml",
+                    "webhook_url": "http://www.example.com/ping.php",
+                    "parser_type": "heureka.cz",
+                    "feed_types": ["heureka.cz", "zbozi.cz"],
+                    "encoding": "utf-8",
+                    "shop_id": null,
+                    "time": 254,
+                    "product_count": 8367,
+                    "progress": 512,
+                    "started_at": "2013-04-23 13:24:55+0000",
+                    "finished_at": null,
+                }
+            ]
+
+### Get an Audit [GET /feedaudits/{id}/{?fields]
+Returns the requested audit resource.
+
++ Parameters
+
+    + id (string) - ID of the audit.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "51768ba7ed14f444772d6137"
+                "error": null,
+                "types": ["xml"],
+                "status": "in_progress",
+                "feed_url": "https://www.example.com/feed.xml",
+                "webhook_url": "http://www.example.com/ping.php",
+                "parser_type": "heureka.cz",
+                "feed_types": ["heureka.cz", "zbozi.cz"],
+                "encoding": "utf-8",
+                "shop_id": null,
+                "time": 254,
+                "product_count": 8367,
+                "progress": 512,
+                "started_at": "2013-04-23 13:24:55+0000",
+                "finished_at": null,
+            }
+
+## Issues [/feedaudits/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
+### List Audit Issues [GET]
+Returns all issues (problematic validations) of a specific audit.
+
++ Parameters
+
+    + id (string) - ID of the audit.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            [
+                {
+                    "id": "51768ba7ed14f444772d6138",
+                    "checked_at": "2013-04-23 13:24:55+0000",
+                    "verdict": "error",
+                    "info": {
+                        "element": "PRODUCT"
+                    },
+                    "validator": "is_present_product",
+                    "level": "recommendation",
+                    "feed_types": ["heureka", "zbozi"],
+                    "product": {"id": "51768ba7ed14f444772d6120"},
+                    "product_id": "57330212ba49891750549828",
+                    "audit_id": "51768ba7ed14f444772d6137"
+                }
+            ]
+
+### Get an Issue [GET /feedaudits/issues/{id}/{?fields}]
+Returns single issue with given `id`.
+
++ Parameters
+
+    + id (string) - ID of the issue.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "51768ba7ed14f444772d6138",
+                "checked_at": "2013-04-23 13:24:55+0000",
+                "verdict": "error",
+                "info": {
+                    "element": "PRODUCT"
+                },
+                "validator": "is_present_product",
+                "level": "recommendation",
+                "feed_types": ["heureka", "zbozi"],
+                "product_id": "51768ba7ed14f444772d6120",
+                "audit_id": "51768ba7ed14f444772d6137"
+            }
+
+### List Product's Issues [GET /feedaudit/products/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
+Returns all issues (problematic validations) of a specific product.
+
++ Parameters
+
+    + id (string) - ID of the product.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            [
+                {
+                    "id": "51768ba7ed14f444772d6138",
+                    "checked_at": "2013-04-23 13:24:55+0000",
+                    "verdict": "error",
+                    "info": {
+                        "element": "PRODUCT"
+                    },
+                    "validator": "is_present_product",
+                    "feed_types": ["heureka", "zbozi"],
+                    "product": {"id": "51768ba7ed14f444772d6120"},
+                    "audit": {"id": "51768ba7ed14f444772d6137"}
+                }
+            ]
+
+## Products [/feedaudit/audits/{id}/products/{?limit,offset,fields,filter_by,order_by}]
+### List Audit Products [GET]
+Returns all products of a specific audit.
+
++ Parameters
+
+    + id (string) - ID of the audit.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            [
+                {
+                    "id": "51768ba7ed14f444772d6120",
+                    "audit": {"id": "51768ba7ed14f444772d6137"},
+                    "data": [
+                        {"tag": "PRODUCT", "value": "Hovězí plíce 100 g", "elements": []},
+                        {"tag": "DESCRIPTION", "value": "<P>Čistě dietní krm...</div>", "elements": []},
+                        {"tag": "DELIVERY_DATE", "value": 1, "elements": []},
+                        {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
+                    ]
+                }
+            ]
+
+### Get a Product [GET /feedaudit/products/{id}{?fields}]
+Returns a single product resource.
+
++ Parameters
+
+    + id (string) - ID of the product.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "51768ba7ed14f444772d6120",
+                "audit": {"id": "51768ba7ed14f444772d6137"},
+                "data": [
+                    {"tag": "PRODUCT", "value": "Hovězí plíce 100 g", "elements": []},
+                    {"tag": "DESCRIPTION", "value": "<P>Čistě dietní krm...</div>", "elements": []},
+                    {"tag": "DELIVERY_DATE", "value": 1, "elements": []},
+                    {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
+                ]
+            }
