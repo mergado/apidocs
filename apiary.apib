@@ -2114,6 +2114,8 @@ Audit of product feed.
 ### Create a New Audit [POST]
 Creates and starts an audit. Feed type, web hook and shop id are optional.
 
+**OAuth2 Scope:** projects.feedaudit.write
+
 + Parameters
 
     + id (string) - ID of the project.
@@ -2127,8 +2129,6 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
     + Body
     
             {
-                "types": ["supply"],
-                "shop_id": "20",
                 "parser_type": "heureka.cz",
                 "feed_types": ["heureka.cz"],
                 "feed_url": "https://www.example.com/feed.xml",
@@ -2140,21 +2140,19 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
     + Headers
 
             Content-Type: application/json
-            Location: "https://mergado.apiary.io/v0//projects/57334061ba4989170e78dbf3/feedaudits/"
+            Location: "https://app.mergado.com/api/projects/57334061ba4989170e78dbf3/feedaudits/"
 
     + Body
     
             {
                 "id": "51768ba7ed14f444772d6137"
                 "error": null,
-                "types": ["supply"],
                 "status": "in_progress",
                 "feed_url": "https://www.example.com/feed.xml",
                 "webhook_url": "http://www.example.com/ping.php",
                 "parser_type": "heureka.cz",
                 "feed_types": ["heureka.cz"],
                 "encoding": "utf-8",
-                "shop_id": "20",
                 "time": 254,
                 "expired_at": null,
                 "product_count": 8367,
@@ -2178,28 +2176,32 @@ Returns list of all audits.
 
     + Body
     
-            [
-                {
-                    "id": "51768ba7ed14f444772d6137"
-                    "error": null,
-                    "types": ["xml"],
-                    "status": "in_progress",
-                    "feed_url": "https://www.example.com/feed.xml",
-                    "webhook_url": "http://www.example.com/ping.php",
-                    "parser_type": "heureka.cz",
-                    "feed_types": ["heureka.cz", "zbozi.cz"],
-                    "encoding": "utf-8",
-                    "shop_id": null,
-                    "time": 254,
-                    "product_count": 8367,
-                    "progress": 512,
-                    "started_at": "2013-04-23 13:24:55+0000",
-                    "finished_at": null,
-                }
-            ]
+            {
+                "data": [
+                    {
+                        "id": "51768ba7ed14f444772d6137"
+                        "error": null,
+                        "status": "in_progress",
+                        "feed_url": "https://www.example.com/feed.xml",
+                        "webhook_url": "http://www.example.com/ping.php",
+                        "parser_type": "heureka.cz",
+                        "feed_types": ["heureka.cz", "zbozi.cz"],
+                        "encoding": "utf-8",
+                        "time": 254,
+                        "product_count": 8367,
+                        "progress": 512,
+                        "started_at": "2013-04-23 13:24:55+0000",
+                        "finished_at": null,
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
 
 ### Get an Audit [GET /feedaudits/{id}/{?fields]
 Returns the requested audit resource.
+
+**OAuth2 Scope:** projects.feedaudit.read
 
 + Parameters
 
@@ -2216,14 +2218,12 @@ Returns the requested audit resource.
             {
                 "id": "51768ba7ed14f444772d6137"
                 "error": null,
-                "types": ["xml"],
                 "status": "in_progress",
                 "feed_url": "https://www.example.com/feed.xml",
                 "webhook_url": "http://www.example.com/ping.php",
                 "parser_type": "heureka.cz",
                 "feed_types": ["heureka.cz", "zbozi.cz"],
                 "encoding": "utf-8",
-                "shop_id": null,
                 "time": 254,
                 "product_count": 8367,
                 "progress": 512,
@@ -2234,6 +2234,8 @@ Returns the requested audit resource.
 ## Issues [/feedaudits/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
 ### List Audit Issues [GET]
 Returns all issues (problematic validations) of a specific audit.
+
+**OAuth2 Scope:** projects.feedaudit.read
 
 + Parameters
 
@@ -2247,25 +2249,30 @@ Returns all issues (problematic validations) of a specific audit.
 
     + Body
     
-            [
-                {
-                    "id": "51768ba7ed14f444772d6138",
-                    "checked_at": "2013-04-23 13:24:55+0000",
-                    "verdict": "error",
-                    "info": {
-                        "element": "PRODUCT"
-                    },
-                    "validator": "is_present_product",
-                    "level": "recommendation",
-                    "feed_types": ["heureka", "zbozi"],
-                    "product": {"id": "51768ba7ed14f444772d6120"},
-                    "product_id": "57330212ba49891750549828",
-                    "audit_id": "51768ba7ed14f444772d6137"
-                }
-            ]
+            {
+                "data": [
+                    {
+                        "id": "51768ba7ed14f444772d6138",
+                        "product_id": "57330212ba49891750549828",
+                        "audit_id": "51768ba7ed14f444772d6137",
+                        "checked_at": "2013-04-23 13:24:55+0000",
+                        "verdict": "error",
+                        "info": {
+                            "element": "PRODUCT"
+                        },
+                        "validator": "is_present_product",
+                        "level": "recommendation",
+                        "feed_types": ["heureka", "zbozi"]
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
 
 ### Get an Issue [GET /feedaudits/issues/{id}/{?fields}]
 Returns single issue with given `id`.
+
+**OAuth2 Scope:** projects.feedaudit.read
 
 + Parameters
 
@@ -2296,6 +2303,8 @@ Returns single issue with given `id`.
 ### List Product's Issues [GET /feedaudit/products/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
 Returns all issues (problematic validations) of a specific product.
 
+**OAuth2 Scope:** projects.feedaudit.read
+
 + Parameters
 
     + id (string) - ID of the product.
@@ -2308,24 +2317,30 @@ Returns all issues (problematic validations) of a specific product.
 
     + Body
     
-            [
-                {
-                    "id": "51768ba7ed14f444772d6138",
-                    "checked_at": "2013-04-23 13:24:55+0000",
-                    "verdict": "error",
-                    "info": {
-                        "element": "PRODUCT"
-                    },
-                    "validator": "is_present_product",
-                    "feed_types": ["heureka", "zbozi"],
-                    "product": {"id": "51768ba7ed14f444772d6120"},
-                    "audit": {"id": "51768ba7ed14f444772d6137"}
-                }
-            ]
+            {
+                "data": [
+                    {
+                        "id": "51768ba7ed14f444772d6138",
+                        "product_id": "51768ba7ed14f444772d6120",
+                        "audit_id": "51768ba7ed14f444772d6137",
+                        "checked_at": "2013-04-23 13:24:55+0000",
+                        "verdict": "error",
+                        "info": {
+                            "element": "PRODUCT"
+                        },
+                        "validator": "is_present_product",
+                        "feed_types": ["heureka", "zbozi"]
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
 
 ## Products [/feedaudit/audits/{id}/products/{?limit,offset,fields,filter_by,order_by}]
 ### List Audit Products [GET]
 Returns all products of a specific audit.
+
+**OAuth2 Scope:** projects.feedaudit.read
 
 + Parameters
 
@@ -2339,21 +2354,27 @@ Returns all products of a specific audit.
 
     + Body
     
-            [
-                {
-                    "id": "51768ba7ed14f444772d6120",
-                    "audit": {"id": "51768ba7ed14f444772d6137"},
-                    "data": [
-                        {"tag": "PRODUCT", "value": "Hovězí plíce 100 g", "elements": []},
-                        {"tag": "DESCRIPTION", "value": "<P>Čistě dietní krm...</div>", "elements": []},
-                        {"tag": "DELIVERY_DATE", "value": 1, "elements": []},
-                        {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
-                    ]
-                }
-            ]
+            {
+                "data": [
+                    {
+                        "id": "51768ba7ed14f444772d6120",
+                        "audit_id": "51768ba7ed14f444772d6137",
+                        "elements": [
+                            {"tag": "PRODUCT", "value": "Hovězí plíce 100 g", "elements": []},
+                            {"tag": "DESCRIPTION", "value": "<P>Čistě dietní krm...</div>", "elements": []},
+                            {"tag": "DELIVERY_DATE", "value": 1, "elements": []},
+                            {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
+                        ]
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
 
 ### Get a Product [GET /feedaudit/products/{id}{?fields}]
 Returns a single product resource.
+
+**OAuth2 Scope:** projects.feedaudit.read
 
 + Parameters
 
@@ -2369,8 +2390,8 @@ Returns a single product resource.
     
             {
                 "id": "51768ba7ed14f444772d6120",
-                "audit": {"id": "51768ba7ed14f444772d6137"},
-                "data": [
+                "audit_id": "51768ba7ed14f444772d6137",
+                "elements": [
                     {"tag": "PRODUCT", "value": "Hovězí plíce 100 g", "elements": []},
                     {"tag": "DESCRIPTION", "value": "<P>Čistě dietní krm...</div>", "elements": []},
                     {"tag": "DELIVERY_DATE", "value": 1, "elements": []},
