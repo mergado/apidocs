@@ -2502,3 +2502,113 @@ Returns a single product resource.
                     {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
                 ]
             }
+            
+### Return Products in Query [GET /queries/{id}/products/{?limit,offset,fields,filter_by,order_by}]
+Returns products defined in given query.
+
+**OAuth2 Scope:** projects.products.read
+
++ Parameters
+
+    + id (string) - ID of the query.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body  
+    
+            {
+                "data": [
+                    {
+                        "data": {
+                            "CATEGORYTEXT": "Text kategorie",
+                            "DELIVERY_DATE": "0",
+                            "DELIVERY_PRICE_COD|DHL": "5.90",
+                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
+                            "DELIVERY_PRICE|DHL": "4.90",
+                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
+                            "DESCRIPTION": "Popis produktu",
+                            "GIFT": "Zľavový kupón na ďalší nákup",
+                            "HEUREKA_CPC": null,
+                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
+                            "ITEM_ID": "766",
+                            "MANUFACTURER": "Vyrobca",
+                            "PRICE_VAT": "25.39",
+                            "PRODUCT": "Vyrobok",
+                            "PRODUCTNAME": "Nayov vzrobku",
+                            "URL": "http://www.url.cz/prevyrobok/",
+                            "VAT": "0.21"
+                        },
+                      "id": "3838",
+                      "input_data": {
+                            "CATEGORYTEXT": "Text kategorie",
+                            "DELIVERY_DATE": "0",
+                            "DELIVERY_PRICE_COD|DHL": "5.90",
+                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
+                            "DELIVERY_PRICE|DHL": "4.90",
+                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
+                            "DESCRIPTION": "Popis produktu",
+                            "GIFT": "Zľavový kupón na ďalší nákup",
+                            "HEUREKA_CPC": null,
+                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
+                            "ITEM_ID": "766",
+                            "MANUFACTURER": "Vyrobca",
+                            "PRICE_VAT": "25.39",
+                            "PRODUCT": "Vyrobok",
+                            "PRODUCTNAME": "Nayov vzrobku",
+                            "URL": "http://www.url.cz/prevyrobok/",
+                            "VAT": "0.21"
+                      },
+                      "output_changed_at": "2016-04-25T17:20:44+00:00",
+                      "updated_at": "2016-04-25T16:42:50+00:00"
+                    },
+                    {
+                      "data": {
+                            "CATEGORYTEXT": "Text kategorie",
+                            "DELIVERY_DATE": "0",
+                            "DELIVERY_PRICE_COD|DHL": "5.90",
+                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
+                            "DELIVERY_PRICE|DHL": "4.90",
+                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
+                            "DESCRIPTION": "Popis produktu",
+                            "GIFT": "Zľavový kupón na ďalší nákup",
+                            "HEUREKA_CPC": null,
+                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
+                            "ITEM_ID": "766",
+                            "MANUFACTURER": "Vyrobca",
+                            "PRICE_VAT": "25.39",
+                            "PRODUCT": "Vyrobok",
+                            "PRODUCTNAME": "Nayov vzrobku",
+                            "URL": "http://www.url.cz/prevyrobok/",
+                            "VAT": "0.21"
+                      },
+                      "id": "3839",
+                      "input_data": {
+                           "CATEGORYTEXT": "Text kategorie",
+                            "DELIVERY_DATE": "0",
+                            "DELIVERY_PRICE_COD|DHL": "5.90",
+                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
+                            "DELIVERY_PRICE|DHL": "4.90",
+                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
+                            "DESCRIPTION": "Popis produktu",
+                            "GIFT": "Zľavový kupón na ďalší nákup",
+                            "HEUREKA_CPC": null,
+                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
+                            "ITEM_ID": "766",
+                            "MANUFACTURER": "Vyrobca",
+                            "PRICE_VAT": "25.39",
+                            "PRODUCT": "Vyrobok",
+                            "PRODUCTNAME": "Nayov vzrobku",
+                            "URL": "http://www.url.cz/prevyrobok/",
+                            "VAT": "0.21"
+                      },
+                      "output_changed_at": "2016-04-25T17:20:44+00:00",
+                      "updated_at": "2016-04-25T16:42:50+00:00"
+                    }
+                      ],
+                  "limit": 10,
+                  "offset": 0
+                }
