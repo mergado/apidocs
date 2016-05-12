@@ -42,31 +42,35 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ## OAuth2 Scopes
 
-| Scope                       | Description                                           |
-|-----------------------------|-------------------------------------------------------|
-| **user.read**               | Client is authorized to access user information.      |
-| **user.write**              | Client is authorized to modify a user.                |
-| **user.shops.read**         | Client is authorized to access user's eshops.         |
-| **user.shops.write**        | Client is authorized to modify user's eshops.         |
-| **shop.read**               | Client is authorized to access eshop's information.   |
-| **shop.write**              | Client is authorized to modify an eshop.              |
-| **shop.projects.read**      | Client is authorized to access eshop's projects.      |
-| **shop.projects.write**     | Client is authorized to modify eshop's projects.      |
-| **project.read**            | Client is authorized to access project's information. |
-| **project.write**           | Client is authorized to modify a project.             |
-| **project.ga.read**         | Client is authorized to access Google Analytics.      |
-| **project.rules.read**      | Client is authorized to access project's rules.       |
-| **project.rules.write**     | Client is authorized to modify project's rules.       |
-| **project.queries.read**    | Client is authorized to access project's queries.     |
-| **project.queries.write**   | Client is authorized to modify project's queries.     |
-| **project.elements.read**   | Client is authorized to access project's elements.    |
-| **project.elements.write**  | Client is authorized to modify project's elements.    |
-| **project.variables.read**  | Client is authorized to access project's variables.   |
-| **project.variables.write** | Client is authorized to modify project's variables.   |
-| **project.products.read**   | Client is authorized to access project's products.    |
-| **project.products.write**  | Client is authorized to modify project's products.    |
-| **project.stats.read**      | Client is authorized to access project's statistics.  |
-| **project.stats.write**     | Client is authorized to modify project's statistics.  |
+| Scope                        | Description                                           |
+|------------------------------|-------------------------------------------------------|
+| **user.read**                | Client is authorized to access user information.      |
+| **user.write**               | Client is authorized to modify a user.                |
+| **user.shops.read**          | Client is authorized to access user's eshops.         |
+| **user.shops.write**         | Client is authorized to modify user's eshops.         |
+| **shop.read**                | Client is authorized to access eshop's information.   |
+| **shop.write**               | Client is authorized to modify an eshop.              |
+| **shop.projects.read**       | Client is authorized to access eshop's projects.      |
+| **shop.projects.write**      | Client is authorized to modify eshop's projects.      |
+| **shop.notify.read**         | Client is authorized to view sent notifications.      |
+| **shop.notify.write**        | Client is authorized to send new notifications.       |
+| **project.read**             | Client is authorized to access project's information. |
+| **project.write**            | Client is authorized to modify a project.             |
+| **project.ga.read**          | Client is authorized to access Google Analytics.      |
+| **project.rules.read**       | Client is authorized to access project's rules.       |
+| **project.rules.write**      | Client is authorized to modify project's rules.       |
+| **project.queries.read**     | Client is authorized to access project's queries.     |
+| **project.queries.write**    | Client is authorized to modify project's queries.     |
+| **project.elements.read**    | Client is authorized to access project's elements.    |
+| **project.elements.write**   | Client is authorized to modify project's elements.    |
+| **project.variables.read**   | Client is authorized to access project's variables.   |
+| **project.variables.write**  | Client is authorized to modify project's variables.  nono |
+| **project.products.read**    | Client is authorized to access project's products.    |
+| **project.products.write**   | Client is authorized to modify project's products.    |
+| **project.stats.read**       | Client is authorized to access project's statistics.  |
+| **project.stats.write**      | Client is authorized to modify project's statistics.  |
+| **project.feedaudits.read**  | Client is authorized to access project's feedauidts.  |
+| **project.feedaudits.write** | Client is authorized to create project's feedauidts.  |
 
 
 ## Info [/]
@@ -896,6 +900,106 @@ Performes update of variable's attributes.
                 "fragment_number": 2,
                 "sample_text": null,
                 "type": "manual"
+            }
+
+## Notifications [/shops/{id}/notifications/]
+API for notifications. Notifications in Mergado have _channels_. A channel
+represents the way to notify a user. Furthermore, notifications can be created
+with a different _scope_. A scope defines who will receive the notification.
+Notifications can be also made with different _priority_. Users can configure
+what notification and how often they want to receive each notification with
+given priority.
+
++ Attributes
+
+    + title (string) - Subject or title of the notification.
+    + body (string) - Notification text.
+    + channels (enum[string], optional) - List of channels.
+        + Default
+            + `frontend`
+        + Members
+            + `email` - Notification is sent to the user's email.
+            + `frontend` - Notification is shown in the Mergado's notification panel.
+    + priority (enum[string], optional) - Priority of the notification.
+        + Default
+            + `medium`
+        + Members
+            + `low`
+            + `medium`
+            + `high`
+    + scope (enum[string], optional) - Scope of the notification.
+        + Default
+            + `owner`
+        + Members
+            + `owner` - Notification is sent to all users who can access the eshop.
+            + `eshop` - Notification is sent only to the owner of the eshop.
+
+### Send a Notification [POST]
+**OAuth2 Scope:** shop.notify.write
+
++ Parameters
+
+    + id (string) - ID of an eshop.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "title": "eshop fuckup",
+                "body": "Your eshop is total screwed.",
+                "channels": ["email"],
+                "created_at": "2016-05-11 14:43:18",
+                "priority": "high",
+                "scope": "owner"
+            }
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/shops/1/notifications/30/"
+
+    + Body
+    
+            {
+                "id": "30",
+                "title": "eshop fuckup",
+                "body": "Your eshop is total screwed.",
+                "channels": ["email"],
+                "created_at": "2016-05-11 14:43:18",
+                "priority": "high",
+                "scope": "owner"
+            }
+
+### Get a Notification [GET /notifications/{id}/{?fields}]
+**OAuth2 Scope:** shop.notify.read
+
++ Parameters
+
+    + id (string) - ID of a notification.
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "30",
+                "title": "eshop fuckup",
+                "body": "Your eshop is total screwed.",
+                "channels": ["email"],
+                "created_at": "2016-05-11 14:43:18",
+                "priority": "high",
+                "scope": "owner"
             }
 
 
