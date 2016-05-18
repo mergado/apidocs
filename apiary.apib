@@ -72,7 +72,6 @@ The Mergado API is based on REST principles. The request/response format is JSON
 | **project.feedaudits.read**  | Client is authorized to access project's feedauidts.  |
 | **project.feedaudits.write** | Client is authorized to create project's feedauidts.  |
 
-
 ## Info [/]
 ### Show API Version [GET]
 
@@ -87,7 +86,6 @@ The Mergado API is based on REST principles. The request/response format is JSON
             {
                 "version": "0.2"
             }
-
 
 # Group Management
 Management of users, eshops, projects and other resources.
@@ -582,8 +580,6 @@ Returns a product with the given ID.
                 }
             }
 
-
-            
 ### Query Products [GET /queries/{id}/products/{?limit,offset,fields}]
 Returns products that satisfy a condition defined by the given query.
 
@@ -879,7 +875,6 @@ Performes update of element's attributes.
                 "hidden": true
             }
 
-
 ## Variables [/project/{id}/variables/]
 API for management of project's variables.
 
@@ -1151,7 +1146,6 @@ given priority.
                 "priority": "high",
                 "scope": "owner"
             }
-
 
 # Group Rules
 API for rule management, definition and application.
@@ -1769,7 +1763,6 @@ Lists all queries that were created for the specified rule.
                 "offset": 0
             }
 
-
 ### Assign a Query to a Rule [PATCH /rules/{id}/queries/]
 Assigns a Query to a Rule. The query must exist, otherwise 400 (bad request) status is returned.
 The body parameters also must uniquely identify a query. If the query is already assigned to the rule,
@@ -1858,7 +1851,6 @@ The body parameters also must uniquely identify a query. If the query is already
                 "offset": 0
             }
 
-
 ### Retract a Query from a Rule [DELETE /rules/{rid}/queries/{qid}]
 Retract a Query from a Rule.
 
@@ -1876,7 +1868,6 @@ Retract a Query from a Rule.
             Content-Type: application/json
 
 + Response 204
-
 
 # Group Statistics
 API for statistics, their acquisition and aggregation.
@@ -2275,7 +2266,7 @@ Returns list of issues of an audit.
                 "limit": 10,
                 "offset": 0
             }
-            
+
 # Group Google
 API for google.
 
@@ -2339,7 +2330,7 @@ value in ascending order. Groups of results can be created using `dimensions` qu
                 "limit": 10,
                 "offset": 0
             }
-            
+
 # Group Feed Audits
 Audit of product feed.
 
