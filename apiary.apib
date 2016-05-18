@@ -64,7 +64,7 @@ The Mergado API is based on REST principles. The request/response format is JSON
 | **project.elements.read**    | Client is authorized to access project's elements.    |
 | **project.elements.write**   | Client is authorized to modify project's elements.    |
 | **project.variables.read**   | Client is authorized to access project's variables.   |
-| **project.variables.write**  | Client is authorized to modify project's variables.  nono |
+| **project.variables.write**  | Client is authorized to modify project's variables.   |
 | **project.products.read**    | Client is authorized to access project's products.    |
 | **project.products.write**   | Client is authorized to modify project's products.    |
 | **project.stats.read**       | Client is authorized to access project's statistics.  |
@@ -470,44 +470,70 @@ Returns project's products.
 
     + Body
     
-            "data": [
-                {
-                    "id": "1693",
-                    "output_changed_at": null,
-                    "updated_at": "2016-04-28T17:18:50+00:00",
-                    "data": {
-                        "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
-                        "DELIVERY_DATE": "0",
-                        "DESCRIPTION": "Toner HP Q7551X",
-                        "DUES": "0",
-                        "IMGURL": "http://www.example.com/img/755.jpg",
-                        "MANUFACTURER": "PIRANHA",
-                        "PRICE": "808.18",
-                        "PRODUCT": "Toner HP Q7551X",
-                        "URL": "http://www.comps.cz/toner-hp-755",
-                        "VAT": "21.0"
+            {
+                "data": [
+                    {
+                        "id": "1693",
+                        "output_changed_at": null,
+                        "updated_at": "2016-04-28T17:18:50+00:00",
+                        "data": {
+                            "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
+                            "DELIVERY_DATE": "0",
+                            "DESCRIPTION": "Toner HP Q7551X",
+                            "DUES": "0",
+                            "IMGURL": "http://www.example.com/img/755.jpg",
+                            "MANUFACTURER": "PIRANHA",
+                            "PRICE": "808.18",
+                            "PRODUCT": "Toner HP Q7551X",
+                            "URL": "http://www.comps.cz/toner-hp-755",
+                            "VAT": "21.0"
+                        },
+                        "input_data": {
+                            "CATEGORYTEXT": "Tonery do tiskáren | Kompatibilní tonery",
+                            "DELIVERY_DATE": "0",
+                            "DESCRIPTION": "Toner HP Q7551X",
+                            "DUES": "3",
+                            "IMGURL": "http://www.example.com/img/755.jpg",
+                            "MANUFACTURER": "PIRANHA",
+                            "PRICE": "808.18",
+                            "PRODUCT": "Toner HP Q7551X",
+                            "URL": "http://www.comps.cz/toner-hp-755",
+                            "VAT": "21.0"
+                        }
+                    },
+                    {
+                        "id": "1694",
+                        "output_changed_at": null,
+                        "updated_at": "2016-04-28T17:18:50+00:00",
+                        "data": {
+                            "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
+                            "DELIVERY_DATE": "0",
+                            "DESCRIPTION": "Toner HP Q7532X",
+                            "DUES": "0",
+                            "IMGURL": "http://www.example.com/img/7532.jpg",
+                            "MANUFACTURER": "PIRANHA",
+                            "PRICE": "848.18",
+                            "PRODUCT": "Toner HP Q7532X",
+                            "URL": "http://www.comps.cz/toner-hp-7532",
+                            "VAT": "21.0"
+                        },
+                        "input_data": {
+                            "CATEGORYTEXT": "Tonery do tiskáren | Kompatibilní tonery",
+                            "DELIVERY_DATE": "0",
+                            "DESCRIPTION": "Toner HP Q7532X",
+                            "DUES": "0",
+                            "IMGURL": "http://www.example.com/img/7532.jpg",
+                            "MANUFACTURER": "PIRANHA",
+                            "PRICE": "848.18",
+                            "PRODUCT": "Toner HP Q7532X",
+                            "URL": "http://www.comps.cz/toner-hp-7532",
+                            "VAT": "21.0"
+                        }
                     }
-                },
-                {
-                    "id": "1694",
-                    "output_changed_at": null,
-                    "updated_at": "2016-04-28T17:18:50+00:00",
-                    "data": {
-                        "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
-                        "DELIVERY_DATE": "0",
-                        "DESCRIPTION": "Toner HP Q7532X",
-                        "DUES": "0",
-                        "IMGURL": "http://www.example.com/img/7532.jpg",
-                        "MANUFACTURER": "PIRANHA",
-                        "PRICE": "848.18",
-                        "PRODUCT": "Toner HP Q7532X",
-                        "URL": "http://www.comps.cz/toner-hp-7532",
-                        "VAT": "21.0"
-                    }
-                },
+                ],
                 "limit": 10,
                 "offset": 0
-            ]
+            }
 
 ### Get a Product [GET /products/{id}/{?fields}]
 Returns a product with the given ID.
@@ -541,7 +567,131 @@ Returns a product with the given ID.
                     "PRODUCT": "Toner HP Q7551X",
                     "URL": "http://www.comps.cz/toner-hp-755",
                     "VAT": "21.0"
+                },
+                "input_data": {
+                    "CATEGORYTEXT": "Tonery do tiskáren | Kompatibilní tonery",
+                    "DELIVERY_DATE": "0",
+                    "DESCRIPTION": "Toner HP Q7551X",
+                    "DUES": "0",
+                    "IMGURL": "http://www.example.com/img/755.jpg",
+                    "MANUFACTURER": "PIRANHA",
+                    "PRICE": "808.18",
+                    "PRODUCT": "Toner HP Q7551X",
+                    "URL": "http://www.comps.cz/toner-hp-755",
+                    "VAT": "21.0"
                 }
+            }
+
+
+            
+### Query Products [GET /queries/{id}/products/{?limit,offset,fields}]
+Returns products that satisfy a condition defined by the given query.
+
+**OAuth2 Scope:** projects.products.read
+
++ Parameters
+
+    + id (string) - ID of the query.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body  
+    
+            {
+                "data": [
+                    {
+                        "id": "3838",
+                        "output_changed_at": "2016-04-25T17:20:44+00:00",
+                        "updated_at": "2016-04-25T16:42:50+00:00",
+                        "data": {
+                            "CATEGORYTEXT": "Text kategorie",
+                            "DELIVERY_DATE": "0",
+                            "DELIVERY_PRICE_COD|DHL": "5.90",
+                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
+                            "DELIVERY_PRICE|DHL": "4.90",
+                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
+                            "DESCRIPTION": "Popis produktu",
+                            "GIFT": "Zľavový kupón na ďalší nákup",
+                            "HEUREKA_CPC": null,
+                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
+                            "ITEM_ID": "766",
+                            "MANUFACTURER": "Vyrobca",
+                            "PRICE_VAT": "25.39",
+                            "PRODUCT": "Vyrobok",
+                            "PRODUCTNAME": "Nayov vzrobku",
+                            "URL": "http://www.url.cz/prevyrobok/",
+                            "VAT": "0.21"
+                        },
+                        "input_data": {
+                            "CATEGORYTEXT": "Text kategorie",
+                            "DELIVERY_DATE": "0",
+                            "DELIVERY_PRICE_COD|DHL": "5.90",
+                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
+                            "DELIVERY_PRICE|DHL": "4.90",
+                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
+                            "DESCRIPTION": "Popis produktu",
+                            "GIFT": "Zľavový kupón na ďalší nákup",
+                            "HEUREKA_CPC": null,
+                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
+                            "ITEM_ID": "766",
+                            "MANUFACTURER": "Vyrobca",
+                            "PRICE_VAT": "25.39",
+                            "PRODUCT": "Vyrobok",
+                            "PRODUCTNAME": "Nayov vzrobku",
+                            "URL": "http://www.url.cz/prevyrobok/",
+                            "VAT": "0.21"
+                        }
+                    },
+                    {
+                        "id": "3839",
+                        "output_changed_at": "2016-04-25T17:20:44+00:00",
+                        "updated_at": "2016-04-25T16:42:50+00:00",
+                        "data": {
+                            "CATEGORYTEXT": "Text kategorie",
+                            "DELIVERY_DATE": "0",
+                            "DELIVERY_PRICE_COD|DHL": "5.90",
+                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
+                            "DELIVERY_PRICE|DHL": "4.90",
+                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
+                            "DESCRIPTION": "Popis produktu",
+                            "GIFT": "Zľavový kupón na ďalší nákup",
+                            "HEUREKA_CPC": null,
+                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
+                            "ITEM_ID": "766",
+                            "MANUFACTURER": "Vyrobca",
+                            "PRICE_VAT": "25.39",
+                            "PRODUCT": "Vyrobok",
+                            "PRODUCTNAME": "Nayov vzrobku",
+                            "URL": "http://www.url.cz/prevyrobok/",
+                            "VAT": "0.21"
+                        },
+                        "input_data": {
+                            "CATEGORYTEXT": "Text kategorie",
+                            "DELIVERY_DATE": "0",
+                            "DELIVERY_PRICE_COD|DHL": "5.90",
+                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
+                            "DELIVERY_PRICE|DHL": "4.90",
+                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
+                            "DESCRIPTION": "Popis produktu",
+                            "GIFT": "Zľavový kupón na ďalší nákup",
+                            "HEUREKA_CPC": null,
+                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
+                            "ITEM_ID": "766",
+                            "MANUFACTURER": "Vyrobca",
+                            "PRICE_VAT": "25.39",
+                            "PRODUCT": "Vyrobok",
+                            "PRODUCTNAME": "Nayov vzrobku",
+                            "URL": "http://www.url.cz/prevyrobok/",
+                            "VAT": "0.21"
+                        }
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
 
 ## Elements [/projects/{id}/elements/]
@@ -1760,27 +1910,27 @@ Returns latest summarized statistics and other information of en eshop.
                 "data": [
                     {
                         "date": "2016-04-23",
-                        "heureka_contact_email": "prodej@mironet.cz",
-                        "heureka_contact_phone": "234 700 800",
-                        "heureka_credit_amount": 61324.82,
+                        "heureka_contact_email": "example@example.com",
+                        "heureka_contact_phone": "123 456 789",
+                        "heureka_credit_amount": 3904.82,
                         "heureka_credit_status": "ok",
                         "heureka_follows_questions": true,
                         "heureka_has_active_ppc": true,
                         "heureka_has_certificate": true,
-                        "heureka_logo_url": "http://im9.cz/iR/importobchod-orig/4896_logo--mm130x40.png",
+                        "heureka_logo_url": "http://example.com/img/logo.png",
                         "heureka_subsidiaries_count": 101,
                         "heureka_total_clicks": 937,
                         "heureka_total_cost": 1788.12,
                         "heureka_xml_available": true,
-                        "hledejceny_credit_amount": null,
-                        "hledejceny_total_clicks": null,
-                        "hledejceny_total_cost": null,
-                        "srovname_credit_amount": null,
-                        "srovname_total_clicks": null,
-                        "srovname_total_cost": null,
-                        "zbozi_credit_amount": null,
-                        "zbozi_total_clicks": null,
-                        "zbozi_total_cost": null
+                        "hledejceny_credit_amount": 1223.59,
+                        "hledejceny_total_clicks": 12,
+                        "hledejceny_total_cost": 98,
+                        "srovname_credit_amount": 939,
+                        "srovname_total_clicks": 19,
+                        "srovname_total_cost": 54,
+                        "zbozi_credit_amount": 1943,
+                        "zbozi_total_clicks": 203,
+                        "zbozi_total_cost": 1234
                     }
                 ],
                 "limit": 10,
@@ -2249,7 +2399,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
     + Body
     
             {
-                "id": "51768ba7ed14f444772d6137"
+                "id": "51768ba7ed14f444772d6137",
                 "error": null,
                 "status": "in_progress",
                 "feed_url": "https://www.example.com/feed.xml",
@@ -2262,7 +2412,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
                 "product_count": 8367,
                 "progress": 512,
                 "started_at": "2013-04-23 13:24:55+0000",
-                "finished_at": null,
+                "finished_at": null
             }
 
 ### List Audits [GET /projects/{id}/feedaudits/{?limit,offset,fields}]
@@ -2283,7 +2433,7 @@ Returns list of all audits.
             {
                 "data": [
                     {
-                        "id": "51768ba7ed14f444772d6137"
+                        "id": "51768ba7ed14f444772d6137",
                         "error": null,
                         "status": "in_progress",
                         "feed_url": "https://www.example.com/feed.xml",
@@ -2295,7 +2445,7 @@ Returns list of all audits.
                         "product_count": 8367,
                         "progress": 512,
                         "started_at": "2013-04-23 13:24:55+0000",
-                        "finished_at": null,
+                        "finished_at": null
                     }
                 ],
                 "limit": 10,
@@ -2320,7 +2470,7 @@ Returns the requested audit resource.
     + Body
     
             {
-                "id": "51768ba7ed14f444772d6137"
+                "id": "51768ba7ed14f444772d6137",
                 "error": null,
                 "status": "in_progress",
                 "feed_url": "https://www.example.com/feed.xml",
@@ -2332,7 +2482,7 @@ Returns the requested audit resource.
                 "product_count": 8367,
                 "progress": 512,
                 "started_at": "2013-04-23 13:24:55+0000",
-                "finished_at": null,
+                "finished_at": null
             }
 
 ## Issues [/feedaudits/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
@@ -2502,113 +2652,3 @@ Returns a single product resource.
                     {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
                 ]
             }
-            
-### Return Products in Query [GET /queries/{id}/products/{?limit,offset,fields,filter_by,order_by}]
-Returns products defined in given query.
-
-**OAuth2 Scope:** projects.products.read
-
-+ Parameters
-
-    + id (string) - ID of the query.
-    
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body  
-    
-            {
-                "data": [
-                    {
-                        "data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
-                        },
-                      "id": "3838",
-                      "input_data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
-                      },
-                      "output_changed_at": "2016-04-25T17:20:44+00:00",
-                      "updated_at": "2016-04-25T16:42:50+00:00"
-                    },
-                    {
-                      "data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
-                      },
-                      "id": "3839",
-                      "input_data": {
-                           "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
-                      },
-                      "output_changed_at": "2016-04-25T17:20:44+00:00",
-                      "updated_at": "2016-04-25T16:42:50+00:00"
-                    }
-                      ],
-                  "limit": 10,
-                  "offset": 0
-                }
