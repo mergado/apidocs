@@ -1146,7 +1146,89 @@ given priority.
                 "priority": "high",
                 "scope": "owner"
             }
+            
+## Tasks [/project/{id}/tasks/{?limit,offset,fields}]
+### Create a task [POST]
+Creates a tasks and runs it. Returns information about created task.
 
+**OAuth2 Scope:** project.tasks.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+    
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "actions": ["download","sync","apply"],
+                "force": true
+            }
+    
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/tasks/15/"
+
+    + Body
+    
+            {
+              "actions": [
+                "download",
+                "sync",
+                "apply"
+              ],
+              "current_action": null,
+              "duration": 0,
+              "error": null,
+              "finished_at": null,
+              "id": "224",
+              "project_id": "30",
+              "started_at": "2016-05-23T11:49:47+00:00",
+              "status": "in_progress"
+            }
+            
+### Get a Task [GET /tasks/{id}/{?fields}]
+Fetch a specific task.
+
+**OAuth2 Scope:** project.tasks.read
+
++ Parameters
+
+    + id (string) - ID of a task.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "actions": [
+                "download",
+                "sync",
+                "apply"
+              ],
+              "current_action": null,
+              "duration": 3.309,
+              "error": null,
+              "finished_at": "2016-05-20T14:42:59+00:00",
+              "id": "223",
+              "project_id": "30",
+              "started_at": "2016-05-20T14:42:56+00:00",
+              "status": "done"
+            }
+            
+                        
 # Group Rules
 API for rule management, definition and application.
 
