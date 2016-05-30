@@ -36,7 +36,7 @@ The Mergado API is based on REST principles. The request/response format is JSON
 |------------------------------|------------------------------------------------|-------------|
 | **fields**                   | `?fields=uri,shop.id`                          | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
 | **limit**, **offset**        | `?limit=5&offset=2`                            | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
-| **start_date**, **end_date** | `?start_date=2013-12-24&end_date=2013-12-26`   | Works for only for some special arrays. In the example, it will return results corresponding only to Christmas time period of 2013.
+| **date**                     | `?date=2015-12-24`                             | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
 | **filter_by**                | `?filter_by={"validator": "heureka_is_alone"}` | Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
 | **order_by**                 | `?order_by=validator,-verdict`                 | Orders the result in ascending or descending order. |
 
@@ -2079,7 +2079,7 @@ are returned. This can be changed by the query string parameter `date`.
             }
  
  
-### Statistics of All Products [GET /projects/{id}/stats/products/{?fields,limit,offset,date}]
+### Statistics of All Products [GET /projects/{id}/stats/products/{?fields,limit,offset,date,filter_by,order_by}]
 Returns statistics of all products, by default only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`
 
@@ -2089,6 +2089,8 @@ are returned. This can be changed by the query string parameter `date`
 
     + id (string) - ID of the project.
     + date (date, optional) - Date of the collection of the requested statistics.
+    + filter_by (string, optional) - See the section [Additional GET parameters](#introduction/additional-get-parameters)
+    + order_by (string, optional) - See the section [Additional GET parameters](#introduction/additional-get-parameters)
 
 + Response 200
 
