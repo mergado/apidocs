@@ -1240,6 +1240,59 @@ Creates a tasks and runs it. Returns information about created task.
               "status": "in_progress"
             }
             
+### List Project Tasks [GET]
+Lists tasks belonging to given project.
+
+**OAuth2 Scope:** project.tasks.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "actions": [
+                    "import",
+                    "apply"
+                  ],
+                  "current_action": null,
+                  "duration": 4.607,
+                  "error": null,
+                  "finished_at": "2016-05-18T15:16:26+00:00",
+                  "id": "199",
+                  "project_id": "30",
+                  "started_at": "2016-05-18T15:16:22+00:00",
+                  "status": "done"
+                },
+                {
+                  "actions": [
+                    "import",
+                    "apply",
+                    "export"
+                  ],
+                  "current_action": null,
+                  "duration": 10.582,
+                  "error": null,
+                  "finished_at": "2016-05-18T15:17:22+00:00",
+                  "id": "200",
+                  "project_id": "30",
+                  "started_at": "2016-05-18T15:17:12+00:00",
+                  "status": "done"
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
+            
 ### Get a Task [GET /tasks/{id}/{?fields}]
 Fetch a specific task.
 
@@ -1273,6 +1326,139 @@ Fetch a specific task.
               "status": "done"
             }
             
+## Logs [/project/{id}/logs/]
+### Get Import Log [GET /project/{id}/logs/import/{?limit,offset,fields}]
+Fetches all import logs for given project.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "duration": 2.352,
+                  "finished_at": "2016-05-18T15:16:25+00:00",
+                  "id": "75",
+                  "items": 1,
+                  "items_created": 1,
+                  "items_processed": 1,
+                  "items_removed": 0,
+                  "items_updated": 0,
+                  "started_at": "2016-05-18T15:16:23+00:00",
+                  "user_id": "1"
+                },
+                {
+                  "duration": 1.423,
+                  "finished_at": "2016-05-18T15:17:21+00:00",
+                  "id": "76",
+                  "items": 1,
+                  "items_created": 0,
+                  "items_processed": 1,
+                  "items_removed": 0,
+                  "items_updated": 0,
+                  "started_at": "2016-05-18T15:17:20+00:00",
+                  "user_id": null
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
+
+
+### Get Apply Log [GET /project/{id}/logs/apply/{?limit,offset,fields}]
+Fetches all apply logs for given project.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "duration": 1.548,
+                  "finished_at": "2016-05-18T15:16:26+00:00",
+                  "id": "155",
+                  "items": 1,
+                  "started_at": "2016-05-18T15:16:25+00:00",
+                  "user_id": "1"
+                },
+                {
+                  "duration": 1.464,
+                  "finished_at": "2016-05-18T15:17:22+00:00",
+                  "id": "156",
+                  "items": 1,
+                  "started_at": "2016-05-18T15:17:21+00:00",
+                  "user_id": null
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
+            
+### Get Export Log [GET /project/{id}/logs/export/{?limit,offset,fields}]
+Fetches all export logs for given project.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "duration": 5,
+                  "finished_at": null,
+                  "id": "1",
+                  "initial": false,
+                  "items": 20,
+                  "processed_items": 20,
+                  "started_at": "2016-06-01T15:52:45+00:00",
+                  "user_id": "1"
+                },
+                {
+                  "duration": 10,
+                  "finished_at": "2016-06-01T15:54:44+00:00",
+                  "id": "2",
+                  "initial": false,
+                  "items": 100,
+                  "processed_items": 100,
+                  "started_at": "2016-06-01T15:54:30+00:00",
+                  "user_id": "1"
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
                         
 # Group Rules
 API for rule management, definition and application.
