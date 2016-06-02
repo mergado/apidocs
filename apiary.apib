@@ -1459,6 +1459,56 @@ Fetches all export logs for given project.
               "limit": 10,
               "offset": 0
             }
+            
+### Get Access Log [GET /project/{id}/logs/access/{?limit,offset,fields}]
+Fetches all export logs for given project.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "https": false,
+                  "id": "101",
+                  "identity": "-",
+                  "ip": "111.222.333.444",
+                  "referer": "-",
+                  "request": "GET /mergadovenaradie-cz-heureka-cz-greagfsdabtrshthgreav.xml HTTP/1.1",
+                  "size": 627142,
+                  "status": 200,
+                  "time": "2016-05-15T08:18:13+00:00",
+                  "user": "-",
+                  "user_agent": "Heurekabot-Feed/1.0 (+http://sluzby.heureka.cz/napoveda/heurekabot/)"
+                },
+                {
+                  "https": false,
+                  "id": "127",
+                  "identity": "-",
+                  "ip": "555.666.777.888",
+                  "referer": "-",
+                  "request": "HEAD /naradiovemergado-cz-kurtmjyrasnaENBREANzgtsf.xml HTTP/1.1",
+                  "size": 0,
+                  "status": 200,
+                  "time": "2016-05-15T08:24:38+00:00",
+                  "user": "-",
+                  "user_agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; cs; rv:1) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 1)"
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
                         
 # Group Rules
 API for rule management, definition and application.
