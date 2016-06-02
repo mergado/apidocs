@@ -1192,7 +1192,7 @@ given priority.
                 "offset": 0
             }
             
-## Tasks [/project/{id}/tasks/{?limit,offset,fields}]
+## Tasks [/projects/{id}/tasks/{?limit,offset,fields}]
 ### Create a Task [POST]
 Creates a tasks and runs it. Returns information about created task.
 
@@ -1326,8 +1326,8 @@ Fetch a specific task.
               "status": "done"
             }
             
-## Logs [/project/{id}/logs/]
-### Get Import Log [GET /project/{id}/logs/import/{?limit,offset,fields}]
+## Logs [/projects/{id}/logs/]
+### Get Import Log [GET /projects/{id}/logs/import/{?limit,offset,fields}]
 Fetches all import logs for given project.
 
 **OAuth2 Scope:** project.logs.read
@@ -1376,7 +1376,7 @@ Fetches all import logs for given project.
             }
 
 
-### Get Apply Log [GET /project/{id}/logs/apply/{?limit,offset,fields}]
+### Get Apply Log [GET /projects/{id}/logs/apply/{?limit,offset,fields}]
 Fetches all apply logs for given project.
 
 **OAuth2 Scope:** project.logs.read
@@ -1416,7 +1416,7 @@ Fetches all apply logs for given project.
               "offset": 0
             }
             
-### Get Export Log [GET /project/{id}/logs/export/{?limit,offset,fields}]
+### Get Export Log [GET /projects/{id}/logs/export/{?limit,offset,fields}]
 Fetches all export logs for given project.
 
 **OAuth2 Scope:** project.logs.read
@@ -1460,7 +1460,7 @@ Fetches all export logs for given project.
               "offset": 0
             }
             
-### Get Access Log [GET /project/{id}/logs/access/{?limit,offset,fields}]
+### Get Access Log [GET /projects/{id}/logs/access/{?limit,offset,fields}]
 Fetches all export logs for given project.
 
 **OAuth2 Scope:** project.logs.read
