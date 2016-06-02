@@ -2436,6 +2436,97 @@ are returned. This can be changed by the query string parameter `date`
                 "offset": 0
             }
 
+### Statistics of All Products using POST [POST /projects/{id}/stats/products/]
+Returns statistics of all products by POST, by default only the latest statistics (usualy from yesterday)
+are returned. This can be changed by the field `date`
+
+**OAuth2 Scope:** project.stats.read
+
++ Request
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Attributes (object)
+        + date (string) - Date of the collection of the requested statistics.
+        + filter_by (string) - Currently only filtering by `item id` is supported.
+          See the section [Additional GET parameters](#introduction/additional-get-parameters).
+    
+    + Body
+    
+            {
+                "date": "2016-02-02",
+                "filter_by": {
+                    "item_id__in": ["a", "b", "c"]
+                }
+            }
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                {
+                    "product_id": "123678",
+                    "date": "2015-02-02",
+                    "stats": {
+                        "categorytext": "Náhradní díly | LCD Display pro notebook",
+                        "cost": 1070.4,
+                        "delivery_date": 0,
+                        "heureka_avg_position": 1,
+                        "heureka_cpc": 2.05,
+                        "heureka_min_cpc": 1.5,
+                        "heureka_min_price": 2621,
+                        "heureka_name": "10.1 LCD LED Display univerzální notebook",
+                        "heureka_price_position": 1,
+                        "heureka_stats_clicks": 0,
+                        "heureka_stats_cost_of_sales": 0,
+                        "heureka_stats_cpc": 0,
+                        "heureka_stats_sales": 0,
+                        "heureka_stats_total_cost": 0,
+                        "heureka_stats_total_orders": 0,
+                        "heureka_url": "http://displeje-pro-notebooky.heureka.cz/10_1-lcd-led-display-univerzalni-notebook/",
+                        "imgurl": "https://www.example.com/img/990.jpg",
+                        "is_starter": null,
+                        "is_topseller": null,
+                        "item_id": "990",
+                        "manufacturer": "Samsung / Samsung LTN",
+                        "name": "10.1 LCD LED Display univerzální notebook",
+                        "price": 2166,
+                        "price_vat": 2620.9,
+                        "url": "https://www.example.com/101quot-lcd-led-display-univerzalni-notebook"
+                    }
+                },
+                {
+                    "product_id": null,
+                    "date": "2015-02-02",
+                    "stats": {
+                        "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
+                        "cost": 1500.7,
+                        "delivery_date": 0,
+                        "heureka_cpc": null,
+                        "imgurl": "https://www.example.com/img/924.jpg",
+                        "is_starter": null,
+                        "is_topseller": null,
+                        "item_id": "924",
+                        "manufacturer": "Aqua Computer",
+                        "name": "Aqua Computer Cuplex Kryos XT",
+                        "price": 1651,
+                        "price_vat": 1997.7,
+                        "url": "https://www.example.com/aqua-computer-cuplex-kryos-xt"
+                    }
+                }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
 ## Categories [/projects/{id}/stats/categories/]
 
 ### Statistics of Categories [GET /projects/<id>/stats/categories/{?fields,limit,offset}]
