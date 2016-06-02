@@ -333,6 +333,14 @@ Show additional eshop information and statistics.
 
 + Response 200
 
+    + Attributes
+        + number_of_projects (number) - Number of exports (projects) created in this eshop.
+        + is_connected_to_heureka (boolean) - Whether the eshop is connected to Heureka.
+        + is_connected_to_hledejceny (boolean) - Whether the eshop is connected to Hledejceny.cz.
+        + is_connected_to_srovname (boolean) - Whether the eshop is connected to Srovname.cz.
+        + is_connected_to_zbozi (boolean) - Whether the eshop is connected to Zbozi.cz.
+        + is_connected_to_google_analytics (boolean) - Whether the eshop is connected to Google Analytics.
+
     + Headers
 
             Content-Type: application/json
@@ -340,7 +348,12 @@ Show additional eshop information and statistics.
     + Body
     
             {
-                "number_of_projects": 3
+                "number_of_projects": 3,
+                "is_connected_to_heureka": true,
+                "is_connected_to_hledejceny": false,
+                "is_connected_to_srovname": false,
+                "is_connected_to_zbozi": true,
+                "is_connected_to_google_analytics": false
             }
 
 ## Projects [/shops/{id}/projects/{?limit,offset,fields}]
@@ -1186,7 +1199,7 @@ given priority.
                         "resolve": "promptly",
                         "resolved_at": null,
                         "user_id": "1"
-                    },
+                    }
                 ],
                 "limit": 10,
                 "offset": 0
