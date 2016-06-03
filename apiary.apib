@@ -3112,3 +3112,227 @@ Returns a single product resource.
                     {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
                 ]
             }
+            
+# Group Categories
+API for heureka categories.
+
+## Categories [/categories/]
+
+### Get a Category [GET /categories/{id}/{?fields}]
+Returns a single Heureka category.
+
++ Parameters
+
+    + id (string) - ID of the category.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "children": [
+                {
+                  "id": "463",
+                  "name": "Hracie karty - poker"
+                },
+                {
+                  "id": "464",
+                  "name": "Poker sady"
+                },
+                {
+                  "id": "465",
+                  "name": "Príslušenstvo pre poker"
+                },
+                {
+                  "id": "466",
+                  "name": "Stoly na poker"
+                },
+                {
+                  "id": "467",
+                  "name": "Žetóny - poker"
+                }
+              ],
+              "full_name": "Šport | Poker",
+              "id": "68",
+              "min_cpcs": [
+                {
+                  "to_price": "10.0",
+                  "value": "0.03"
+                },
+                {
+                  "to_price": "40.0",
+                  "value": "0.05"
+                },
+                {
+                  "to_price": "110.0",
+                  "value": "0.05"
+                },
+                {
+                  "to_price": "185.0",
+                  "value": "0.07"
+                },
+                {
+                  "to_price": "370.0",
+                  "value": "0.09"
+                },
+                {
+                  "to_price": null,
+                  "value": "0.11"
+                }
+              ],
+              "name": "Poker",
+              "parent": {
+                "id": "7",
+                "name": "Šport"
+              }
+            }
+            
+### List a Categories [GET /categories/{?limit,offset,fields,}]
+Returns list of all Heureka categories.
+
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            [
+              {
+                "children": [
+                  {
+                    "id": "2210",
+                    "name": "Auto-moto"
+                  },
+                  {
+                    "id": "2209",
+                    "name": "Bílé zboží"
+                  },
+                  {
+                    "id": "2217",
+                    "name": "Dětské zboží"
+                  },
+                  {
+                    "id": "2216",
+                    "name": "Dům a zahrada"
+                  },
+                  {
+                    "id": "2219",
+                    "name": "Elektronika"
+                  },
+                  {
+                    "id": "2215",
+                    "name": "Filmy, knihy, hry"
+                  },
+                  {
+                    "id": "2218",
+                    "name": "Hobby"
+                  },
+                  {
+                    "id": "2220",
+                    "name": "Jídlo a nápoje"
+                  },
+                  {
+                    "id": "2213",
+                    "name": "Kosmetika a zdraví"
+                  },
+                  {
+                    "id": "2214",
+                    "name": "Oblečení a móda"
+                  },
+                  {
+                    "id": "2208",
+                    "name": "Sexuální a erotické pomůcky"
+                  },
+                  {
+                    "id": "2221",
+                    "name": "Sport"
+                  },
+                  {
+                    "id": "2211",
+                    "name": "Stavebniny"
+                  },
+                  {
+                    "id": "2212",
+                    "name": "Zážitky a ubytování"
+                  }
+                ],
+                "full_name": "Heureka.cz",
+                "id": "1",
+                "min_cpcs": [],
+                "name": "Heureka.cz",
+                "parent": null
+              },
+              {
+                "children": [
+                  {
+                    "id": "5",
+                    "name": "Auto-moto"
+                  },
+                  {
+                    "id": "15",
+                    "name": "Biela technika"
+                  },
+                  {
+                    "id": "11",
+                    "name": "Detský tovar"
+                  },
+                  {
+                    "id": "10",
+                    "name": "Dom a záhrada"
+                  },
+                  {
+                    "id": "13",
+                    "name": "Elektronika"
+                  },
+                  {
+                    "id": "9",
+                    "name": "Filmy, knihy, hry"
+                  },
+                  {
+                    "id": "14",
+                    "name": "Hobby"
+                  },
+                  {
+                    "id": "16",
+                    "name": "Jedlo a nápoje"
+                  },
+                  {
+                    "id": "4",
+                    "name": "Kozmetika a zdravie"
+                  },
+                  {
+                    "id": "12",
+                    "name": "Oblečenie a móda"
+                  },
+                  {
+                    "id": "8",
+                    "name": "Sexuálne a erotické pomôcky"
+                  },
+                  {
+                    "id": "7",
+                    "name": "Šport"
+                  },
+                  {
+                    "id": "6",
+                    "name": "Stavebniny"
+                  },
+                  {
+                    "id": "3",
+                    "name": "Zážitky a ubytovanie"
+                  }
+                ],
+                "full_name": "Heureka.sk",
+                "id": "2",
+                "min_cpcs": [],
+                "name": "Heureka.sk",
+                "parent": null
+              }
+            }
+            ]
