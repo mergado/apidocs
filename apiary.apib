@@ -3114,7 +3114,10 @@ Returns a single product resource.
             }
             
 # Group Categories
-API for heureka categories.
+API for heureka categories. Categories have a _min cpc_ value attached to it. 
+But not every category displays this value. If you want to find a _min cpc_ value of a category,
+you need to traverse its parents until you find a category with _min cpc_ displayed. This _min cpc_ then applies
+to all children categories.
 
 ## Categories [/categories/]
 
@@ -3334,5 +3337,4 @@ Returns list of all Heureka categories.
                 "name": "Heureka.sk",
                 "parent": null
               }
-            }
             ]
