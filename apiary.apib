@@ -4,10 +4,13 @@ HOST: https://app.mergado.com/api/
 # Mergado
 The Mergado API is based on REST principles. The request/response format is JSON.
 
->**Note:** IDs are strings. Even if they seem to be numbers at the first sight,
- in fact they can be anything alphanumeric. Trust me.
+## Requests
 
-## Allowed HTTPs requests:
+The recommended encoding for all requests is UTF-8. Requests must be made over **HTTPS** and
+all endpoints start with `https://app.mergado.com/api/`. Note that almost all API endpoints
+require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
+
+### Allowed HTTPs requests
 
 | Method | Description                                |
 |--------|--------------------------------------------|
@@ -16,7 +19,17 @@ The Mergado API is based on REST principles. The request/response format is JSON
 | PATCH  | Updates a resource.                        |
 | DELETE | Deletes a resource.                        |
 
-## Typical Server Responses
+### Additional GET parameters
+
+| Parameter                    | Example                                   | Description |
+|------------------------------|------------------------------------------ |-------------|
+| **fields**                   | `?fields=uri,shop.id`                     | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
+| **limit**, **offset**        | `?limit=5&offset=2`                       | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
+| **date**                     | `?date=2015-12-24`                        | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
+| **filter_by**                | `?filter_by={"item_id__in": "123456789"}` | Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
+| **order_by**                 | `?order_by=validator,-verdict`            | Orders the result in ascending or descending order. |
+
+### Typical Server Responses
 
 | Code | Status             | Description |
 |------|--------------------|-------------|
@@ -30,17 +43,15 @@ The Mergado API is based on REST principles. The request/response format is JSON
 | 405  | Method Not Allowed | Requested method is not supported for the specified resource. |
 | 409  | Conflict           | Resource already exists and could not be created. |
 
-## Additional GET parameters
+## OAuth 2.0
 
-| Parameter                    | Example                                   | Description |
-|------------------------------|------------------------------------------ |-------------|
-| **fields**                   | `?fields=uri,shop.id`                     | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
-| **limit**, **offset**        | `?limit=5&offset=2`                       | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
-| **date**                     | `?date=2015-12-24`                        | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
-| **filter_by**                | `?filter_by={"item_id__in": "123456789"}` | Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
-| **order_by**                 | `?order_by=validator,-verdict`            | Orders the result in ascending or descending order. |
+To access Mergado API, clients (e.g. an application) are authenticated using
+[OAuth 2.0](https://tools.ietf.org/html/rfc6749). Each application is required to have
+its OAuth credentials which can be obtained from the Mergado
+[developers center](https://developers.mergado.com) (when you register your application,
+a client ID and a secret key is assigned to your application).
 
-## OAuth2 Scopes
+### Scopes
 
 | Scope                        | Description                                           |
 |------------------------------|-------------------------------------------------------|
@@ -94,6 +105,31 @@ The Mergado API is based on REST principles. The request/response format is JSON
 Management of users, eshops, projects and other resources.
 
 ## Users [/users/{?limit,offset,fields}]
+
++ Attributes
+
+    + id (string) - User's ID.
+    + first_name (string) - User's first name.
+    + last_name (string) - User's last name.
+    + name (string) - User's full name.
+    + username (string) - User's login.
+    + email (string) - User's email address.
+    + city (string, optional) - User's city.
+    + company (string, optional) - User's company.
+    + country (string, optional) - Country code in ISO 3166-1.
+    + postcode (string, optional) - User's postal code.
+    + street (string, optional) - User's street.
+    + timezone (string, optional) - User's timezone.
+    + timezone_offset (string, optional) - Timezone offset.
+    + dic (string, optional) - VAT identification number.
+    + ico (string, optional) - Taxpayer identification number.
+    + fakturoid_id (string, optional) - ID for connection with [fakturoid.cz](https://fakturoid.cz).
+    + invoice_months (number, optional) - Number of months to be invoiced for Mergado.
+    + last_access (string) - Datetime of user's last access to Mergado.
+    + locale (string) - User's locale in ISO 15897.
+    + registered_at (string) - Datetime of registration.
+    + send_summary (boolean) - Whether the user wants to receive a summary about their eshops/exports.
+
 ### List Users [GET]
 Lists all users the authenticated client has access to.
 
@@ -116,6 +152,7 @@ Lists all users the authenticated client has access to.
                         "first_name": "Lorem",
                         "last_name": "Ipsum",
                         "name": "Lorem Ipsum",
+                        "username": "loremipsum",
                         "email": "lorem.ipsum@example.com",
                         "city": "Brno",
                         "company": "Mergado",
@@ -127,7 +164,6 @@ Lists all users the authenticated client has access to.
                         "last_access": "2016-03-21T16:32:32+00:00",
                         "locale": "cs-CZ",
                         "postcode": "61200",
-                        "promotion_code": null,
                         "registered_at": "2015-11-03T16:08:17+00:00",
                         "street": "Palackého 123/456",
                         "timezone": "Europe/Prague",
@@ -155,6 +191,7 @@ Returns currently authenticated user.
                 "first_name": "Lorem",
                 "last_name": "Ipsum",
                 "name": "Lorem Ipsum",
+                "username": "loremipsum",
                 "email": "lorem.ipsum@example.com",
                 "city": "Brno",
                 "company": "Mergado",
@@ -166,7 +203,6 @@ Returns currently authenticated user.
                 "last_access": "2016-03-21T16:32:32+00:00",
                 "locale": "cs-CZ",
                 "postcode": "61200",
-                "promotion_code": null,
                 "registered_at": "2015-11-03T16:08:17+00:00",
                 "street": "Palackého 123/456",
                 "timezone": "Europe/Prague",
@@ -196,6 +232,7 @@ Returns a user.
                 "first_name": "Lorem",
                 "last_name": "Ipsum",
                 "name": "Lorem Ipsum",
+                "username": "loremipsum",
                 "email": "lorem.ipsum@example.com",
                 "city": "Brno",
                 "company": "Mergado",
@@ -207,7 +244,6 @@ Returns a user.
                 "last_access": "2016-03-21T16:32:32+00:00",
                 "locale": "cs-CZ",
                 "postcode": "61200",
-                "promotion_code": null,
                 "registered_at": "2015-11-03T16:08:17+00:00",
                 "street": "Palackého 123/456",
                 "timezone": "Europe/Prague",
@@ -225,6 +261,13 @@ Lists all permissions (accesses to eshops) of a specific user.
     + id (string) - ID of a user.
 
 + Response 200
+
+    + Attributes
+        + shop_id (string) - ID of the shop the role relates to.
+        + role (enum[string]) - User's role.
+            + members
+                + `writer`
+                + `reader`
 
     + Headers
 
@@ -248,6 +291,19 @@ Lists all permissions (accesses to eshops) of a specific user.
             }
 
 ## Eshops [/users/{id}/shops/{?limit,offset,fields}]
+
++ Attributes
+
+    + id (string) - ID of the shop.
+    + owner_id (string) - ID of the user who is the owner of the shop in Mergado
+      (that is usualy the user who created the eshop).
+    + tariff_id (string) - ID of the tariff the eshop has ordered.
+    + name (string) - Unique name of the eshop.
+    + xml_domain (string) - XML domain of the eshop as detected from an XML feed.
+    + exported_items (number) - Sum of exported items in all exports.
+    + created_at (string) - Datetime when the export was created.
+    + permissions - List of users and roles with access to the eshop.
+
 ### List User Eshops [GET]
 Returns eshops the user can access.
 
@@ -357,6 +413,30 @@ Show additional eshop information and statistics.
             }
 
 ## Projects [/shops/{id}/projects/{?limit,offset,fields}]
+
++ Attributes
+
+    + id (string) - ID of the project (or sometimes called export).
+    + shop_id (string) - Eshop ID.
+    + creator_id (string) - ID of the user who created this project.
+    + name (string) - Name of the project.
+    + url (string) - URL of the XML feed with products.
+    + activated (boolean) - Whether the project is active or not.
+    + created (string) - When the project was created.
+    + exported_items (number) - Number of exported items in the last export of the project.
+    + input_fomat (string) - Input format (e.g. heureka.cz, zbozi.cz).
+    + output_format (string) - Output format.
+    + pairing_elements (string) - List of pairing elements (used for sychronization of XML feed).
+    + readonly (boolean) - If the project is set to readonly, import of XML feed is forbidden,
+      rules cannot be applied, export is skipped.
+    + rules_changed_at (string) - The last time someone created, deleted or updated a rule in the project.
+    + slug (string) - Unique identifier used in output URL of the exported XML feed.
+    + turned_off (boolean) - Whether the project was turned off or not.
+    + update_period (number) - Update period of the project (how often to run import of the input XML feed).
+    + last_access (string) - Last access to the project by a user.
+    + xml_synced_at (string) - The last time an input feed was imported.
+    + xml_updated_at (string) - The last time the project was updated by a change in the input XML feed.
+
 ### List Shop Projects [GET]
 Returns projects of an eshop.
 
@@ -392,8 +472,6 @@ Returns projects of an eshop.
                         "pairing_elements": "URL",
                         "readonly": false,
                         "rules_changed_at": "2015-11-11T15:43:07+00:00",
-                        "sklik_context": null,
-                        "sklik_search": null,
                         "slug": "example-com-heureka-cz-asdf",
                         "turned_off": true,
                         "update_period": 14400,
@@ -435,8 +513,6 @@ Returns a project with the given ID.
                 "pairing_elements": "URL",
                 "readonly": false,
                 "rules_changed_at": "2015-11-11T15:43:07+00:00",
-                "sklik_context": null,
-                "sklik_search": null,
                 "slug": "example-com-heureka-cz-asdf",
                 "turned_off": true,
                 "update_period": 14400,
@@ -455,6 +531,9 @@ Show additional project information and statistics.
     + id (string) - ID of a project.
 
 + Response 200
+
+    + Attributes
+        + number_of_elements (number) - Number of elements in the project.
 
     + Headers
 
@@ -2760,6 +2839,11 @@ value in ascending order. Groups of results can be created using `dimensions` qu
         + Members
             + `date` - groups each product by the date the product has been collected.
             + `day_of_week` - groups the products by the day of the week.
+    + start_date (string, optional)
+    + end_date (string, optional)
+    + fields (string, optional)
+    + limit (number, optional)
+    + offset (number, optional)
 
 + Response 200
 
