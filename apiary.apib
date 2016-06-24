@@ -546,6 +546,16 @@ Show additional project information and statistics.
             }
 
 ## Products [/projects/{id}/products/{?limit,offset,fields}]
+
++ Attributes
+
+    + id (string) - ID of the product.
+    + output_changed_at (string) - The last time output data (values of elements)
+      of this product changed.
+    + updated_at (string) - The last time input data of this product changed.
+    + data - Output data of this product.
+    + input_data - Input data of this product.
+
 ### List Products [GET]
 Returns project's products.
 
@@ -788,6 +798,20 @@ Returns products that satisfy a condition defined by the given query.
 ## Elements [/projects/{id}/elements/]
 API for project's elements management.
 
++ Attributes
+
+    + id (string) - ID of the element.
+    + project_id (string) - ID of the project in which the element created.
+    + name (string) - Name of the element.
+    + type (enum[string]) - Type of the element.
+        + members
+            + input
+            + manual
+            + from_rule
+            + special
+    + hidden (boolean) - Whether the product is hidden or not. Elements
+      can be hidden by a user or a hiding rule.
+
 ### Create an Element [POST]
 Creates an element inside a project.
 
@@ -972,6 +996,25 @@ Performes update of element's attributes.
 
 ## Variables [/project/{id}/variables/]
 API for management of project's variables.
+
++ Attributes
+
+    + id (string) - ID of the variable.
+    + name (string) - Name of the variable.
+    + project_element_id (string) - ID of the element the variable is created from.
+    + project_id (string) - ID of the project the variable is created in.
+    + regular_expression (string, optional) - Regular expression used for
+      parsing some part of an element's value (for example domain from URL).
+    + fragment_number (number, optional) - Fragment or group number to match
+      from given regular expression.
+    + sample_text (string, optional) - Sample text used for the regular
+      expression. This is visible in the UI so that a user can immediately
+      see the result of the regular expression.
+    + type (enum[string]) - Type of the variable, whether it was created
+      automatically as a pair to input elements, or manually by a user or in API.
+        + members
+            + input
+            + manual
 
 ### Create a Variable [POST]
 Creates a new variable inside a project.
@@ -1285,6 +1328,25 @@ given priority.
             }
             
 ## Tasks [/projects/{id}/tasks/{?limit,offset,fields}]
+
++ Attributes
+
+    + id (string) - ID of the task.
+    + project_id (string) - ID of the project the task was performed in.
+    + actions - A list of actions to perform. Allowed actioins are `import`
+      `apply` and `export`.
+    + current_action (string) - Action currently being performed.
+    + duration (number) - Number of seconds the task runs.
+    + error (string, optional) - Raised error during the task that caused
+      unexpected termination.
+    + started_at (string) - when the task started.
+    + finished_at (string) - When the task was finished.
+    + status (enum[string]) - Status of the task.
+        + members
+            + in_progress
+            + error
+            + done
+
 ### Create a Task [POST]
 Creates a tasks and runs it. Returns information about created task.
 
@@ -1303,7 +1365,7 @@ Creates a tasks and runs it. Returns information about created task.
     + Body
     
             {
-                "actions": ["download","sync","apply"],
+                "actions": ["import", "apply"],
                 "force": true
             }
     
@@ -1318,8 +1380,7 @@ Creates a tasks and runs it. Returns information about created task.
     
             {
               "actions": [
-                "download",
-                "sync",
+                "import",
                 "apply"
               ],
               "current_action": null,
@@ -1404,8 +1465,7 @@ Fetch a specific task.
     
             {
               "actions": [
-                "download",
-                "sync",
+                "import",
                 "apply"
               ],
               "current_action": null,
@@ -1419,6 +1479,7 @@ Fetch a specific task.
             }
             
 ## Logs [/projects/{id}/logs/]
+
 ### Get Import Log [GET /projects/{id}/logs/import/{?limit,offset,fields}]
 Fetches all import logs for given project.
 
@@ -1606,6 +1667,17 @@ Fetches all export logs for given project.
 API for rule management, definition and application.
 
 ## Definitions [/rules/definitions/{?limit,offset,fields}]
+
++ Attributes
+
+    + type (string) - Unique name of the rule.
+    + relationship (enum[string]) - Whether the rule accepts an object
+      (dictionary) as an argument or a list of objects.
+        + members
+            + 1:1
+            + 1:N
+    + fields - List of fields the rule accepts during instantiation.
+
 ### List Defined Rules [GET]
 Returns definitions of all rules and required data for their instantiation.
 
@@ -1667,6 +1739,29 @@ Returns definitions of all rules and required data for their instantiation.
             }
 
 ## Rule Instances [/projects/{id}/rules/]
+
++ Attributes
+
+    + id (string) - ID of the rule.
+    + name (string) - Name of the rule (is shown in Mergado UI).
+    + type (string) - Type of the rule.
+    + project_id (string) - ID of the project the rule was created in.
+    + project_element_id (string, optional) - ID of the element the rule
+      should apply to. The element is optional, not all rules require an element.
+    + priority (number) - Priority of the rule, or the position when it is applied.
+      The position matters as each rule makes some changes to the products' data.
+    + applies (boolean) - Whether the rule is turned on or off.
+    + is_deletable (boolean) - Whether the user is allowed to delete the rule.
+    + is_movable (boolean) - Whether the user is allowed to change position
+      the rule.
+    + is_editable (boolean) - Whether the user is allowed to edit the rule.
+    + is_pausable (boolean) - Whether the user is allowed to pause the rule.
+    + data - Parameters of the rule, some rules accept parameters, e.g.
+      a value to write into an element, regular expressions, etc.
+    + queries - It is possible to control to what products each rule applies.
+      Queries exists for exactly this purpose. If no query is specified,
+      the rule will be applied to all products.
+
 ### Create a Rule [POST]
 Creates a new rule inside the specified project.
 
@@ -1782,7 +1877,10 @@ Creates a new rule inside the specified project.
     
             {
                 "applies": true,
-                "deletable": true,
+                "is_deletable": true,
+                "is_movable": true,
+                "is_editable": true,
+                "is_pausable": true,
                 "id": "39",
                 "name": "Cena 2 BATCH",
                 "priority": 3,
@@ -1839,7 +1937,10 @@ Lists all rules' instances that were created inside the specified project.
                         "project_id": "1",
                         "project_element_id": null,
                         "applies": true,
-                        "deletable": true,
+                        "is_deletable": true,
+                        "is_movable": true,
+                        "is_editable": true,
+                        "is_pausable": true,
                         "name": null,
                         "priority": 0,
                         "type": "format_converter"
@@ -1849,7 +1950,10 @@ Lists all rules' instances that were created inside the specified project.
                         "project_id": "1",
                         "project_element_id": "5",
                         "applies": true,
-                        "deletable": true,
+                        "is_deletable": true,
+                        "is_movable": true,
+                        "is_editable": true,
+                        "is_pausable": true,
                         "name": "Cena",
                         "priority": 3,
                         "type": "batch_rewriting"
@@ -1881,7 +1985,10 @@ Returns a specific rule instance.
                 "project_id": "1",
                 "project_element_id": "5",
                 "applies": true,
-                "deletable": true,
+                "is_deletable": true,
+                "is_movable": true,
+                "is_editable": true,
+                "is_pausable": true,
                 "name": "Cena",
                 "priority": 3,
                 "type": "rewriting",
@@ -1949,7 +2056,10 @@ Performes update of rule's attributes.
                 "project_id": "2",
                 "project_element_id": "50",
                 "applies": true,
-                "deletable": true,
+                "is_deletable": true,
+                "is_movable": true,
+                "is_editable": true,
+                "is_pausable": true,
                 "name": "PRODUCTNAME: Added Free Car",
                 "priority": 3,
                 "type": "rewriting",
@@ -1995,6 +2105,19 @@ for one to many (O2M) rules with a lot of records.
 
 ## Queries [/projects/{id}/queries/]
 MQL query management.
+
++ Attributes
+
+    + id (string) - ID of the query.
+    + name (string) - Name of the query.
+    + project_id (string) - ID of the project the query is created in.
+    + advanced_interface (string) - Whether the query was created using
+      the advanced interface. Advanced interface represents the raw MQL query.
+    + created_at (string) - When was the query created.
+    + query (string) - Raw MQL.
+    + read_only (boolean) - Whether the query can be modified.
+    + search_output (boolean) - Whether the query should select products' data
+      according to the values of input data or output data.
 
 ### Create a Query [POST]
 Creates a new query inside the specified project.
@@ -3221,61 +3344,61 @@ Returns a single Heureka category.
     + Body
     
             {
-              "children": [
-                {
-                  "id": "463",
-                  "name": "Hracie karty - poker"
+                "id": "68",
+                "name": "Poker",
+                "full_name": "Šport | Poker",
+                "parent": {
+                    "id": "7",
+                    "name": "Šport"
                 },
-                {
-                  "id": "464",
-                  "name": "Poker sady"
-                },
-                {
-                  "id": "465",
-                  "name": "Príslušenstvo pre poker"
-                },
-                {
-                  "id": "466",
-                  "name": "Stoly na poker"
-                },
-                {
-                  "id": "467",
-                  "name": "Žetóny - poker"
-                }
-              ],
-              "full_name": "Šport | Poker",
-              "id": "68",
-              "min_cpcs": [
-                {
-                  "to_price": "10.0",
-                  "value": "0.03"
-                },
-                {
-                  "to_price": "40.0",
-                  "value": "0.05"
-                },
-                {
-                  "to_price": "110.0",
-                  "value": "0.05"
-                },
-                {
-                  "to_price": "185.0",
-                  "value": "0.07"
-                },
-                {
-                  "to_price": "370.0",
-                  "value": "0.09"
-                },
-                {
-                  "to_price": null,
-                  "value": "0.11"
-                }
-              ],
-              "name": "Poker",
-              "parent": {
-                "id": "7",
-                "name": "Šport"
-              }
+                "children": [
+                    {
+                        "id": "463",
+                        "name": "Hracie karty - poker"
+                    },
+                    {
+                        "id": "464",
+                        "name": "Poker sady"
+                    },
+                    {
+                        "id": "465",
+                        "name": "Príslušenstvo pre poker"
+                    },
+                    {
+                        "id": "466",
+                        "name": "Stoly na poker"
+                    },
+                    {
+                        "id": "467",
+                        "name": "Žetóny - poker"
+                    }
+                ],
+                "min_cpcs": [
+                    {
+                        "to_price": "10.0",
+                        "value": "0.03"
+                    },
+                    {
+                        "to_price": "40.0",
+                        "value": "0.05"
+                    },
+                    {
+                        "to_price": "110.0",
+                        "value": "0.05"
+                    },
+                    {
+                        "to_price": "185.0",
+                        "value": "0.07"
+                    },
+                    {
+                        "to_price": "370.0",
+                        "value": "0.09"
+                    },
+                    {
+                        "to_price": null,
+                        "value": "0.11"
+                    }
+                ]
             }
             
 ### List a Categories [GET /categories/{?limit,offset,fields,}]
@@ -3291,134 +3414,38 @@ Returns list of all Heureka categories.
     + Body
     
             [
-              {
-                "children": [
-                  {
-                    "id": "2210",
-                    "name": "Auto-moto"
-                  },
-                  {
-                    "id": "2209",
-                    "name": "Bílé zboží"
-                  },
-                  {
-                    "id": "2217",
-                    "name": "Dětské zboží"
-                  },
-                  {
-                    "id": "2216",
-                    "name": "Dům a zahrada"
-                  },
-                  {
-                    "id": "2219",
-                    "name": "Elektronika"
-                  },
-                  {
-                    "id": "2215",
-                    "name": "Filmy, knihy, hry"
-                  },
-                  {
-                    "id": "2218",
-                    "name": "Hobby"
-                  },
-                  {
-                    "id": "2220",
-                    "name": "Jídlo a nápoje"
-                  },
-                  {
-                    "id": "2213",
-                    "name": "Kosmetika a zdraví"
-                  },
-                  {
-                    "id": "2214",
-                    "name": "Oblečení a móda"
-                  },
-                  {
-                    "id": "2208",
-                    "name": "Sexuální a erotické pomůcky"
-                  },
-                  {
-                    "id": "2221",
-                    "name": "Sport"
-                  },
-                  {
-                    "id": "2211",
-                    "name": "Stavebniny"
-                  },
-                  {
-                    "id": "2212",
-                    "name": "Zážitky a ubytování"
-                  }
-                ],
-                "full_name": "Heureka.cz",
-                "id": "1",
-                "min_cpcs": [],
-                "name": "Heureka.cz",
-                "parent": null
-              },
-              {
-                "children": [
-                  {
-                    "id": "5",
-                    "name": "Auto-moto"
-                  },
-                  {
-                    "id": "15",
-                    "name": "Biela technika"
-                  },
-                  {
-                    "id": "11",
-                    "name": "Detský tovar"
-                  },
-                  {
-                    "id": "10",
-                    "name": "Dom a záhrada"
-                  },
-                  {
-                    "id": "13",
-                    "name": "Elektronika"
-                  },
-                  {
-                    "id": "9",
-                    "name": "Filmy, knihy, hry"
-                  },
-                  {
-                    "id": "14",
-                    "name": "Hobby"
-                  },
-                  {
-                    "id": "16",
-                    "name": "Jedlo a nápoje"
-                  },
-                  {
-                    "id": "4",
-                    "name": "Kozmetika a zdravie"
-                  },
-                  {
-                    "id": "12",
-                    "name": "Oblečenie a móda"
-                  },
-                  {
-                    "id": "8",
-                    "name": "Sexuálne a erotické pomôcky"
-                  },
-                  {
-                    "id": "7",
-                    "name": "Šport"
-                  },
-                  {
-                    "id": "6",
-                    "name": "Stavebniny"
-                  },
-                  {
-                    "id": "3",
-                    "name": "Zážitky a ubytovanie"
-                  }
-                ],
-                "full_name": "Heureka.sk",
-                "id": "2",
-                "min_cpcs": [],
-                "name": "Heureka.sk",
-                "parent": null
-              }
+                {
+                    "id": "1",
+                    "name": "Heureka.cz",
+                    "full_name": "Heureka.cz",
+                    "parent": null,
+                    "children": [
+                        {
+                            "id": "2210",
+                            "name": "Auto-moto"
+                        },
+                        {
+                            "id": "2209",
+                            "name": "Bílé zboží"
+                        }
+                    ],
+                    "min_cpcs": []
+                },
+                {
+                    "id": "2",
+                    "name": "Heureka.sk",
+                    "full_name": "Heureka.sk",
+                    "parent": null,
+                    "children": [
+                        {
+                            "id": "5",
+                            "name": "Auto-moto"
+                        },
+                        {
+                            "id": "15",
+                            "name": "Biela technika"
+                        }
+                    ],
+                    "min_cpcs": []
+                }
             ]
