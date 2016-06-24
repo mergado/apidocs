@@ -51,40 +51,8 @@ its OAuth credentials which can be obtained from the Mergado
 [developers center](https://developers.mergado.com) (when you register your application,
 a client ID and a secret key is assigned to your application).
 
-### Scopes
-
-| Scope                        | Description                                           |
-|------------------------------|-------------------------------------------------------|
-| **user.read**                | Client is authorized to access user information.      |
-| **user.write**               | Client is authorized to modify a user.                |
-| **user.shops.read**          | Client is authorized to access user's eshops.         |
-| **user.shops.write**         | Client is authorized to modify user's eshops.         |
-| **user.notify.read**         | Client is authorized to read user's notifications     |
-| **shop.read**                | Client is authorized to access eshop's information.   |
-| **shop.write**               | Client is authorized to modify an eshop.              |
-| **shop.projects.read**       | Client is authorized to access eshop's projects.      |
-| **shop.projects.write**      | Client is authorized to modify eshop's projects.      |
-| **shop.notify.read**         | Client is authorized to view sent notifications.      |
-| **shop.notify.write**        | Client is authorized to send new notifications.       |
-| **project.read**             | Client is authorized to access project's information. |
-| **project.write**            | Client is authorized to modify a project.             |
-| **project.ga.read**          | Client is authorized to access Google Analytics.      |
-| **project.rules.read**       | Client is authorized to access project's rules.       |
-| **project.rules.write**      | Client is authorized to modify project's rules.       |
-| **project.queries.read**     | Client is authorized to access project's queries.     |
-| **project.queries.write**    | Client is authorized to modify project's queries.     |
-| **project.elements.read**    | Client is authorized to access project's elements.    |
-| **project.elements.write**   | Client is authorized to modify project's elements.    |
-| **project.variables.read**   | Client is authorized to access project's variables.   |
-| **project.variables.write**  | Client is authorized to modify project's variables.   |
-| **project.products.read**    | Client is authorized to access project's products.    |
-| **project.products.write**   | Client is authorized to modify project's products.    |
-| **project.stats.read**       | Client is authorized to access project's statistics.  |
-| **project.stats.write**      | Client is authorized to modify project's statistics.  |
-| **project.feedaudits.read**  | Client is authorized to access project's feedauidts.  |
-| **project.feedaudits.write** | Client is authorized to create project's feedauidts.  |
-| **project.tasks.read**       | Client is authorized to read project's tasks.         |
-| **project.tasks.write**      | Client is authorized to create project's tasks.       |
+* [Basics of OAuth 2.0 in Mergado Apps](http://mergado.github.io/docs/api/authorization.html)
+* [List of all OAuth scopes](http://mergado.github.io/docs/api/oauth-scopes.html)
 
 ## Info [/]
 ### Show API Version [GET]
@@ -100,6 +68,32 @@ a client ID and a secret key is assigned to your application).
             {
                 "version": "0.2"
             }
+
+## XML Formats [/formats/]
+Formats represent XML feeds and their specification that Mergado supports.
+
+### List Supported Formats [GET]
+Returns a list of IDs of all currently supported XML formats.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            [
+                "heureka.cz",
+                "hledejceny.cz",
+                "hyperzbozi.cz",
+                "srovname.cz",
+                "zbozi.cz",
+                "heureka.cz-kosik",
+                "heureka.sk",
+                "najnakup.sk",
+                "pricemania.sk"
+            ]
 
 # Group Management
 Management of users, eshops, projects and other resources.
@@ -2943,7 +2937,75 @@ API for google.
 
 ## Analytics [/projects/{id}/google/analytics/]
 
-### Request Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions}]
+### Eshop Data [GET /shops/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,source,metrics,dimensions}]
+Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
+value in ascending order. Groups of results can be created using `dimensions` query string.
+
+**OAuth2 Scope:** projects.ga.read
+
++ Parameters
+
+    + id (string) - ID of the shop.
+    + source (string, optional) - The source of referrals. For manual campaign tracking,
+      it is the value of the utm_source campaign tracking parameter. This parameter
+      can be a regular expression (in which case the operator `=~` must be used, e.g.
+      `source=~*.example.com`) or ID of a format (see section with formats).
+    + metrics (enum[string], optional) - Comma sepparated list of metrics to use.
+        + Members
+            + `sales_sum` - total sales of all products in the group.
+            + `orders_sum` - number of orders of all products in the group.
+            + `clicks_sum` - number of clicks of all products in the group.
+    + dimensions (enum[string], optional) - Comma sepparated list of dimensions to use.
+        + Default: `date`
+        + Members
+            + `date` - groups each product by the date the product has been collected.
+            + `day_of_week` - groups the products by the day of the week.
+    + start_date (string, optional)
+    + end_date (string, optional)
+    + fields (string, optional)
+    + limit (number, optional)
+    + offset (number, optional)
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+    
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "group": {"date": "2016-05-04"},
+                        "clicks_sum": 861,
+                        "orders_sum": 50,
+                        "sales_sum": 129852
+                    },
+                    {
+                        "group": {"date": "2016-05-03"},
+                        "clicks_sum": 1661,
+                        "orders_sum": 69,
+                        "sales_sum": 225298
+                    },
+                    {
+                        "group": {"date": "2016-05-02"},
+                        "clicks_sum": 1523,
+                        "orders_sum": 70,
+                        "sales_sum": 141676
+                    },
+                    {
+                        "group": {"date": "2016-05-01"},
+                        "clicks_sum": 1095,
+                        "orders_sum": 54,
+                        "sales_sum": 113470
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Project Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions}]
 Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
 
