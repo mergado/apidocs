@@ -2450,10 +2450,62 @@ export (project) formats:
 * `heureka.cz`, `heureka.sk` - all listed endpoints are supported.
 * `zbozi.cz` - only eshop's statistics can be requested.
 
-## Eshops [/shops/{id}/stats/{?limit,offset,fields}]
+## Eshop Statistics [/shops/{id}/stats/{?limit,offset,fields}]
+Collections here represent collected statistics of eshops from various
+comparison shopping services (Zboží.cz, Heureka.cz, etc.).
 
-### Eshop Statistics [GET]
-Returns latest summarized statistics and other information of en eshop.
++ Attributes
+
+    + date (string) - Date of collection of the statistics.
+    + heureka_contact_email (string) - Contact email of the eshop as shown
+      on Heureka.
+    + heureka_contact_phone (string) - Contact phone of the eshop as shown
+      on Heureka.
+    + heureka_credit_amount (string) - The amount of credit for the account
+      the eshop is registered on behalf of on Heureka.cz.
+    + heureka_credit_status (enum[string]) - Status of credit on Heureka
+      evaluated by Mergado.
+        + members
+            + ok
+            + low
+            + none
+    + heureka_follows_questions (boolean) - Whether the eshop has signed up
+      to follow questions customers ask on Heureka about a product the eshop offers.
+    + heureka_has_active_ppc (boolean) - Whether the eshop has activated PPC
+      on Heureka.
+    + heureka_has_certificate (boolean) - Whether the eshop received the
+      certificate called "Ověřeno zákazníky" from Heureka.
+    + heureka_logo_url (string) - URL of eshop's logo pointed to Heureka's servers.
+    + heureka_subsidiaries_count (number) - Number of eshop's subsidiaries
+      registered on Heureka (the eshop may have more subsidiaries, even though
+      that would be their lost).
+    + heureka_total_clicks (number) - Total number of clicks during 24 hours
+      (counted for the chosen `date`) on Heureka for the eshop.
+    + heureka_total_cost (number) Total cost for advertisement during 24 hours
+      (counted for the chosen `date`) on Heureka for the eshop.
+    + heureka_xml_available (string) - Whether the XML feed Heureka periodically
+      downloads to update eshop's offers was available.
+    + hledejceny_credit_amount (number) - The amount of credit for the account
+      the eshop is registered on behalf of on Hledejceny.cz.
+    + hledejceny_total_clicks (number) - Total number of clicks during 24 hours
+      (counted for the chosen `date`) on Hledejceny for the eshop.
+    + hledejceny_total_cost (number) Total cost for advertisement during 24 hours
+      (counted for the chosen `date`) on Hledejceny for the eshop.
+    + srovname_credit_amount (number) - The amount of credit for the account
+      the eshop is registered on behalf of on Srovname.cz.
+    + srovname_total_clicks (number) - Total number of clicks during 24 hours
+      (counted for the chosen `date`) on Srovname for the eshop.
+    + srovname_total_cost (number) Total cost for advertisement during 24 hours
+      (counted for the chosen `date`) on Srovname for the eshop.
+    + zbozi_credit_amount (number) - The amount of credit for the account
+      the eshop is registered on behalf of on Zbozi.cz.
+    + zbozi_total_clicks(number) - Total number of clicks during 24 hours
+      (counted for the chosen `date`) on Zbozi for the eshop.
+    + zbozi_total_cost (number) Total cost for advertisement during 24 hours
+      (counted for the chosen `date`) on Zbozi for the eshop.
+
+### Get Statistics [GET]
+Returns latest summarized statistics and other information of an eshop.
 
 **OAuth2 Scope:** project.stats.read
 
@@ -2500,7 +2552,97 @@ Returns latest summarized statistics and other information of en eshop.
                 "offset": 0
             }
 
-## Products [/products/{id}/stats/]
+## Product Statistics [/products/{id}/stats/]
+
++ Attributes
+
+    + product_id (string) - ID of the product.
+    + date (string) - Date of collection of the statistics.
+    + stats (object) - The statistics.
+
+        + item_id (string) - ITEM_ID of the product.
+        + categorytext (string) - Value of the `CATEGORYTEXT` element.
+        + delivery_date (string) - Delivery date set by the eshop.
+        + url (string) - URL of the product in eshop.
+        + name (string) - Name of the product in eshop.
+        + price (number) - Price without VAT of the product.
+        + price_vat (number) - Price (with VAT included) of the product.
+        + manufacturer (string) - Manufacturer of the product set by the eshop.
+        + imgurl (string) - URL of the product's image.
+        + cost (number) - How much the eshop had to pay for the product.
+        + is_starter (boolean) - This indicates whether the product is something
+          you usually buy with something else. Or to put it differently, let's
+          say you buy the body of a DLSR (e.g. Nikon D5200) than it is very
+          likely you also buy a lens or a tripod. This is indicated by this
+          attribute. Unfortunately at the moment no eshop provides this information.
+        + is_topseller (boolean) - Whether the product is one of the most
+          selling products in the eshop.
+        + heureka_avg_position (number) - Average bidding position of the product
+          on Heureka. Unfortunately this is not very reliable information as
+          the average is taken only from all actual clicks on the product.
+          Also the product must be very popular, otherwise the information is
+          completely missing.
+        + heureka_category (string) - Name of category Heureka paired this product into.
+        + heureka_cpc (number) - Offered cost per click to Heureka by the eshop.
+        + heureka_is_paired (boolean) - Whether the product is paired to a
+          category on Heureka.
+        + heureka_max_prices (array) - Ordered list of maximal prices of the
+          product offered by other eshops.
+        + heureka_min_praces (array) - Ordered list of minimal prices of the
+          product offered by other eshops.
+        + heureka_min_cpc (number) - The minimal CPC Heureka accepts for the
+          product.
+        + heureka_min_price (number) - Minimal offered price for the product
+          from all eshops.
+        + heureka_name (string) - Name of the product shown on Heureka.
+        + heureka_popularity (number) - Popularity of the product on Heureka.
+          The bigger, the more popular. There is no maximal popularity of
+          product since Heureka doesn't provide such information.
+        + heureka_price_position (number) - Position of the product on by price
+          on Heureka.
+        + heureka_profit (number) - Calculated eshop's profit from advertising
+          the product on Heureka.
+        + heureka_segment (string) - The name of the section on Heureka the
+          product was paired into.
+        + heureka_shops_count (number) - Number of eshops that offer the same
+          product on Heureka.
+        + heureka_stats_clicks (number) - Number of clicks on the product
+          offered by this eshop on Heureka.
+        + heureka_stats_cost_of_sales (number) - Cost of sales for the product
+          on Heureka.
+        + heureka_stats_cpc (number) - Paid costs per click for the product
+          on Heureka.
+        + heureka_stats_sales (number) - Sales from the product on Heureka.
+        + heureka_stats_total_cost (number) Total cost for advertisement of
+          the product on Heureka.
+        + heureka_stats_total_orders (number) - Number of total orders of
+          this product on Heureka.
+        + heureka_url (string) - URL of the product on Heureka.
+        + heureka_price_status (enum[string]) - Indicates status of price
+          of the product on Heureka and is evaluated by Mergado from the
+          other available statistics.
+            + Members
+                + ok
+                + low
+                + increased
+                + high
+        + heureka_position_status (enum[string]) - This is an enum indication
+          position status on Heureka, evaluated by Mergado.
+            + Members
+                + ok
+                + low
+        + heureka_margin_status (enum[string]) - This is an enum indicating
+          status of margin from Heureka of the product evaluated by Mergado.
+            + Members
+                + ok
+                + low
+                + negative
+        + heureka_cpc_status (enum[string]) - This is an enum indicating status
+          of CPC on Heureka evaluated by Mergado.
+            + Members
+                + ok
+                + low
+                + decreased
 
 ### Statistics of a Product [GET /products/<id>/stats/{?fields,date}]
 Retruns statistics of a product, by default only the latest statistics (usualy from yesterday)
@@ -2736,7 +2878,15 @@ are returned. This can be changed by the field `date`
                 "offset": 0
             }
 
-## Categories [/projects/{id}/stats/categories/]
+## Statistics of Categories [/projects/{id}/stats/categories/]
+
++ Attributes
+    + date (string) - Date of the collection of the statistics.
+    + categorytext (string) - Value of the element `CATEGORYTEXT`.
+    + paired_products (number) - Number of products correctly paired on Heureka
+      with the given value of `CATEGORYTEXT`.
+    + unpaired_products (number) - Number of products incorrectly paired on Heureka
+      with the given value of `CATEGORYTEXT`.
 
 ### Statistics of Categories [GET /projects/<id>/stats/categories/{?fields,limit,offset}]
 Returns latest statistics of feed's categories (for example number of paired products
@@ -2775,7 +2925,22 @@ for given `CATEGORYTEXT`).
                 "offset": 0
             }
 
-## Audits [/projects/{id}/stats/audits/]
+## Audited Statistics [/projects/{id}/stats/audits/]
+
++ Attributes
+    + id (string) - ID of the audit.
+    + date (string) - When the audit was performed.
+    + status (enum[string]) - Status of the audit.
+        + members
+            + done
+            + in_progress
+            + error
+    + error (string, optional) - Error raised during the process of
+      performing audit.
+    + started_at (string) - When the audit was started.
+    + finished_at (string) - When the audit was finished.
+    + product_count (number) - Number of products in the audit.
+    + issues (object) - Occurrences of issues in the audit.
 
 ### List of Audits [GET /projects/{id}/stats/audits/{?fields,limit,offset}]
 Returns list of performed audits.
@@ -2901,6 +3066,15 @@ Returns list of issues of an audit.
 
 **OAuth2 Scope:** project.stats.read
 
++ Attributes
+
+    + audit_id (string) - ID of the audit.
+    + item_id (string) - ITEM_ID of the product.
+    + product_id (string) - ID of the product in Mergado.
+    + validator (string) - A name identifying the performed validation.
+    + verdict (string) - Verdict of the performed validation.
+    + info (object) - Additional info of the performed validation.
+
 + Parameters
 
     + id (string) - ID of the audit.
@@ -2932,10 +3106,529 @@ Returns list of issues of an audit.
                 "offset": 0
             }
 
+# Group Feed Audits
+Audit of product feed.
+
+- Issues are checks with non-ok verdicts. Some issues are feed-wide, so
+  they are bound only to an audit resource. Most issues are product-specific,
+  so they are bound to audit and also to product resource.
+- Every validator provides specific additional info to check. It is accessible
+  in `info` field of issues and it can have various forms - its schema is
+  validator-dependent.
+- Web hook URL is requested with POST (audit's JSON resource sent in data)
+  right in the moment when audit is finished.
+- Progress is raised by every check, there is no information about *total*
+  number of progress units.
+- Feed type is optional. In case it's missing, it is detected before audit
+  starts.
+- Error field of audits and issues has nothing to do with checking itself -
+  is is used only in case mergado3 application fails and raises an exception.
+  This generic error field is rather for debugging API than for being consumed
+  by API clients.
+- Product's data is parsed and saved just *as is* into data field. No semantic
+  analysis is performed, validators take it raw and do whatever they want
+  with it. This means the data field also has no fixed schema.
+- Audits can be scheduled.
+
+## Audits [/projects/{id}/feedaudits/]
+
++ Attributes
+
+    + id (string) - ID of the audit.
+    + date (string) - When the audit was performed.
+    + status (enum[string]) - Status of the audit.
+        + members
+            + done
+            + in_progress
+            + error
+    + error (string, optional) - Error raised during the process of
+      performing audit.
+    + started_at (string) - When the audit was started.
+    + finished_at (string) - When the audit was finished.
+    + product_count (number) - Number of products in the audit.
+    + issues (object) - Occurrences of issues in the audit.
+    + parser_type (string) - Parser used for parsing the XML feed.
+    + feed_url (string) - URL of the XML feed.
+    + webhook_url (string) - URL to call when the audit is finished.
+      The URL is called via an HTTP POST with the audit information in the body.
+    + encoding (string) - Detected encoding.
+    + time (string) - Number of seconds the audit runs.
+    + expired_at (string) - Whether the audit expired, if yes than the date
+      of expiration.
+    + progress (number) - Progress of the audit (a number between 0 and 100).
+
+### Create a New Audit [POST]
+Creates and starts an audit. Feed type, web hook and shop id are optional.
+
+**OAuth2 Scope:** projects.feedaudit.write
+
++ Parameters
+
+    + id (string) - ID of the project.
+    
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "parser_type": "heureka.cz",
+                "feed_types": ["heureka.cz"],
+                "feed_url": "https://www.example.com/feed.xml",
+                "webhook_url": "http://www.example.com/ping.php"
+            }
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/projects/57334061ba4989170e78dbf3/feedaudits/"
+
+    + Body
+    
+            {
+                "id": "51768ba7ed14f444772d6137",
+                "error": null,
+                "status": "in_progress",
+                "feed_url": "https://www.example.com/feed.xml",
+                "webhook_url": "http://www.example.com/ping.php",
+                "parser_type": "heureka.cz",
+                "feed_types": ["heureka.cz"],
+                "encoding": "utf-8",
+                "time": 254,
+                "expired_at": null,
+                "product_count": 8367,
+                "progress": 40,
+                "started_at": "2013-04-23 13:24:55+0000",
+                "finished_at": null
+            }
+
+### List Audits [GET /projects/{id}/feedaudits/{?limit,offset,fields}]
+Returns list of all audits.
+
++ Parameters
+
+    + id (string) - ID of the project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "51768ba7ed14f444772d6137",
+                        "error": null,
+                        "status": "in_progress",
+                        "feed_url": "https://www.example.com/feed.xml",
+                        "webhook_url": "http://www.example.com/ping.php",
+                        "parser_type": "heureka.cz",
+                        "feed_types": ["heureka.cz", "zbozi.cz"],
+                        "encoding": "utf-8",
+                        "time": 254,
+                        "product_count": 8367,
+                        "progress": 40,
+                        "started_at": "2013-04-23 13:24:55+0000",
+                        "finished_at": null
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get an Audit [GET /feedaudits/{id}/{?fields]
+Returns the requested audit resource.
+
+**OAuth2 Scope:** projects.feedaudit.read
+
++ Parameters
+
+    + id (string) - ID of the audit.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "51768ba7ed14f444772d6137",
+                "error": null,
+                "status": "in_progress",
+                "feed_url": "https://www.example.com/feed.xml",
+                "webhook_url": "http://www.example.com/ping.php",
+                "parser_type": "heureka.cz",
+                "feed_types": ["heureka.cz", "zbozi.cz"],
+                "encoding": "utf-8",
+                "time": 254,
+                "product_count": 8367,
+                "progress": 40,
+                "started_at": "2013-04-23 13:24:55+0000",
+                "finished_at": null
+            }
+
+## Audit Issues [/feedaudits/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
+
++ Attributes
+
+    + id (string) - ID of the issue.
+    + audit_id (string) - ID of the audit.
+    + product_id (string) - ID of the product (this is not a ID of the product
+      in Mergado).
+    + validator (string) - A name identifying the performed validation.
+    + verdict (string) - Verdict of the performed validation.
+    + info (object) - Additional info of the performed validation.
+    + checked_at (string) - When the validation was performed.
+    + level (enum[string]) - Level of the importance of the issue.
+        + members
+            + recommendation
+            + warning
+            + error
+    + feed_types (array) - List of formats or feed types the issue applies to.
+
+### List Audit Issues [GET]
+Returns all issues (problematic validations) of a specific audit.
+
+**OAuth2 Scope:** projects.feedaudit.read
+
++ Parameters
+
+    + id (string) - ID of the audit.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "51768ba7ed14f444772d6138",
+                        "product_id": "57330212ba49891750549828",
+                        "audit_id": "51768ba7ed14f444772d6137",
+                        "checked_at": "2013-04-23 13:24:55+0000",
+                        "verdict": "error",
+                        "info": {
+                            "element": "PRODUCT"
+                        },
+                        "validator": "is_present_product",
+                        "level": "recommendation",
+                        "feed_types": ["heureka.cz", "zbozi.cz"]
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get an Issue [GET /feedaudits/issues/{id}/{?fields}]
+Returns single issue with given `id`.
+
+**OAuth2 Scope:** projects.feedaudit.read
+
++ Parameters
+
+    + id (string) - ID of the issue.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "51768ba7ed14f444772d6138",
+                "checked_at": "2013-04-23 13:24:55+0000",
+                "verdict": "error",
+                "info": {
+                    "element": "PRODUCT"
+                },
+                "validator": "is_present_product",
+                "level": "recommendation",
+                "feed_types": ["heureka", "zbozi"],
+                "product_id": "51768ba7ed14f444772d6120",
+                "audit_id": "51768ba7ed14f444772d6137"
+            }
+
+### List Product's Issues [GET /feedaudit/products/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
+Returns all issues (problematic validations) of a specific product.
+
+**OAuth2 Scope:** projects.feedaudit.read
+
++ Parameters
+
+    + id (string) - ID of the product.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "51768ba7ed14f444772d6138",
+                        "product_id": "51768ba7ed14f444772d6120",
+                        "audit_id": "51768ba7ed14f444772d6137",
+                        "checked_at": "2013-04-23 13:24:55+0000",
+                        "verdict": "error",
+                        "info": {
+                            "element": "PRODUCT"
+                        },
+                        "validator": "is_present_product",
+                        "feed_types": ["heureka", "zbozi"]
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+## Audit Products [/feedaudit/audits/{id}/products/{?limit,offset,fields,filter_by,order_by}]
+
++ Attributes
+
+    + id (string) - ID of the product.
+    + audit_id (string) - ID of the audit.
+    + elements (array) - List of elements, values and subelements.
+        + (object)
+            + tag (string) - Name of the element.
+            + value (string) - Value of the element.
+            + elements (array) - Subelements of the element.
+
+### List Audit Products [GET]
+Returns all products of a specific audit.
+
+**OAuth2 Scope:** projects.feedaudit.read
+
++ Parameters
+
+    + id (string) - ID of the audit.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "51768ba7ed14f444772d6120",
+                        "audit_id": "51768ba7ed14f444772d6137",
+                        "elements": [
+                            {"tag": "PRODUCT", "value": "Hovězí plíce 100 g", "elements": []},
+                            {"tag": "DESCRIPTION", "value": "<P>Čistě dietní krm...</div>", "elements": []},
+                            {"tag": "DELIVERY_DATE", "value": 1, "elements": []},
+                            {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
+                        ]
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get a Product [GET /feedaudit/products/{id}{?fields}]
+Returns a single product resource.
+
+**OAuth2 Scope:** projects.feedaudit.read
+
++ Parameters
+
+    + id (string) - ID of the product.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "51768ba7ed14f444772d6120",
+                "audit_id": "51768ba7ed14f444772d6137",
+                "elements": [
+                    {"tag": "PRODUCT", "value": "Hovězí plíce 100 g", "elements": []},
+                    {"tag": "DESCRIPTION", "value": "<P>Čistě dietní krm...</div>", "elements": []},
+                    {"tag": "DELIVERY_DATE", "value": 1, "elements": []},
+                    {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
+                ]
+            }
+            
+# Group Heureka
+API for various Heureka.cz helpers and resources.
+
+## Heureka Categories [/categories/]
+API for Heureka categories. Categories have a _min cpc_ value attached to it. 
+But not every category displays this value. If you want to find a _min cpc_ value of a category,
+you need to traverse its parents until you find a category with _min cpc_ displayed. This _min cpc_ then applies
+to all children categories.
+
++ Attributes
+
+    + id (string) - ID of the category.
+    + name (string) - Name of the category.
+    + full_name (string) - Full name of the category.
+    + parent (object) - Parent of the category.
+        + id (string) - ID of the parent.
+        + name (string) - Name of the parent.
+    + children (array) - Sub-categories of the category.
+        + (object)
+            + id (string) - ID of the child.
+            + name (string) - Name of the child.
+
+### Get a Category [GET /heureka/categories/{id}/{?fields}]
+Returns a single Heureka category.
+
++ Parameters
+
+    + id (string) - ID of the category.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "68",
+                "name": "Poker",
+                "full_name": "Šport | Poker",
+                "parent": {
+                    "id": "7",
+                    "name": "Šport"
+                },
+                "children": [
+                    {
+                        "id": "463",
+                        "name": "Hracie karty - poker"
+                    },
+                    {
+                        "id": "464",
+                        "name": "Poker sady"
+                    },
+                    {
+                        "id": "465",
+                        "name": "Príslušenstvo pre poker"
+                    },
+                    {
+                        "id": "466",
+                        "name": "Stoly na poker"
+                    },
+                    {
+                        "id": "467",
+                        "name": "Žetóny - poker"
+                    }
+                ],
+                "min_cpcs": [
+                    {
+                        "to_price": "10.0",
+                        "value": "0.03"
+                    },
+                    {
+                        "to_price": "40.0",
+                        "value": "0.05"
+                    },
+                    {
+                        "to_price": "110.0",
+                        "value": "0.05"
+                    },
+                    {
+                        "to_price": "185.0",
+                        "value": "0.07"
+                    },
+                    {
+                        "to_price": "370.0",
+                        "value": "0.09"
+                    },
+                    {
+                        "to_price": null,
+                        "value": "0.11"
+                    }
+                ]
+            }
+            
+### List a Categories [GET /heureka/categories/{?limit,offset,fields,}]
+Returns list of all Heureka categories.
+
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            [
+                {
+                    "id": "1",
+                    "name": "Heureka.cz",
+                    "full_name": "Heureka.cz",
+                    "parent": null,
+                    "children": [
+                        {
+                            "id": "2210",
+                            "name": "Auto-moto"
+                        },
+                        {
+                            "id": "2209",
+                            "name": "Bílé zboží"
+                        }
+                    ],
+                    "min_cpcs": []
+                },
+                {
+                    "id": "2",
+                    "name": "Heureka.sk",
+                    "full_name": "Heureka.sk",
+                    "parent": null,
+                    "children": [
+                        {
+                            "id": "5",
+                            "name": "Auto-moto"
+                        },
+                        {
+                            "id": "15",
+                            "name": "Biela technika"
+                        }
+                    ],
+                    "min_cpcs": []
+                }
+            ]
+
 # Group Google
 API for google.
 
 ## Analytics [/projects/{id}/google/analytics/]
+
++ Attributes
+
+    + group (object) - Values of the requested dimensions for the group.
+    + clicks_sum (number) - Number of clicks of all products in the group.
+    + orders_sum (number) - Number of orders of all products in the group.
+    + sales_sum (number) - Total sales of all products in the group.
 
 ### Eshop Data [GET /shops/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,source,metrics,dimensions}]
 Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
@@ -3068,446 +3761,3 @@ value in ascending order. Groups of results can be created using `dimensions` qu
                 "limit": 10,
                 "offset": 0
             }
-
-# Group Feed Audits
-Audit of product feed.
-
-- Issues are checks with non-ok verdicts. Some issues are feed-wide, so
-  they are bound only to an audit resource. Most issues are product-specific,
-  so they are bound to audit and also to product resource.
-- Every validator provides specific additional info to check. It is accessible
-  in `info` field of issues and it can have various forms - its schema is
-  validator-dependent.
-- Web hook URL is requested with POST (audit's JSON resource sent in data)
-  right in the moment when audit is finished.
-- Progress is raised by every check, there is no information about *total*
-  number of progress units.
-- Feed type is optional. In case it's missing, it is detected before audit
-  starts.
-- Error field of audits and issues has nothing to do with checking itself -
-  is is used only in case mergado3 application fails and raises an exception.
-  This generic error field is rather for debugging API than for being consumed
-  by API clients.
-- Product's data is parsed and saved just *as is* into data field. No semantic
-  analysis is performed, validators take it raw and do whatever they want
-  with it. This means the data field also has no fixed schema.
-- Audits can be scheduled.
-
-## Audits [/projects/{id}/feedaudits/]
-### Create a New Audit [POST]
-Creates and starts an audit. Feed type, web hook and shop id are optional.
-
-**OAuth2 Scope:** projects.feedaudit.write
-
-+ Parameters
-
-    + id (string) - ID of the project.
-    
-+ Request
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "parser_type": "heureka.cz",
-                "feed_types": ["heureka.cz"],
-                "feed_url": "https://www.example.com/feed.xml",
-                "webhook_url": "http://www.example.com/ping.php"
-            }
-
-+ Response 201
-
-    + Headers
-
-            Content-Type: application/json
-            Location: "https://app.mergado.com/api/projects/57334061ba4989170e78dbf3/feedaudits/"
-
-    + Body
-    
-            {
-                "id": "51768ba7ed14f444772d6137",
-                "error": null,
-                "status": "in_progress",
-                "feed_url": "https://www.example.com/feed.xml",
-                "webhook_url": "http://www.example.com/ping.php",
-                "parser_type": "heureka.cz",
-                "feed_types": ["heureka.cz"],
-                "encoding": "utf-8",
-                "time": 254,
-                "expired_at": null,
-                "product_count": 8367,
-                "progress": 512,
-                "started_at": "2013-04-23 13:24:55+0000",
-                "finished_at": null
-            }
-
-### List Audits [GET /projects/{id}/feedaudits/{?limit,offset,fields}]
-Returns list of all audits.
-
-+ Parameters
-
-    + id (string) - ID of the project.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "data": [
-                    {
-                        "id": "51768ba7ed14f444772d6137",
-                        "error": null,
-                        "status": "in_progress",
-                        "feed_url": "https://www.example.com/feed.xml",
-                        "webhook_url": "http://www.example.com/ping.php",
-                        "parser_type": "heureka.cz",
-                        "feed_types": ["heureka.cz", "zbozi.cz"],
-                        "encoding": "utf-8",
-                        "time": 254,
-                        "product_count": 8367,
-                        "progress": 512,
-                        "started_at": "2013-04-23 13:24:55+0000",
-                        "finished_at": null
-                    }
-                ],
-                "limit": 10,
-                "offset": 0
-            }
-
-### Get an Audit [GET /feedaudits/{id}/{?fields]
-Returns the requested audit resource.
-
-**OAuth2 Scope:** projects.feedaudit.read
-
-+ Parameters
-
-    + id (string) - ID of the audit.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "id": "51768ba7ed14f444772d6137",
-                "error": null,
-                "status": "in_progress",
-                "feed_url": "https://www.example.com/feed.xml",
-                "webhook_url": "http://www.example.com/ping.php",
-                "parser_type": "heureka.cz",
-                "feed_types": ["heureka.cz", "zbozi.cz"],
-                "encoding": "utf-8",
-                "time": 254,
-                "product_count": 8367,
-                "progress": 512,
-                "started_at": "2013-04-23 13:24:55+0000",
-                "finished_at": null
-            }
-
-## Issues [/feedaudits/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
-### List Audit Issues [GET]
-Returns all issues (problematic validations) of a specific audit.
-
-**OAuth2 Scope:** projects.feedaudit.read
-
-+ Parameters
-
-    + id (string) - ID of the audit.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "data": [
-                    {
-                        "id": "51768ba7ed14f444772d6138",
-                        "product_id": "57330212ba49891750549828",
-                        "audit_id": "51768ba7ed14f444772d6137",
-                        "checked_at": "2013-04-23 13:24:55+0000",
-                        "verdict": "error",
-                        "info": {
-                            "element": "PRODUCT"
-                        },
-                        "validator": "is_present_product",
-                        "level": "recommendation",
-                        "feed_types": ["heureka", "zbozi"]
-                    }
-                ],
-                "limit": 10,
-                "offset": 0
-            }
-
-### Get an Issue [GET /feedaudits/issues/{id}/{?fields}]
-Returns single issue with given `id`.
-
-**OAuth2 Scope:** projects.feedaudit.read
-
-+ Parameters
-
-    + id (string) - ID of the issue.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "id": "51768ba7ed14f444772d6138",
-                "checked_at": "2013-04-23 13:24:55+0000",
-                "verdict": "error",
-                "info": {
-                    "element": "PRODUCT"
-                },
-                "validator": "is_present_product",
-                "level": "recommendation",
-                "feed_types": ["heureka", "zbozi"],
-                "product_id": "51768ba7ed14f444772d6120",
-                "audit_id": "51768ba7ed14f444772d6137"
-            }
-
-### List Product's Issues [GET /feedaudit/products/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
-Returns all issues (problematic validations) of a specific product.
-
-**OAuth2 Scope:** projects.feedaudit.read
-
-+ Parameters
-
-    + id (string) - ID of the product.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "data": [
-                    {
-                        "id": "51768ba7ed14f444772d6138",
-                        "product_id": "51768ba7ed14f444772d6120",
-                        "audit_id": "51768ba7ed14f444772d6137",
-                        "checked_at": "2013-04-23 13:24:55+0000",
-                        "verdict": "error",
-                        "info": {
-                            "element": "PRODUCT"
-                        },
-                        "validator": "is_present_product",
-                        "feed_types": ["heureka", "zbozi"]
-                    }
-                ],
-                "limit": 10,
-                "offset": 0
-            }
-
-## Products [/feedaudit/audits/{id}/products/{?limit,offset,fields,filter_by,order_by}]
-### List Audit Products [GET]
-Returns all products of a specific audit.
-
-**OAuth2 Scope:** projects.feedaudit.read
-
-+ Parameters
-
-    + id (string) - ID of the audit.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "data": [
-                    {
-                        "id": "51768ba7ed14f444772d6120",
-                        "audit_id": "51768ba7ed14f444772d6137",
-                        "elements": [
-                            {"tag": "PRODUCT", "value": "Hovězí plíce 100 g", "elements": []},
-                            {"tag": "DESCRIPTION", "value": "<P>Čistě dietní krm...</div>", "elements": []},
-                            {"tag": "DELIVERY_DATE", "value": 1, "elements": []},
-                            {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
-                        ]
-                    }
-                ],
-                "limit": 10,
-                "offset": 0
-            }
-
-### Get a Product [GET /feedaudit/products/{id}{?fields}]
-Returns a single product resource.
-
-**OAuth2 Scope:** projects.feedaudit.read
-
-+ Parameters
-
-    + id (string) - ID of the product.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "id": "51768ba7ed14f444772d6120",
-                "audit_id": "51768ba7ed14f444772d6137",
-                "elements": [
-                    {"tag": "PRODUCT", "value": "Hovězí plíce 100 g", "elements": []},
-                    {"tag": "DESCRIPTION", "value": "<P>Čistě dietní krm...</div>", "elements": []},
-                    {"tag": "DELIVERY_DATE", "value": 1, "elements": []},
-                    {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
-                ]
-            }
-            
-# Group Categories
-API for heureka categories. Categories have a _min cpc_ value attached to it. 
-But not every category displays this value. If you want to find a _min cpc_ value of a category,
-you need to traverse its parents until you find a category with _min cpc_ displayed. This _min cpc_ then applies
-to all children categories.
-
-## Categories [/categories/]
-
-### Get a Category [GET /categories/{id}/{?fields}]
-Returns a single Heureka category.
-
-+ Parameters
-
-    + id (string) - ID of the category.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "id": "68",
-                "name": "Poker",
-                "full_name": "Šport | Poker",
-                "parent": {
-                    "id": "7",
-                    "name": "Šport"
-                },
-                "children": [
-                    {
-                        "id": "463",
-                        "name": "Hracie karty - poker"
-                    },
-                    {
-                        "id": "464",
-                        "name": "Poker sady"
-                    },
-                    {
-                        "id": "465",
-                        "name": "Príslušenstvo pre poker"
-                    },
-                    {
-                        "id": "466",
-                        "name": "Stoly na poker"
-                    },
-                    {
-                        "id": "467",
-                        "name": "Žetóny - poker"
-                    }
-                ],
-                "min_cpcs": [
-                    {
-                        "to_price": "10.0",
-                        "value": "0.03"
-                    },
-                    {
-                        "to_price": "40.0",
-                        "value": "0.05"
-                    },
-                    {
-                        "to_price": "110.0",
-                        "value": "0.05"
-                    },
-                    {
-                        "to_price": "185.0",
-                        "value": "0.07"
-                    },
-                    {
-                        "to_price": "370.0",
-                        "value": "0.09"
-                    },
-                    {
-                        "to_price": null,
-                        "value": "0.11"
-                    }
-                ]
-            }
-            
-### List a Categories [GET /categories/{?limit,offset,fields,}]
-Returns list of all Heureka categories.
-
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            [
-                {
-                    "id": "1",
-                    "name": "Heureka.cz",
-                    "full_name": "Heureka.cz",
-                    "parent": null,
-                    "children": [
-                        {
-                            "id": "2210",
-                            "name": "Auto-moto"
-                        },
-                        {
-                            "id": "2209",
-                            "name": "Bílé zboží"
-                        }
-                    ],
-                    "min_cpcs": []
-                },
-                {
-                    "id": "2",
-                    "name": "Heureka.sk",
-                    "full_name": "Heureka.sk",
-                    "parent": null,
-                    "children": [
-                        {
-                            "id": "5",
-                            "name": "Auto-moto"
-                        },
-                        {
-                            "id": "15",
-                            "name": "Biela technika"
-                        }
-                    ],
-                    "min_cpcs": []
-                }
-            ]
