@@ -6,18 +6,18 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ## Requests
 
-The recommended encoding for all requests is UTF-8. Requests must be made over **HTTPS** and
+The recommended encoding of all requests is UTF-8. Requests must be made over **HTTPS** and
 all endpoints start with `https://app.mergado.com/api/`. Note that almost all API endpoints
 require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 
 ### Allowed HTTPs requests
 
-| Method | Description                                |
-|--------|--------------------------------------------|
-| GET    | Retrieves a resource or list of resources. |
-| POST   | Creates or updates a resource.             |
-| PATCH  | Updates a resource.                        |
-| DELETE | Deletes a resource.                        |
+| Method | Description                                  |
+|--------|----------------------------------------------|
+| GET    | Retrieves a resource or a list of resources. |
+| POST   | Creates or updates a resource.               |
+| PATCH  | Updates a resource.                          |
+| DELETE | Deletes a resource.                          |
 
 ### Additional GET parameters
 
@@ -45,10 +45,10 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 
 ## OAuth 2.0
 
-To access Mergado API, clients (e.g. an application) are authenticated using
+To access Mergado API, clients (e.g. an application) are required to authenticate with
 [OAuth 2.0](https://tools.ietf.org/html/rfc6749). Each application is required to have
 its OAuth credentials which can be obtained from the Mergado
-[developers center](https://developers.mergado.com) (when you register your application,
+[developers center](https://developers.mergado.com) (during registeration of your application,
 a client ID and a secret key is assigned to your application).
 
 * [Basics of OAuth 2.0 in Mergado Apps](http://mergado.github.io/docs/api/authorization.html)
@@ -70,10 +70,10 @@ a client ID and a secret key is assigned to your application).
             }
 
 ## XML Formats [/formats/]
-Formats represent XML feeds and their specification that Mergado supports.
+Formats represent XML feeds and their specification supported by Mergado.
 
 ### List Supported Formats [GET]
-Returns a list of IDs of all currently supported XML formats.
+Returns a list of IDs of all supported XML feed's formats.
 
 + Response 200
 
@@ -95,10 +95,11 @@ Returns a list of IDs of all currently supported XML formats.
                 "pricemania.sk"
             ]
 
-# Group Management
-Management of users, eshops, projects and other resources.
+# Group Core
+Management of users, eshops, projects and other core resources.
 
 ## Users [/users/{?limit,offset,fields}]
+Users with an account in Mergado.
 
 + Attributes
 
@@ -285,6 +286,7 @@ Lists all permissions (accesses to eshops) of a specific user.
             }
 
 ## Eshops [/users/{id}/shops/{?limit,offset,fields}]
+Eshops in Mergado.
 
 + Attributes
 
@@ -407,6 +409,8 @@ Show additional eshop information and statistics.
             }
 
 ## Projects [/shops/{id}/projects/{?limit,offset,fields}]
+Project is created when a user imports an XML feed in Mergado. This feed may come in different formats
+and it is very common that one eshop has several projects each maaged for a different shopping service.
 
 + Attributes
 
@@ -540,6 +544,7 @@ Show additional project information and statistics.
             }
 
 ## Products [/projects/{id}/products/{?limit,offset,fields}]
+A products represents one item in an XML feed.
 
 + Attributes
 
@@ -790,7 +795,7 @@ Returns products that satisfy a condition defined by the given query.
             }
 
 ## Elements [/projects/{id}/elements/]
-API for project's elements management.
+Elements are named attributes of products.
 
 + Attributes
 
@@ -989,7 +994,11 @@ Performes update of element's attributes.
             }
 
 ## Variables [/project/{id}/variables/]
-API for management of project's variables.
+Variables can be seen as pointers to products' values or parts of values and
+can be used in most _rules_ (see the section about rules). Variables are created
+automatically during import and in the UI (but not in the API) when an element
+is created. However, they can be also created by users who can use a regular
+expression to match only a part of a product's value.
 
 + Attributes
 
@@ -1181,7 +1190,7 @@ Performes update of variable's attributes.
 
 ## Notifications [/shops/{id}/notifications/]
 API for notifications. Notifications in Mergado have _channels_. A channel
-represents the way to notify a user. Furthermore, notifications can be created
+represents a way to notify the users. Furthermore, notifications can be created
 with a different _scope_. A scope defines who will receive the notification.
 Notifications can be also made with different _priority_. Users can configure
 what notification and how often they want to receive each notification with
@@ -1322,6 +1331,8 @@ given priority.
             }
             
 ## Tasks [/projects/{id}/tasks/{?limit,offset,fields}]
+Tasks represent a way to synchronize XML feeds with Mergado, apply changes or
+export products for shopping services.
 
 + Attributes
 
@@ -1473,6 +1484,8 @@ Fetch a specific task.
             }
             
 ## Logs [/projects/{id}/logs/]
+Core actions like import, export, an application of rules or download by a shopping
+service are logged separately. Note that each log entry is available only for 30 days.
 
 ### Get Import Log [GET /projects/{id}/logs/import/{?limit,offset,fields}]
 Fetches all import logs for given project.
@@ -1652,15 +1665,18 @@ Fetches all export logs for given project.
                   "user": "-",
                   "user_agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; cs; rv:1) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 1)"
                 }
-              ],
-              "limit": 10,
-              "offset": 0
+                ],
+                "limit": 10,
+                "offset": 0
             }
                         
 # Group Rules
-API for rule management, definition and application.
+API for rule management, definition and application. Rules are probably the most important feature
+in Mergado. They allow users to modify their XML feeds or can be used to convert a feed to a different
+format (e.g. from Heureka.cz to Google Merchant).
 
 ## Definitions [/rules/definitions/{?limit,offset,fields}]
+Definition of rules so that developers can see which rules expect what data.
 
 + Attributes
 
@@ -1752,7 +1768,7 @@ Returns definitions of all rules and required data for their instantiation.
     + is_pausable (boolean) - Whether the user is allowed to pause the rule.
     + data - Parameters of the rule, some rules accept parameters, e.g.
       a value to write into an element, regular expressions, etc.
-    + queries - It is possible to control to what products each rule applies.
+    + queries (array) - It is possible to control to what products each rule applies.
       Queries exists for exactly this purpose. If no query is specified,
       the rule will be applied to all products.
 
@@ -2442,7 +2458,7 @@ Retract a Query from a Rule.
 + Response 204
 
 # Group Statistics
-API for statistics, their acquisition and aggregation.
+API for statistics collected from eshops, shopping services and other resources.
 
 **Warning:** Statistics are currently collected only for the following
 export (project) formats:
@@ -2553,6 +2569,7 @@ Returns latest summarized statistics and other information of an eshop.
             }
 
 ## Product Statistics [/products/{id}/stats/]
+Statistics of products, this includes attributes like URL, PRICE etc.
 
 + Attributes
 
@@ -2823,62 +2840,63 @@ are returned. This can be changed by the field `date`
     
             {
                 "data": [
-                {
-                    "product_id": "123678",
-                    "date": "2015-02-02",
-                    "stats": {
-                        "categorytext": "Náhradní díly | LCD Display pro notebook",
-                        "cost": 1070.4,
-                        "delivery_date": 0,
-                        "heureka_avg_position": 1,
-                        "heureka_cpc": 2.05,
-                        "heureka_min_cpc": 1.5,
-                        "heureka_min_price": 2621,
-                        "heureka_name": "10.1 LCD LED Display univerzální notebook",
-                        "heureka_price_position": 1,
-                        "heureka_stats_clicks": 0,
-                        "heureka_stats_cost_of_sales": 0,
-                        "heureka_stats_cpc": 0,
-                        "heureka_stats_sales": 0,
-                        "heureka_stats_total_cost": 0,
-                        "heureka_stats_total_orders": 0,
-                        "heureka_url": "http://displeje-pro-notebooky.heureka.cz/10_1-lcd-led-display-univerzalni-notebook/",
-                        "imgurl": "https://www.example.com/img/990.jpg",
-                        "is_starter": null,
-                        "is_topseller": null,
-                        "item_id": "990",
-                        "manufacturer": "Samsung / Samsung LTN",
-                        "name": "10.1 LCD LED Display univerzální notebook",
-                        "price": 2166,
-                        "price_vat": 2620.9,
-                        "url": "https://www.example.com/101quot-lcd-led-display-univerzalni-notebook"
+                    {
+                        "product_id": "123678",
+                        "date": "2015-02-02",
+                        "stats": {
+                            "categorytext": "Náhradní díly | LCD Display pro notebook",
+                            "cost": 1070.4,
+                            "delivery_date": 0,
+                            "heureka_avg_position": 1,
+                            "heureka_cpc": 2.05,
+                            "heureka_min_cpc": 1.5,
+                            "heureka_min_price": 2621,
+                            "heureka_name": "10.1 LCD LED Display univerzální notebook",
+                            "heureka_price_position": 1,
+                            "heureka_stats_clicks": 0,
+                            "heureka_stats_cost_of_sales": 0,
+                            "heureka_stats_cpc": 0,
+                            "heureka_stats_sales": 0,
+                            "heureka_stats_total_cost": 0,
+                            "heureka_stats_total_orders": 0,
+                            "heureka_url": "http://displeje-pro-notebooky.heureka.cz/10_1-lcd-led-display-univerzalni-notebook/",
+                            "imgurl": "https://www.example.com/img/990.jpg",
+                            "is_starter": null,
+                            "is_topseller": null,
+                            "item_id": "990",
+                            "manufacturer": "Samsung / Samsung LTN",
+                            "name": "10.1 LCD LED Display univerzální notebook",
+                            "price": 2166,
+                            "price_vat": 2620.9,
+                            "url": "https://www.example.com/101quot-lcd-led-display-univerzalni-notebook"
+                        }
+                    },
+                    {
+                        "product_id": null,
+                        "date": "2015-02-02",
+                        "stats": {
+                            "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
+                            "cost": 1500.7,
+                            "delivery_date": 0,
+                            "heureka_cpc": null,
+                            "imgurl": "https://www.example.com/img/924.jpg",
+                            "is_starter": null,
+                            "is_topseller": null,
+                            "item_id": "924",
+                            "manufacturer": "Aqua Computer",
+                            "name": "Aqua Computer Cuplex Kryos XT",
+                            "price": 1651,
+                            "price_vat": 1997.7,
+                            "url": "https://www.example.com/aqua-computer-cuplex-kryos-xt"
+                        }
                     }
-                },
-                {
-                    "product_id": null,
-                    "date": "2015-02-02",
-                    "stats": {
-                        "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
-                        "cost": 1500.7,
-                        "delivery_date": 0,
-                        "heureka_cpc": null,
-                        "imgurl": "https://www.example.com/img/924.jpg",
-                        "is_starter": null,
-                        "is_topseller": null,
-                        "item_id": "924",
-                        "manufacturer": "Aqua Computer",
-                        "name": "Aqua Computer Cuplex Kryos XT",
-                        "price": 1651,
-                        "price_vat": 1997.7,
-                        "url": "https://www.example.com/aqua-computer-cuplex-kryos-xt"
-                    }
-                }
                 ],
                 "limit": 10,
                 "offset": 0
             }
 
-## Statistics of Categories [/projects/{id}/stats/categories/]
+## Category Statistics [/projects/{id}/stats/categories/]
+A collection of statistics about categories.
 
 + Attributes
     + date (string) - Date of the collection of the statistics.
@@ -2926,6 +2944,9 @@ for given `CATEGORYTEXT`).
             }
 
 ## Audited Statistics [/projects/{id}/stats/audits/]
+Audits evaluated in Mergado from the available data (other statistics).
+For example, we are able to detect if the offered price is too high as we store
+positions of products on Heureka.
 
 + Attributes
     + id (string) - ID of the audit.
@@ -3131,6 +3152,7 @@ Audit of product feed.
 - Audits can be scheduled.
 
 ## Audits [/projects/{id}/feedaudits/]
+Audit represents validation of an XML feed.
 
 + Attributes
 
@@ -3278,6 +3300,8 @@ Returns the requested audit resource.
             }
 
 ## Audit Issues [/feedaudits/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
+Each issue represents error, warning or recommendation that applies for products or
+the whole feed.
 
 + Attributes
 
@@ -3401,6 +3425,7 @@ Returns all issues (problematic validations) of a specific product.
             }
 
 ## Audit Products [/feedaudit/audits/{id}/products/{?limit,offset,fields,filter_by,order_by}]
+XML feed's products for validation.
 
 + Attributes
 
@@ -3619,7 +3644,7 @@ Returns list of all Heureka categories.
             ]
 
 # Group Google
-API for google.
+API for various Google tools, helpers and resources.
 
 ## Analytics [/projects/{id}/google/analytics/]
 
@@ -3634,7 +3659,7 @@ API for google.
 Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
 
-**OAuth2 Scope:** projects.ga.read
+**OAuth2 Scope:** shop.ga.read
 
 + Parameters
 
@@ -3702,11 +3727,11 @@ value in ascending order. Groups of results can be created using `dimensions` qu
 Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
 
-**OAuth2 Scope:** projects.ga.read
+**OAuth2 Scope:** project.ga.read
 
 + Parameters
 
-    + id (string) - ID of the shop.
+    + id (string) - ID of the project.
     + metrics (enum[string], optional) - Comma sepparated list of metrics to use.
         + Members
             + `sales_sum` - total sales of all products in the group.
