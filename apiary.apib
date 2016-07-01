@@ -54,6 +54,9 @@ a client ID and a secret key is assigned to your application).
 * [Basics of OAuth 2.0 in Mergado Apps](http://mergado.github.io/docs/api/authorization.html)
 * [List of all OAuth scopes](http://mergado.github.io/docs/api/oauth-scopes.html)
 
+# Group Base
+Various API resources that don't require any authentication.
+
 ## Info [/]
 ### Show API Version [GET]
 
@@ -94,6 +97,79 @@ Returns a list of IDs of all supported XML feed's formats.
                 "najnakup.sk",
                 "pricemania.sk"
             ]
+
+## Rule Definitions [/rules/definitions/{?limit,offset,fields}]
+Definition of rules so that developers can see which rules expect what data.
+
++ Attributes
+
+    + type (string) - Unique name of the rule.
+    + relationship (enum[string]) - Whether the rule accepts an object
+      (dictionary) as an argument or a list of objects.
+        + members
+            + 1:1
+            + 1:N
+    + fields - List of fields the rule accepts during instantiation.
+
+### List Defined Rules [GET]
+Returns definitions of all rules and required data for their instantiation.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "type": "format_converter",
+                        "relationship": "1:1",
+                        "fields": []
+                    },
+                    {
+                        "type": "rewriting",
+                        "relationship": "1:1",
+                        "fields": [
+                            {
+                                "name": "new_content",
+                                "required": true,
+                                "type": "STRING"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "replacing",
+                        "relationship": "1:1",
+                        "fields": [
+                            {
+                                "name": "search",
+                                "required": true,
+                                "type": "STRING"
+                            },
+                            {
+                                "name": "replacement",
+                                "required": true,
+                                "type": "STRING"
+                            },
+                            {
+                                "name": "regex",
+                                "required": true,
+                                "type": "BOOLEAN"
+                            },
+                            {
+                                "name": "case_sensitive",
+                                "required": true,
+                                "type": "BOOLEAN"
+                            }
+                        ]
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
 
 # Group Core
 Management of users, eshops, projects and other core resources.
@@ -1188,567 +1264,10 @@ Performes update of variable's attributes.
                 "type": "manual"
             }
 
-## Notifications [/shops/{id}/notifications/]
-API for notifications. Notifications in Mergado have _channels_. A channel
-represents a way to notify the users. Furthermore, notifications can be created
-with a different _scope_. A scope defines who will receive the notification.
-Notifications can be also made with different _priority_. Users can configure
-what notification and how often they want to receive each notification with
-given priority.
-
-+ Attributes
-
-    + title (string) - Subject or title of the notification.
-    + body (string) - Notification text.
-    + channels (enum[string], optional) - List of channels.
-        + Default
-            + `frontend`
-        + Members
-            + `email` - Notification is sent to the user's email.
-            + `frontend` - Notification is shown in the Mergado's notification panel.
-    + priority (enum[string], optional) - Priority of the notification.
-        + Default
-            + `medium`
-        + Members
-            + `low`
-            + `medium`
-            + `high`
-    + scope (enum[string], optional) - Scope of the notification.
-        + Default
-            + `owner`
-        + Members
-            + `owner` - Notification is sent to all users who can access the eshop.
-            + `eshop` - Notification is sent only to the owner of the eshop.
-
-### Send a Notification [POST]
-**OAuth2 Scope:** shop.notify.write
-
-+ Parameters
-
-    + id (string) - ID of an eshop.
-
-+ Request
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "title": "eshop fuckup",
-                "body": "Your eshop is total screwed.",
-                "channels": ["email"],
-                "created_at": "2016-05-11 14:43:18",
-                "priority": "high",
-                "scope": "owner"
-            }
-
-+ Response 201
-
-    + Headers
-
-            Content-Type: application/json
-            Location: "https://app.mergado.com/api/shops/1/notifications/30/"
-
-    + Body
-    
-            {
-                "id": "30",
-                "title": "eshop fuckup",
-                "body": "Your eshop is total screwed.",
-                "channels": ["email"],
-                "created_at": "2016-05-11 14:43:18",
-                "priority": "high",
-                "scope": "owner"
-            }
-
-### Get a Notification [GET /notifications/{id}/{?fields}]
-**OAuth2 Scope:** shop.notify.read
-
-+ Parameters
-
-    + id (string) - ID of a notification.
-
-+ Response 201
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "id": "30",
-                "title": "eshop fuckup",
-                "body": "Your eshop is total screwed.",
-                "channels": ["email"],
-                "created_at": "2016-05-11 14:43:18",
-                "priority": "high",
-                "scope": "owner"
-            }
-            
-### Get Users Notifications [GET /users/{id}/notifications/{?fields}]
-**OAuth2 Scope:** user.notify.read
-
-+ Parameters
-
-    + id (string) - ID of a user.
-
-+ Response 201
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "data": [
-                    {
-                        "address": "freddy.krueger@mergado.com",
-                        "channel": "email",
-                        "id": "1",
-                        "locale": null,
-                        "notification_id": "1",
-                        "resolve": "promptly",
-                        "resolved_at": "2016-04-13T15:58:51+00:00",
-                        "user_id": "1"
-                    },
-                    {
-                        "address": null,
-                        "channel": "frontend",
-                        "id": "2",
-                        "locale": null,
-                        "notification_id": "2",
-                        "resolve": "promptly",
-                        "resolved_at": null,
-                        "user_id": "1"
-                    }
-                ],
-                "limit": 10,
-                "offset": 0
-            }
-            
-## Tasks [/projects/{id}/tasks/{?limit,offset,fields}]
-Tasks represent a way to synchronize XML feeds with Mergado, apply changes or
-export products for shopping services.
-
-+ Attributes
-
-    + id (string) - ID of the task.
-    + project_id (string) - ID of the project the task was performed in.
-    + actions - A list of actions to perform. Allowed actioins are `import`
-      `apply` and `export`.
-    + current_action (string) - Action currently being performed.
-    + duration (number) - Number of seconds the task runs.
-    + error (string, optional) - Raised error during the task that caused
-      unexpected termination.
-    + started_at (string) - when the task started.
-    + finished_at (string) - When the task was finished.
-    + status (enum[string]) - Status of the task.
-        + members
-            + in_progress
-            + error
-            + done
-
-### Create a Task [POST]
-Creates a tasks and runs it. Returns information about created task.
-
-**OAuth2 Scope:** project.tasks.write
-
-+ Parameters
-
-    + id (string) - ID of a project.
-    
-+ Request
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "actions": ["import", "apply"],
-                "force": true
-            }
-    
-+ Response 201
-
-    + Headers
-
-            Content-Type: application/json
-            Location: "https://app.mergado.com/api/tasks/15/"
-
-    + Body
-    
-            {
-              "actions": [
-                "import",
-                "apply"
-              ],
-              "current_action": null,
-              "duration": 0,
-              "error": null,
-              "finished_at": null,
-              "id": "224",
-              "project_id": "30",
-              "started_at": "2016-05-23T11:49:47+00:00",
-              "status": "in_progress"
-            }
-            
-### List Project Tasks [GET]
-Lists tasks belonging to given project.
-
-**OAuth2 Scope:** project.tasks.read
-
-+ Parameters
-
-    + id (string) - ID of a project.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-              "data": [
-                {
-                  "actions": [
-                    "import",
-                    "apply"
-                  ],
-                  "current_action": null,
-                  "duration": 4.607,
-                  "error": null,
-                  "finished_at": "2016-05-18T15:16:26+00:00",
-                  "id": "199",
-                  "project_id": "30",
-                  "started_at": "2016-05-18T15:16:22+00:00",
-                  "status": "done"
-                },
-                {
-                  "actions": [
-                    "import",
-                    "apply",
-                    "export"
-                  ],
-                  "current_action": null,
-                  "duration": 10.582,
-                  "error": null,
-                  "finished_at": "2016-05-18T15:17:22+00:00",
-                  "id": "200",
-                  "project_id": "30",
-                  "started_at": "2016-05-18T15:17:12+00:00",
-                  "status": "done"
-                }
-              ],
-              "limit": 10,
-              "offset": 0
-            }
-            
-### Get a Task [GET /tasks/{id}/{?fields}]
-Fetch a specific task.
-
-**OAuth2 Scope:** project.tasks.read
-
-+ Parameters
-
-    + id (string) - ID of a task.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-              "actions": [
-                "import",
-                "apply"
-              ],
-              "current_action": null,
-              "duration": 3.309,
-              "error": null,
-              "finished_at": "2016-05-20T14:42:59+00:00",
-              "id": "223",
-              "project_id": "30",
-              "started_at": "2016-05-20T14:42:56+00:00",
-              "status": "done"
-            }
-            
-## Logs [/projects/{id}/logs/]
-Core actions like import, export, an application of rules or download by a shopping
-service are logged separately. Note that each log entry is available only for 30 days.
-
-### Get Import Log [GET /projects/{id}/logs/import/{?limit,offset,fields}]
-Fetches all import logs for given project.
-
-**OAuth2 Scope:** project.logs.read
-
-+ Parameters
-
-    + id (string) - ID of a project.
-    
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-              "data": [
-                {
-                  "duration": 2.352,
-                  "finished_at": "2016-05-18T15:16:25+00:00",
-                  "id": "75",
-                  "items": 1,
-                  "items_created": 1,
-                  "items_processed": 1,
-                  "items_removed": 0,
-                  "items_updated": 0,
-                  "started_at": "2016-05-18T15:16:23+00:00",
-                  "user_id": "1"
-                },
-                {
-                  "duration": 1.423,
-                  "finished_at": "2016-05-18T15:17:21+00:00",
-                  "id": "76",
-                  "items": 1,
-                  "items_created": 0,
-                  "items_processed": 1,
-                  "items_removed": 0,
-                  "items_updated": 0,
-                  "started_at": "2016-05-18T15:17:20+00:00",
-                  "user_id": null
-                }
-              ],
-              "limit": 10,
-              "offset": 0
-            }
-
-
-### Get Apply Log [GET /projects/{id}/logs/apply/{?limit,offset,fields}]
-Fetches all apply logs for given project.
-
-**OAuth2 Scope:** project.logs.read
-
-+ Parameters
-
-    + id (string) - ID of a project.
-    
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-              "data": [
-                {
-                  "duration": 1.548,
-                  "finished_at": "2016-05-18T15:16:26+00:00",
-                  "id": "155",
-                  "items": 1,
-                  "started_at": "2016-05-18T15:16:25+00:00",
-                  "user_id": "1"
-                },
-                {
-                  "duration": 1.464,
-                  "finished_at": "2016-05-18T15:17:22+00:00",
-                  "id": "156",
-                  "items": 1,
-                  "started_at": "2016-05-18T15:17:21+00:00",
-                  "user_id": null
-                }
-              ],
-              "limit": 10,
-              "offset": 0
-            }
-            
-### Get Export Log [GET /projects/{id}/logs/export/{?limit,offset,fields}]
-Fetches all export logs for given project.
-
-**OAuth2 Scope:** project.logs.read
-
-+ Parameters
-
-    + id (string) - ID of a project.
-    
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-              "data": [
-                {
-                  "duration": 5,
-                  "finished_at": null,
-                  "id": "1",
-                  "initial": false,
-                  "items": 20,
-                  "processed_items": 20,
-                  "started_at": "2016-06-01T15:52:45+00:00",
-                  "user_id": "1"
-                },
-                {
-                  "duration": 10,
-                  "finished_at": "2016-06-01T15:54:44+00:00",
-                  "id": "2",
-                  "initial": false,
-                  "items": 100,
-                  "processed_items": 100,
-                  "started_at": "2016-06-01T15:54:30+00:00",
-                  "user_id": "1"
-                }
-              ],
-              "limit": 10,
-              "offset": 0
-            }
-            
-### Get Access Log [GET /projects/{id}/logs/access/{?limit,offset,fields}]
-Fetches all export logs for given project.
-
-**OAuth2 Scope:** project.logs.read
-
-+ Parameters
-
-    + id (string) - ID of a project.
-    
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-              "data": [
-                {
-                  "https": false,
-                  "id": "101",
-                  "identity": "-",
-                  "ip": "111.222.333.444",
-                  "referer": "-",
-                  "request": "GET /mergadovenaradie-cz-heureka-cz-greagfsdabtrshthgreav.xml HTTP/1.1",
-                  "size": 627142,
-                  "status": 200,
-                  "time": "2016-05-15T08:18:13+00:00",
-                  "user": "-",
-                  "user_agent": "Heurekabot-Feed/1.0 (+http://sluzby.heureka.cz/napoveda/heurekabot/)"
-                },
-                {
-                  "https": false,
-                  "id": "127",
-                  "identity": "-",
-                  "ip": "555.666.777.888",
-                  "referer": "-",
-                  "request": "HEAD /naradiovemergado-cz-kurtmjyrasnaENBREANzgtsf.xml HTTP/1.1",
-                  "size": 0,
-                  "status": 200,
-                  "time": "2016-05-15T08:24:38+00:00",
-                  "user": "-",
-                  "user_agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; cs; rv:1) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 1)"
-                }
-                ],
-                "limit": 10,
-                "offset": 0
-            }
-                        
-# Group Rules
+## Rules [/projects/{id}/rules/]
 API for rule management, definition and application. Rules are probably the most important feature
 in Mergado. They allow users to modify their XML feeds or can be used to convert a feed to a different
 format (e.g. from Heureka.cz to Google Merchant).
-
-## Definitions [/rules/definitions/{?limit,offset,fields}]
-Definition of rules so that developers can see which rules expect what data.
-
-+ Attributes
-
-    + type (string) - Unique name of the rule.
-    + relationship (enum[string]) - Whether the rule accepts an object
-      (dictionary) as an argument or a list of objects.
-        + members
-            + 1:1
-            + 1:N
-    + fields - List of fields the rule accepts during instantiation.
-
-### List Defined Rules [GET]
-Returns definitions of all rules and required data for their instantiation.
-
-+ Response 200
-
-    + Headers
-    
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "data": [
-                    {
-                        "type": "format_converter",
-                        "relationship": "1:1",
-                        "fields": []
-                    },
-                    {
-                        "type": "rewriting",
-                        "relationship": "1:1",
-                        "fields": [
-                            {
-                                "name": "new_content",
-                                "required": true,
-                                "type": "STRING"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "replacing",
-                        "relationship": "1:1",
-                        "fields": [
-                            {
-                                "name": "search",
-                                "required": true,
-                                "type": "STRING"
-                            },
-                            {
-                                "name": "replacement",
-                                "required": true,
-                                "type": "STRING"
-                            },
-                            {
-                                "name": "regex",
-                                "required": true,
-                                "type": "BOOLEAN"
-                            },
-                            {
-                                "name": "case_sensitive",
-                                "required": true,
-                                "type": "BOOLEAN"
-                            }
-                        ]
-                    }
-                ],
-                "limit": 10,
-                "offset": 0
-            }
-
-## Rule Instances [/projects/{id}/rules/]
 
 + Attributes
 
@@ -2456,6 +1975,488 @@ Retract a Query from a Rule.
             Content-Type: application/json
 
 + Response 204
+
+## Notifications [/shops/{id}/notifications/]
+API for notifications. Notifications in Mergado have _channels_. A channel
+represents a way to notify the users. Furthermore, notifications can be created
+with a different _scope_. A scope defines who will receive the notification.
+Notifications can be also made with different _priority_. Users can configure
+what notification and how often they want to receive each notification with
+given priority.
+
++ Attributes
+
+    + title (string) - Subject or title of the notification.
+    + body (string) - Notification text.
+    + channels (enum[string], optional) - List of channels.
+        + Default
+            + `frontend`
+        + Members
+            + `email` - Notification is sent to the user's email.
+            + `frontend` - Notification is shown in the Mergado's notification panel.
+    + priority (enum[string], optional) - Priority of the notification.
+        + Default
+            + `medium`
+        + Members
+            + `low`
+            + `medium`
+            + `high`
+    + scope (enum[string], optional) - Scope of the notification.
+        + Default
+            + `owner`
+        + Members
+            + `owner` - Notification is sent to all users who can access the eshop.
+            + `eshop` - Notification is sent only to the owner of the eshop.
+
+### Send a Notification [POST]
+**OAuth2 Scope:** shop.notify.write
+
++ Parameters
+
+    + id (string) - ID of an eshop.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "title": "eshop fuckup",
+                "body": "Your eshop is total screwed.",
+                "channels": ["email"],
+                "created_at": "2016-05-11 14:43:18",
+                "priority": "high",
+                "scope": "owner"
+            }
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/shops/1/notifications/30/"
+
+    + Body
+    
+            {
+                "id": "30",
+                "title": "eshop fuckup",
+                "body": "Your eshop is total screwed.",
+                "channels": ["email"],
+                "created_at": "2016-05-11 14:43:18",
+                "priority": "high",
+                "scope": "owner"
+            }
+
+### Get a Notification [GET /notifications/{id}/{?fields}]
+**OAuth2 Scope:** shop.notify.read
+
++ Parameters
+
+    + id (string) - ID of a notification.
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "30",
+                "title": "eshop fuckup",
+                "body": "Your eshop is total screwed.",
+                "channels": ["email"],
+                "created_at": "2016-05-11 14:43:18",
+                "priority": "high",
+                "scope": "owner"
+            }
+            
+### Get Users Notifications [GET /users/{id}/notifications/{?fields}]
+**OAuth2 Scope:** user.notify.read
+
++ Parameters
+
+    + id (string) - ID of a user.
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "address": "freddy.krueger@mergado.com",
+                        "channel": "email",
+                        "id": "1",
+                        "locale": null,
+                        "notification_id": "1",
+                        "resolve": "promptly",
+                        "resolved_at": "2016-04-13T15:58:51+00:00",
+                        "user_id": "1"
+                    },
+                    {
+                        "address": null,
+                        "channel": "frontend",
+                        "id": "2",
+                        "locale": null,
+                        "notification_id": "2",
+                        "resolve": "promptly",
+                        "resolved_at": null,
+                        "user_id": "1"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+            
+## Tasks [/projects/{id}/tasks/{?limit,offset,fields}]
+Tasks represent a way to synchronize XML feeds with Mergado, apply changes or
+export products for shopping services.
+
++ Attributes
+
+    + id (string) - ID of the task.
+    + project_id (string) - ID of the project the task was performed in.
+    + actions - A list of actions to perform. Allowed actioins are `import`
+      `apply` and `export`.
+    + current_action (string) - Action currently being performed.
+    + duration (number) - Number of seconds the task runs.
+    + error (string, optional) - Raised error during the task that caused
+      unexpected termination.
+    + started_at (string) - when the task started.
+    + finished_at (string) - When the task was finished.
+    + status (enum[string]) - Status of the task.
+        + members
+            + in_progress
+            + error
+            + done
+
+### Create a Task [POST]
+Creates a tasks and runs it. Returns information about created task.
+
+**OAuth2 Scope:** project.tasks.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+    
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "actions": ["import", "apply"],
+                "force": true
+            }
+    
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/tasks/15/"
+
+    + Body
+    
+            {
+              "actions": [
+                "import",
+                "apply"
+              ],
+              "current_action": null,
+              "duration": 0,
+              "error": null,
+              "finished_at": null,
+              "id": "224",
+              "project_id": "30",
+              "started_at": "2016-05-23T11:49:47+00:00",
+              "status": "in_progress"
+            }
+            
+### List Project Tasks [GET]
+Lists tasks belonging to given project.
+
+**OAuth2 Scope:** project.tasks.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "actions": [
+                    "import",
+                    "apply"
+                  ],
+                  "current_action": null,
+                  "duration": 4.607,
+                  "error": null,
+                  "finished_at": "2016-05-18T15:16:26+00:00",
+                  "id": "199",
+                  "project_id": "30",
+                  "started_at": "2016-05-18T15:16:22+00:00",
+                  "status": "done"
+                },
+                {
+                  "actions": [
+                    "import",
+                    "apply",
+                    "export"
+                  ],
+                  "current_action": null,
+                  "duration": 10.582,
+                  "error": null,
+                  "finished_at": "2016-05-18T15:17:22+00:00",
+                  "id": "200",
+                  "project_id": "30",
+                  "started_at": "2016-05-18T15:17:12+00:00",
+                  "status": "done"
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
+            
+### Get a Task [GET /tasks/{id}/{?fields}]
+Fetch a specific task.
+
+**OAuth2 Scope:** project.tasks.read
+
++ Parameters
+
+    + id (string) - ID of a task.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "actions": [
+                "import",
+                "apply"
+              ],
+              "current_action": null,
+              "duration": 3.309,
+              "error": null,
+              "finished_at": "2016-05-20T14:42:59+00:00",
+              "id": "223",
+              "project_id": "30",
+              "started_at": "2016-05-20T14:42:56+00:00",
+              "status": "done"
+            }
+            
+## Logs [/projects/{id}/logs/]
+Core actions like import, export, an application of rules or download by a shopping
+service are logged separately. Note that each log entry is available only for 30 days.
+
+### Get Import Log [GET /projects/{id}/logs/import/{?limit,offset,fields}]
+Fetches all import logs for given project.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "duration": 2.352,
+                  "finished_at": "2016-05-18T15:16:25+00:00",
+                  "id": "75",
+                  "items": 1,
+                  "items_created": 1,
+                  "items_processed": 1,
+                  "items_removed": 0,
+                  "items_updated": 0,
+                  "started_at": "2016-05-18T15:16:23+00:00",
+                  "user_id": "1"
+                },
+                {
+                  "duration": 1.423,
+                  "finished_at": "2016-05-18T15:17:21+00:00",
+                  "id": "76",
+                  "items": 1,
+                  "items_created": 0,
+                  "items_processed": 1,
+                  "items_removed": 0,
+                  "items_updated": 0,
+                  "started_at": "2016-05-18T15:17:20+00:00",
+                  "user_id": null
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
+
+
+### Get Apply Log [GET /projects/{id}/logs/apply/{?limit,offset,fields}]
+Fetches all apply logs for given project.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "duration": 1.548,
+                  "finished_at": "2016-05-18T15:16:26+00:00",
+                  "id": "155",
+                  "items": 1,
+                  "started_at": "2016-05-18T15:16:25+00:00",
+                  "user_id": "1"
+                },
+                {
+                  "duration": 1.464,
+                  "finished_at": "2016-05-18T15:17:22+00:00",
+                  "id": "156",
+                  "items": 1,
+                  "started_at": "2016-05-18T15:17:21+00:00",
+                  "user_id": null
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
+            
+### Get Export Log [GET /projects/{id}/logs/export/{?limit,offset,fields}]
+Fetches all export logs for given project.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "duration": 5,
+                  "finished_at": null,
+                  "id": "1",
+                  "initial": false,
+                  "items": 20,
+                  "processed_items": 20,
+                  "started_at": "2016-06-01T15:52:45+00:00",
+                  "user_id": "1"
+                },
+                {
+                  "duration": 10,
+                  "finished_at": "2016-06-01T15:54:44+00:00",
+                  "id": "2",
+                  "initial": false,
+                  "items": 100,
+                  "processed_items": 100,
+                  "started_at": "2016-06-01T15:54:30+00:00",
+                  "user_id": "1"
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
+            
+### Get Access Log [GET /projects/{id}/logs/access/{?limit,offset,fields}]
+Fetches all export logs for given project.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "https": false,
+                  "id": "101",
+                  "identity": "-",
+                  "ip": "111.222.333.444",
+                  "referer": "-",
+                  "request": "GET /mergadovenaradie-cz-heureka-cz-greagfsdabtrshthgreav.xml HTTP/1.1",
+                  "size": 627142,
+                  "status": 200,
+                  "time": "2016-05-15T08:18:13+00:00",
+                  "user": "-",
+                  "user_agent": "Heurekabot-Feed/1.0 (+http://sluzby.heureka.cz/napoveda/heurekabot/)"
+                },
+                {
+                  "https": false,
+                  "id": "127",
+                  "identity": "-",
+                  "ip": "555.666.777.888",
+                  "referer": "-",
+                  "request": "HEAD /naradiovemergado-cz-kurtmjyrasnaENBREANzgtsf.xml HTTP/1.1",
+                  "size": 0,
+                  "status": 200,
+                  "time": "2016-05-15T08:24:38+00:00",
+                  "user": "-",
+                  "user_agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; cs; rv:1) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 1)"
+                }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
 
 # Group Statistics
 API for statistics collected from eshops, shopping services and other resources.
@@ -3646,7 +3647,7 @@ Returns list of all Heureka categories.
 # Group Google
 API for various Google tools, helpers and resources.
 
-## Analytics [/projects/{id}/google/analytics/]
+## Google Analytics [/projects/{id}/google/analytics/]
 
 + Attributes
 
