@@ -3172,6 +3172,7 @@ Audit represents validation of an XML feed.
     + issues (object) - Occurrences of issues in the audit.
     + parser_type (string) - Parser used for parsing the XML feed.
     + feed_url (string) - URL of the XML feed.
+    + shop_name (string) - Detected eshop's name (is not 100% accurate).
     + webhook_url (string) - URL to call when the audit is finished.
       The URL is called via an HTTP POST with the audit information in the body.
     + encoding (string) - Detected encoding.
@@ -3219,6 +3220,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
                 "status": "in_progress",
                 "feed_url": "https://www.example.com/feed.xml",
                 "webhook_url": "http://www.example.com/ping.php",
+                "shop_name": "Example.com",
                 "parser_type": "heureka.cz",
                 "feed_types": ["heureka.cz"],
                 "encoding": "utf-8",
@@ -3253,6 +3255,7 @@ Returns list of all audits.
                         "status": "in_progress",
                         "feed_url": "https://www.example.com/feed.xml",
                         "webhook_url": "http://www.example.com/ping.php",
+                        "shop_name": "Example.com",
                         "parser_type": "heureka.cz",
                         "feed_types": ["heureka.cz", "zbozi.cz"],
                         "encoding": "utf-8",
@@ -3290,6 +3293,7 @@ Returns the requested audit resource.
                 "status": "in_progress",
                 "feed_url": "https://www.example.com/feed.xml",
                 "webhook_url": "http://www.example.com/ping.php",
+                "shop_name": "Example.com",
                 "parser_type": "heureka.cz",
                 "feed_types": ["heureka.cz", "zbozi.cz"],
                 "encoding": "utf-8",
