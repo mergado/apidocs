@@ -2008,7 +2008,7 @@ given priority.
             + `shop` - Notification is sent to all users who can access the eshop.
             + `owner` - Notification is sent only to the owner of the eshop.
 
-### Send a Notification [POST]
+### Notify Eshop Members [POST]
 **OAuth2 Scope:** shop.notify.write
 
 + Parameters
@@ -2024,8 +2024,8 @@ given priority.
     + Body
     
             {
-                "title": "eshop fuckup",
-                "body": "Your eshop is total screwed.",
+                "title": "Eshop problem",
+                "body": "There seems to be a problem in your eshop.",
                 "channels": ["email"],
                 "created_at": "2016-05-11 14:43:18",
                 "priority": "high",
@@ -2037,7 +2037,7 @@ given priority.
     + Headers
 
             Content-Type: application/json
-            Location: "https://app.mergado.com/api/shops/1/notifications/30/"
+            Location: "https://app.mergado.com/api/notifications/30/"
 
     + Body
     
@@ -2049,6 +2049,48 @@ given priority.
                 "created_at": "2016-05-11 14:43:18",
                 "priority": "high",
                 "scope": "owner"
+            }
+
+### Notify a User [POST /users/{id}/notifications/]
+**OAuth2 Scope:** user.notify.write
+
++ Parameters
+
+    + id (string) - ID of a user.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "title": "User settings change",
+                "body": "Your settings has been updated.",
+                "channels": ["email"],
+                "created_at": "2016-05-11 14:43:18",
+                "priority": "high"
+            }
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+            Location: "https://app.mergado.com/api/notifications/32/"
+
+    + Body
+    
+            {
+                "id": "32",
+                "title": "User settings change",
+                "body": "Your settings has been updated.",
+                "channels": ["frontend"],
+                "created_at": "2016-05-11 14:43:18",
+                "priority": "low",
+                "scope": "user"
             }
 
 ### Get a Notification [GET /notifications/{id}/{?fields}]
@@ -2068,8 +2110,8 @@ given priority.
     
             {
                 "id": "30",
-                "title": "eshop fuckup",
-                "body": "Your eshop is total screwed.",
+                "title": "Eshop problem",
+                "body": "There seems to be a problem in your eshop.",
                 "channels": ["email"],
                 "created_at": "2016-05-11 14:43:18",
                 "priority": "high",
