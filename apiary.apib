@@ -1647,6 +1647,7 @@ MQL query management.
     + read_only (boolean) - Whether the query can be modified.
     + search_output (boolean) - Whether the query should select products' data
       according to the values of input data or output data.
+    + product_count (number) - Number of products matching the query.
 
 ### Create a Query [POST]
 Creates a new query inside the specified project.
@@ -1689,7 +1690,8 @@ Creates a new query inside the specified project.
                 "created_at": "2016-03-22T09:02:42+00:00",
                 "query": "PRICE < 200",
                 "read_only": false,
-                "search_output": false
+                "search_output": false,
+                "product_count": 206
             }
 
 ### Get a Query [GET /queries/{id}/{?fields}]
@@ -1717,7 +1719,8 @@ Returns the requrested query.
                 "created_at": "2016-03-22T09:05:14+00:00",
                 "query": "CATEGORYTEXT = \"Spotřební materiál | Ostatní spotřební materiál | Pásky a filmy\"",
                 "read_only": false,
-                "search_output": false
+                "search_output": false,
+                "product_count": 12
             }
 
 ### Delete a Query [DELETE /queries/{id}/]
@@ -1779,7 +1782,8 @@ Performes update of the specified query.
                 "created_at": "2016-03-22T09:02:42+00:00",
                 "query": "PRICE > 200",
                 "read_only": false,
-                "search_output": false
+                "search_output": false,
+                "product_count": 12983
             }
 
 ### List Project Queries [GET /projects/{id}/queries/{?limit,offset,fields}]
@@ -1809,7 +1813,8 @@ Lists all queries that were created inside the specified project.
                         "created_at": "2016-03-22T09:05:14+00:00",
                         "query": "CATEGORYTEXT = \"Spotřební materiál | Pásky a filmy\"",
                         "read_only": false,
-                        "search_output": false
+                        "search_output": false,
+                        "product_count": 986
                     },
                     {
                         "id": "1",
@@ -1819,7 +1824,8 @@ Lists all queries that were created inside the specified project.
                         "created_at": "2016-03-22T09:02:42+00:00",
                         "query": "",
                         "read_only": true,
-                        "search_output": false
+                        "search_output": false,
+                        "product_count": 74
                     }
                 ],
                 "limit": 10,
@@ -1853,7 +1859,8 @@ Lists all queries that were created for the specified rule.
                         "created_at": "2016-03-22T09:05:14+00:00",
                         "query": "CATEGORYTEXT = \"Spotřební materiál | Pásky a filmy\"",
                         "read_only": false,
-                        "search_output": false
+                        "search_output": false,
+                        "product_count": 12
                     },
                     {
                         "id": "1",
@@ -1863,7 +1870,8 @@ Lists all queries that were created for the specified rule.
                         "created_at": "2016-03-22T09:02:42+00:00",
                         "query": "",
                         "read_only": true,
-                        "search_output": false
+                        "search_output": false,
+                        "product_count": 38
                     }
                 ],
                 "limit": 10,
@@ -1912,7 +1920,8 @@ The body parameters also must uniquely identify a query. If the query is already
                         "created_at": "2016-03-22T09:02:42+00:00",
                         "query": "PRICE > 200",
                         "read_only": false,
-                        "search_output": false
+                        "search_output": false,
+                        "product_count": 4583
                     }
                 ],
                 "limit": 10,
@@ -1951,7 +1960,8 @@ The body parameters also must uniquely identify a query. If the query is already
                         "created_at": "2016-03-22T09:05:14+00:00",
                         "query": "PRICE > 200",
                         "read_only": false,
-                        "search_output": false
+                        "search_output": false,
+                        "product_count": 4583
                     }
                 ],
                 "limit": 10,
