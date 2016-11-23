@@ -468,6 +468,15 @@ Show additional eshop information and statistics.
         + is_connected_to_srovname (boolean) - Whether the eshop is connected to Srovname.cz.
         + is_connected_to_zbozi (boolean) - Whether the eshop is connected to Zbozi.cz.
         + is_connected_to_google_analytics (boolean) - Whether the eshop is connected to Google Analytics.
+        + stats_collection (object) - Information about last collection of statistics.
+            + status (enum[string])
+                + members
+                    + done
+                    + in_progress
+                    + error
+            + error (string)
+            + started_at (string)
+            + finished_at (string)
 
     + Headers
 
@@ -481,7 +490,13 @@ Show additional eshop information and statistics.
                 "is_connected_to_hledejceny": false,
                 "is_connected_to_srovname": false,
                 "is_connected_to_zbozi": true,
-                "is_connected_to_google_analytics": false
+                "is_connected_to_google_analytics": false,
+                "stats_collection": {
+                    "status": "done",
+                    "error": null,
+                    "started_at": "2015-11-04T12:31:18+00:00",
+                    "finished_at": "2015-11-04T14:31:18+00:00"
+                }
             }
 
 ## Projects [/shops/{id}/projects/{?limit,offset,fields}]
