@@ -3723,6 +3723,10 @@ API for various Google tools, helpers and resources.
 + Attributes
 
     + group (object) - Values of the requested dimensions for the group.
+        + date (string) - Groups each product by the date the product has been collected.
+        + day_of_week (number) - Groups the products by the day of the week.
+        + landing_page_path (string) - Groups the products by the first page in users' sessions,
+          or the landing page. See Google Analytics for mor details.
     + clicks_sum (number) - Number of clicks of all products in the group.
     + orders_sum (number) - Number of orders of all products in the group.
     + sales_sum (number) - Total sales of all products in the group.
@@ -3750,6 +3754,8 @@ value in ascending order. Groups of results can be created using `dimensions` qu
         + Members
             + `date` - groups each product by the date the product has been collected.
             + `day_of_week` - groups the products by the day of the week.
+            + `landing_page_path` - gropus the products by the first page in users' sessions,
+              or the landing page. See Google Analytics for mor details.
     + start_date (string, optional)
     + end_date (string, optional)
     + fields (string, optional)
@@ -3814,6 +3820,8 @@ value in ascending order. Groups of results can be created using `dimensions` qu
         + Members
             + `date` - groups each product by the date the product has been collected.
             + `day_of_week` - groups the products by the day of the week.
+            + `landing_page_path` - gropus the products by the first page in users' sessions,
+              or the landing page. See Google Analytics for mor details.
     + start_date (string, optional)
     + end_date (string, optional)
     + fields (string, optional)
