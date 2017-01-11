@@ -463,11 +463,6 @@ Show additional eshop information and statistics.
 
     + Attributes
         + number_of_projects (number) - Number of exports (projects) created in this eshop.
-        + is_connected_to_heureka (boolean) - Whether the eshop is connected to Heureka.
-        + is_connected_to_hledejceny (boolean) - Whether the eshop is connected to Hledejceny.cz.
-        + is_connected_to_srovname (boolean) - Whether the eshop is connected to Srovname.cz.
-        + is_connected_to_zbozi (boolean) - Whether the eshop is connected to Zbozi.cz.
-        + is_connected_to_google_analytics (boolean) - Whether the eshop is connected to Google Analytics.
         + stats_collection (object) - Information about last collection of statistics.
             + status (enum[string])
                 + members
@@ -477,6 +472,17 @@ Show additional eshop information and statistics.
             + error (string)
             + started_at (string)
             + finished_at (string)
+        + connections (array) - List of objects representing connections to third-party services.
+            + (object)
+                + name (enum[string]) - Name of the service.
+                    + members
+                        + heureka.cz
+                        + heureka.sk
+                        + zbozi.cz
+                        + srovname.cz
+                        + hledejceny.cz
+                        + google_analytics
+                + currency (string) - Currency in ISO 4217 or a `null` if the currency is not known.
 
     + Headers
 
@@ -486,17 +492,26 @@ Show additional eshop information and statistics.
     
             {
                 "number_of_projects": 3,
-                "is_connected_to_heureka": true,
-                "is_connected_to_hledejceny": false,
-                "is_connected_to_srovname": false,
-                "is_connected_to_zbozi": true,
-                "is_connected_to_google_analytics": false,
                 "stats_collection": {
                     "status": "done",
                     "error": null,
                     "started_at": "2015-11-04T12:31:18+00:00",
                     "finished_at": "2015-11-04T14:31:18+00:00"
-                }
+                },
+                "connections": [
+                    {
+                        "currency": "EUR",
+                        "name": "heureka.sk"
+                    },
+                    {
+                        "currency": "CZK",
+                        "name": "zbozi.cz"
+                    },
+                    {
+                        "currency": null,
+                        "name": "google_analytics"
+                    }
+                ]
             }
 
 ## Projects [/shops/{id}/projects/{?limit,offset,fields}]
