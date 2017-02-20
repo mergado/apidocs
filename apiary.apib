@@ -2569,8 +2569,8 @@ comparison shopping services (Zboží.cz, Heureka.cz, etc.).
       on Heureka.
     + heureka_contact_phone (string) - Contact phone of the eshop as shown
       on Heureka.
-    + heureka_credit_amount (string) - The amount of credit for the account
-      the eshop is registered on behalf of on Heureka.cz.
+    + heureka_credit_amount (string) - The amount of credit available in
+      the account under which the eshop is registered.
     + heureka_credit_status (enum[string]) - Status of credit on Heureka
       evaluated by Mergado.
         + members
@@ -2591,26 +2591,64 @@ comparison shopping services (Zboží.cz, Heureka.cz, etc.).
       (counted for the chosen `date`) on Heureka for the eshop.
     + heureka_total_cost (number) Total cost for advertisement during 24 hours
       (counted for the chosen `date`) on Heureka for the eshop.
-    + heureka_xml_available (string) - Whether the XML feed Heureka periodically
+    + heureka_xml_available (boolean) - Whether the XML feed Heureka periodically
       downloads to update eshop's offers was available.
-    + hledejceny_credit_amount (number) - The amount of credit for the account
-      the eshop is registered on behalf of on Hledejceny.cz.
+    + heureka_generate_xml_reports (boolean) - Whether eshop administrator
+      enabled to generate XML reports with measurements of conversions on Heureka.
+    + heureka_has_active_ppc (boolean) - Whether the eshop runs in the PPC mode
+      on Heureka.
+    + heureka_has_free_mode (boolean) - Whether the eshop runs in the free mode
+      on Heureka.
+    + heureka_measuring_conversions (boolean) - Whether eshop administrator
+      enabled to collect data from measurements of conversions.
+    + heureka_no_delivery_cost_specified (boolean) - Whether eshop administrator
+      specified the cost of delivery on Heureka.
+    + heureka_shop_communication_rating (number) - Average rating of the eshop's
+      support and overall communication with the customer. Contains a number
+      between 0 and 5 (bigger is better).
+    + heureka_delivery_quality_rating (number) - Average rating of the quality
+      of the delivery service employed by the eshop. Contains a number
+      between 0 and 5 (bigger is better).
+    + heureka_overall_satisfaction_rating (number) - Average rating of the
+      overall satisfaction with the eshop from Heureka users. Contains a number
+      between 0 and 5 (bigger is better).
+    + heureka_web_ux_rating (number) - Average rating of the UX (User
+      eXperience) about the eshop's websites from Heureka users. Contains
+      a number between 0 and 5 (bigger is better).
+    + heureka_delivery_time_rating (number) - Average rating of the deliver
+      time of the product(s) ordered by the customer. Contains a number between
+      0 and 5 (bigger is better).
+    + heureka_product_returned_by (number) - Percentage of customers who
+      returned a product ordered from the eshop.
+    + heureka_shop_recommended_by (number) - Percentage of customers who
+      would recommend the eshop to other customers.
+    + heureka_product_received_ok_by (number) - Percentage of customers who
+      received the product in a good condition.
+    + heureka_last_order_at (string) - The date of last order by any customer.
+    + hledejceny_credit_amount (number) - The amount of credit available in
+      the account under which the eshop is registered.
     + hledejceny_total_clicks (number) - Total number of clicks during 24 hours
       (counted for the chosen `date`) on Hledejceny for the eshop.
     + hledejceny_total_cost (number) Total cost for advertisement during 24 hours
       (counted for the chosen `date`) on Hledejceny for the eshop.
-    + srovname_credit_amount (number) - The amount of credit for the account
-      the eshop is registered on behalf of on Srovname.cz.
+    + srovname_credit_amount (number) - The amount of credit available in
+      the account under which the eshop is registered.
     + srovname_total_clicks (number) - Total number of clicks during 24 hours
       (counted for the chosen `date`) on Srovname for the eshop.
     + srovname_total_cost (number) Total cost for advertisement during 24 hours
       (counted for the chosen `date`) on Srovname for the eshop.
-    + zbozi_credit_amount (number) - The amount of credit for the account
-      the eshop is registered on behalf of on Zbozi.cz.
+    + zbozi_credit_amount (number) - The amount of credit available in
+      the account on Zbozi.cz.
+    + zbozi_credit_amount_with_vat (number) - The amount of credit with VAT available in
+      the account on Zbozi.cz.
     + zbozi_total_clicks(number) - Total number of clicks during 24 hours
       (counted for the chosen `date`) on Zbozi for the eshop.
     + zbozi_total_cost (number) Total cost for advertisement during 24 hours
       (counted for the chosen `date`) on Zbozi for the eshop.
+    + zbozi_is_campaign_activated (boolean) - Whether the campaign is activated
+      on Zbozi.cz, i.e. whether the eshop's products are advertised or not.
+    + zbozi_xml_feed (string) - URL of XML feed containing products entered
+      in Zbozi.cz administration.
 
 ### Get Statistics [GET]
 Returns latest summarized statistics and other information of an eshop.
@@ -2645,6 +2683,20 @@ Returns latest summarized statistics and other information of an eshop.
                         "heureka_total_clicks": 937,
                         "heureka_total_cost": 1788.12,
                         "heureka_xml_available": true,
+                        "heureka_generate_xml_reports": true,
+                        "heureka_has_free_mode": false,
+                        "heureka_has_active_ppc": true,
+                        "heureka_measuring_conversions": true,
+                        "heureka_no_delivery_cost_specified": true,
+                        "heureka_shop_communication_rating": 4.5,
+                        "heureka_delivery_quality_rating": 4.7,
+                        "heureka_overall_satisfaction_rating": 4.5,
+                        "heureka_web_ux_rating": 4.5,
+                        "heureka_delivery_time_rating": 4.6,
+                        "heureka_product_returned_by": 96.7,
+                        "heureka_shop_recommended_by": 93.7,
+                        "heureka_product_received_ok_by": 99.1,
+                        "heureka_last_order_at": "2017-02-06",
                         "hledejceny_credit_amount": 1223.59,
                         "hledejceny_total_clicks": 12,
                         "hledejceny_total_cost": 98,
@@ -2652,8 +2704,11 @@ Returns latest summarized statistics and other information of an eshop.
                         "srovname_total_clicks": 19,
                         "srovname_total_cost": 54,
                         "zbozi_credit_amount": 1943,
+                        "zbozi_credit_amount_with_vat": null,
                         "zbozi_total_clicks": 203,
-                        "zbozi_total_cost": 1234
+                        "zbozi_total_cost": 1234,
+                        "zbozi_campaign_activated": true,
+                        "zbozi_xml_feed": "https://feeds.mergado.com/123-example-com"
                     }
                 ],
                 "limit": 10,
