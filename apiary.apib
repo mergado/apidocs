@@ -3823,6 +3823,8 @@ value in ascending order. Groups of results can be created using `dimensions` qu
       it is the value of the utm_source campaign tracking parameter. This parameter
       can be a regular expression (in which case the operator `=~` must be used, e.g.
       `source=~*.example.com`) or ID of a format (see section with formats).
+    + medium (string, optional) - The general category of the source, for example,
+      organic search (organic), cost-per-click paid search (cpc), web referral (referral).
     + metrics (enum[string], optional) - Comma sepparated list of metrics to use.
         + Members
             + `sales_sum` - total sales of all products in the group.
@@ -3889,6 +3891,8 @@ value in ascending order. Groups of results can be created using `dimensions` qu
 + Parameters
 
     + id (string) - ID of the project.
+    + medium (string, optional) - The general category of the source, for example,
+      organic search (organic), cost-per-click paid search (cpc), web referral (referral).
     + metrics (enum[string], optional) - Comma sepparated list of metrics to use.
         + Members
             + `sales_sum` - total sales of all products in the group.
