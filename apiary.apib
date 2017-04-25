@@ -545,6 +545,8 @@ Eshops in Mergado.
     + owner_id (string) - ID of the user who is the owner of the shop in Mergado
       (that is usualy the user who created the eshop).
     + tariff_id (string) - ID of the tariff the eshop has ordered.
+    + tariff_validity (string) - Datetime when the tariff expires.
+    + web (string) - Web sites of the eshop.
     + name (string) - Unique name of the eshop.
     + xml_domain (string) - XML domain of the eshop as detected from an XML feed.
     + exported_items (number) - Sum of exported items in all exports.
@@ -576,6 +578,7 @@ Returns eshops the user can access.
                         "id": "1",
                         "owner_id": "1",
                         "tariff_id": "7",
+                        "tariff_validity": "2015-12-01T10:02:51+00:00",
                         "name": "Example.com",
                         "web": "http://example.com/",
                         "xml_domain": "example.com",
