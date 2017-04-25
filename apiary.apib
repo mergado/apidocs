@@ -258,40 +258,39 @@ Billing is need for automatically billing via Fakturoid.
 + Attributes
 
     + user_id (string) - User identification number.
-    + billing (object) - All informations about billing.
-        + currency - Currency of all services and applications.
-        + total_current_price - Price which will appear in invoice.
-        + total_retail_price - Standart price of services or applications.
-            + services (object) - Informations about paymants of shops.
-                + currency - Currency of all services.
-                + total_current_price - Price which will appear in invoice of all shops.
-                + total_retail_price - Standart price of all services.
-                + shops (array) - All shops for billing.
-                    + (object)
-                        + shop_id (string) - Shop identification number.
-                        + current_price (number) - Price of shop on invoice.
-                        + retail_price (number) - Standard price of shop.
-                        + in_trial_until (number) - Until how long is eshop in trial.
-                        + is_prepaid_until (number) - Until how long is eshop prepaid.
-            + apps (object) - Informations about payments of applications.
-                + currency - Currency of all applications.
-                + total_current_price (number) - Price will appear in invoice of all applications.
-                + total_retail_price (number) - Standard price of all applications.
-                + apps (array) - All applications for billing.
-                    + (object)
-                        + app_name (string) - Application name.
-                        + instance_id (number) - Instance of application.
-                        + current_price (number) - Price of application on invoice.
-                        + retail_price (number) - Standard price of application.
-                        + in_trial_until (string) - Until how long is application in trial.
-                        + is_prepaid_until (string) - Until how long is application prepaid.
-                        + entity_type (enum[string]) - What is type of application.
-                            + Members
-                                + user
-                                + eshop
-                                + project
-                        + entity_id (number) - ID of the entity which application is bound to. Entity can be user or eshop or project.
-                        + is_old (boolean) - If application is new od old.
+    + currency (string) - Currency of all services and applications.
+    + total_current_price (number) - Price which will appear in invoice.
+    + total_retail_price (number) - Standart price of services or applications.
+    + services (object) - Informations about paymants of shops.
+        + currency (string) - Currency of all services.
+        + total_current_price (number) - Price which will appear in invoice of all shops.
+        + total_retail_price (number) - Standart price of all services.
+        + shops (array) - All shops for billing.
+            + (object)
+                + shop_id (string) - Shop identification number.
+                + current_price (number) - Price of shop on invoice.
+                + retail_price (number) - Standard price of shop.
+                + in_trial_until (number) - Until how long is eshop in trial.
+                + is_prepaid_until (number) - Until how long is eshop prepaid.
+    + apps (object) - Informations about payments of applications.
+        + currency (string) - Currency of all applications.
+        + total_current_price (number) - Price will appear in invoice of all applications.
+        + total_retail_price (number) - Standard price of all applications.
+        + apps (array) - All applications for billing.
+            + (object)
+                + app_name (string) - Application name.
+                + instance_id (number) - Instance of application.
+                + current_price (number) - Price of application on invoice.
+                + retail_price (number) - Standard price of application.
+                + in_trial_until (string) - Until how long is application in trial.
+                + is_prepaid_until (string) - Until how long is application prepaid.
+                + entity_type (enum[string]) - What is type of application.
+                    + Members
+                        + user
+                        + eshop
+                        + project
+                + entity_id (number) - ID of the entity which application is bound to. Entity can be user or eshop or project.
+                + is_old (boolean) - If application is new od old.
 
 
 ### Get User Billing [GET /users/{id}/billing/]
@@ -312,44 +311,42 @@ Returns whole billing details for given user.
     + Body
 
             {
-                "billing": {
-                    "apps": {
-                        "currency": "CZK",
-                        "total_current_price": 999.4,
-                        "total_retail_price": 888.5,
-                        "apps": [
-                            {
-                                "app_name": "application_name",
-                                "instance_id": 1,
-                                "current_price": 777.1,
-                                "retail_price": 666.2,
-                                "in_trial_until": "2017-00-15 05:07:13",
-                                "is_prepaid_until": "2017-04-20 01:02:03",
-                                "app_type": "user",
-                                "subject_id": 1,
-                                "is_old": true
-                            }
-                        ]
-                    },
-                    "services": {
-                        "currency": "CZK",
-                        "total_current_price": 999.4,
-                        "total_retail_price": 888.5,
-                        "shops": [
-                            {
-                                "current_price": 678.9,
-                                "in_trial_until": "1970-01-01 13:10:00",
-                                "is_prepaid_until": "2017-04-20 01:02:03",
-                                "retail_price": 56.7,
-                                "shop_id": "3"
-                            }
-                        ]
-                    },
+                "user_id": "1",
+                "apps": {
                     "currency": "CZK",
-                    "total_current_price": 1234.5,
-                    "total_retail_price": 1234.5,
+                    "total_current_price": 999.4,
+                    "total_retail_price": 888.5,
+                    "apps": [
+                        {
+                            "app_name": "application_name",
+                            "instance_id": 1,
+                            "current_price": 777.1,
+                            "retail_price": 666.2,
+                            "in_trial_until": "2017-00-15 05:07:13",
+                            "is_prepaid_until": "2017-04-20 01:02:03",
+                            "app_type": "user",
+                            "subject_id": 1,
+                            "is_old": true
+                        }
+                    ]
                 },
-                "user_id": "1"
+                "services": {
+                    "currency": "CZK",
+                    "total_current_price": 999.4,
+                    "total_retail_price": 888.5,
+                    "shops": [
+                        {
+                            "current_price": 678.9,
+                            "in_trial_until": "1970-01-01 13:10:00",
+                            "is_prepaid_until": "2017-04-20 01:02:03",
+                            "retail_price": 56.7,
+                            "shop_id": "3"
+                        }
+                    ]
+                },
+                "currency": "CZK",
+                "total_current_price": 1234.5,
+                "total_retail_price": 1234.5
             }
 
 ## Users [/users/{?limit,offset,fields}]
