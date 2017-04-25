@@ -2569,18 +2569,18 @@ Creates a tasks and runs it. Returns information about created task.
     + Body
     
             {
-              "actions": [
-                "import",
-                "apply"
-              ],
-              "current_action": null,
-              "duration": 0,
-              "error": null,
-              "finished_at": null,
-              "id": "224",
-              "project_id": "30",
-              "started_at": "2016-05-23T11:49:47+00:00",
-              "status": "in_progress"
+                "actions": [
+                    "import",
+                    "apply"
+                ],
+                "current_action": null,
+                "duration": 0,
+                "error": null,
+                "finished_at": null,
+                "id": "224",
+                "project_id": "30",
+                "started_at": "2016-05-23T11:49:47+00:00",
+                "status": "in_progress"
             }
             
 ### List Project Tasks [GET]
@@ -2601,39 +2601,39 @@ Lists tasks belonging to given project.
     + Body
     
             {
-              "data": [
-                {
-                  "actions": [
-                    "import",
-                    "apply"
-                  ],
-                  "current_action": null,
-                  "duration": 4.607,
-                  "error": null,
-                  "finished_at": "2016-05-18T15:16:26+00:00",
-                  "id": "199",
-                  "project_id": "30",
-                  "started_at": "2016-05-18T15:16:22+00:00",
-                  "status": "done"
-                },
-                {
-                  "actions": [
-                    "import",
-                    "apply",
-                    "export"
-                  ],
-                  "current_action": null,
-                  "duration": 10.582,
-                  "error": null,
-                  "finished_at": "2016-05-18T15:17:22+00:00",
-                  "id": "200",
-                  "project_id": "30",
-                  "started_at": "2016-05-18T15:17:12+00:00",
-                  "status": "done"
-                }
-              ],
-              "limit": 10,
-              "offset": 0
+                "data": [
+                    {
+                        "actions": [
+                            "import",
+                            "apply"
+                        ],
+                        "current_action": null,
+                        "duration": 4.607,
+                        "error": null,
+                        "finished_at": "2016-05-18T15:16:26+00:00",
+                        "id": "199",
+                        "project_id": "30",
+                        "started_at": "2016-05-18T15:16:22+00:00",
+                        "status": "done"
+                    },
+                    {
+                        "actions": [
+                            "import",
+                            "apply",
+                            "export"
+                        ],
+                        "current_action": null,
+                        "duration": 10.582,
+                        "error": null,
+                        "finished_at": "2016-05-18T15:17:22+00:00",
+                        "id": "200",
+                        "project_id": "30",
+                        "started_at": "2016-05-18T15:17:12+00:00",
+                        "status": "done"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
             
 ### Get a Task [GET /tasks/{id}/{?fields}]
@@ -2654,18 +2654,18 @@ Fetch a specific task.
     + Body
     
             {
-              "actions": [
-                "import",
-                "apply"
-              ],
-              "current_action": null,
-              "duration": 3.309,
-              "error": null,
-              "finished_at": "2016-05-20T14:42:59+00:00",
-              "id": "223",
-              "project_id": "30",
-              "started_at": "2016-05-20T14:42:56+00:00",
-              "status": "done"
+                "actions": [
+                  "import",
+                  "apply"
+                ],
+                "current_action": null,
+                "duration": 3.309,
+                "error": null,
+                "finished_at": "2016-05-20T14:42:59+00:00",
+                "id": "223",
+                "project_id": "30",
+                "started_at": "2016-05-20T14:42:56+00:00",
+                "status": "done"
             }
             
 ## Logs [/projects/{id}/logs/]
@@ -2690,34 +2690,34 @@ Fetches all import logs for given project.
     + Body
     
             {
-              "data": [
-                {
-                  "duration": 2.352,
-                  "finished_at": "2016-05-18T15:16:25+00:00",
-                  "id": "75",
-                  "items": 1,
-                  "items_created": 1,
-                  "items_processed": 1,
-                  "items_removed": 0,
-                  "items_updated": 0,
-                  "started_at": "2016-05-18T15:16:23+00:00",
-                  "user_id": "1"
-                },
-                {
-                  "duration": 1.423,
-                  "finished_at": "2016-05-18T15:17:21+00:00",
-                  "id": "76",
-                  "items": 1,
-                  "items_created": 0,
-                  "items_processed": 1,
-                  "items_removed": 0,
-                  "items_updated": 0,
-                  "started_at": "2016-05-18T15:17:20+00:00",
-                  "user_id": null
-                }
-              ],
-              "limit": 10,
-              "offset": 0
+                "data": [
+                    {
+                        "duration": 2.352,
+                        "finished_at": "2016-05-18T15:16:25+00:00",
+                        "id": "75",
+                        "items": 1,
+                        "items_created": 1,
+                        "items_processed": 1,
+                        "items_removed": 0,
+                        "items_updated": 0,
+                        "started_at": "2016-05-18T15:16:23+00:00",
+                        "user_id": "1"
+                    },
+                    {
+                        "duration": 1.423,
+                        "finished_at": "2016-05-18T15:17:21+00:00",
+                        "id": "76",
+                        "items": 1,
+                        "items_created": 0,
+                        "items_processed": 1,
+                        "items_removed": 0,
+                        "items_updated": 0,
+                        "started_at": "2016-05-18T15:17:20+00:00",
+                        "user_id": null
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
 
 
@@ -2739,26 +2739,26 @@ Fetches all apply logs for given project.
     + Body
     
             {
-              "data": [
-                {
-                  "duration": 1.548,
-                  "finished_at": "2016-05-18T15:16:26+00:00",
-                  "id": "155",
-                  "items": 1,
-                  "started_at": "2016-05-18T15:16:25+00:00",
-                  "user_id": "1"
-                },
-                {
-                  "duration": 1.464,
-                  "finished_at": "2016-05-18T15:17:22+00:00",
-                  "id": "156",
-                  "items": 1,
-                  "started_at": "2016-05-18T15:17:21+00:00",
-                  "user_id": null
-                }
-              ],
-              "limit": 10,
-              "offset": 0
+                "data": [
+                    {
+                        "duration": 1.548,
+                        "finished_at": "2016-05-18T15:16:26+00:00",
+                        "id": "155",
+                        "items": 1,
+                        "started_at": "2016-05-18T15:16:25+00:00",
+                        "user_id": "1"
+                    },
+                    {
+                        "duration": 1.464,
+                        "finished_at": "2016-05-18T15:17:22+00:00",
+                        "id": "156",
+                        "items": 1,
+                        "started_at": "2016-05-18T15:17:21+00:00",
+                        "user_id": null
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
             
 ### Get Export Log [GET /projects/{id}/logs/export/{?limit,offset,fields}]
@@ -2779,30 +2779,30 @@ Fetches all export logs for given project.
     + Body
     
             {
-              "data": [
-                {
-                  "duration": 5,
-                  "finished_at": null,
-                  "id": "1",
-                  "initial": false,
-                  "items": 20,
-                  "processed_items": 20,
-                  "started_at": "2016-06-01T15:52:45+00:00",
-                  "user_id": "1"
-                },
-                {
-                  "duration": 10,
-                  "finished_at": "2016-06-01T15:54:44+00:00",
-                  "id": "2",
-                  "initial": false,
-                  "items": 100,
-                  "processed_items": 100,
-                  "started_at": "2016-06-01T15:54:30+00:00",
-                  "user_id": "1"
-                }
-              ],
-              "limit": 10,
-              "offset": 0
+                "data": [
+                    {
+                        "duration": 5,
+                        "finished_at": null,
+                        "id": "1",
+                        "initial": false,
+                        "items": 20,
+                        "processed_items": 20,
+                        "started_at": "2016-06-01T15:52:45+00:00",
+                        "user_id": "1"
+                    },
+                    {
+                        "duration": 10,
+                        "finished_at": "2016-06-01T15:54:44+00:00",
+                        "id": "2",
+                        "initial": false,
+                        "items": 100,
+                        "processed_items": 100,
+                        "started_at": "2016-06-01T15:54:30+00:00",
+                        "user_id": "1"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
             
 ### Get Access Log [GET /projects/{id}/logs/access/{?limit,offset,fields}]
@@ -2823,36 +2823,342 @@ Fetches all export logs for given project.
     + Body
     
             {
-              "data": [
-                {
-                  "https": false,
-                  "id": "101",
-                  "identity": "-",
-                  "ip": "111.222.333.444",
-                  "referer": "-",
-                  "request": "GET /mergadovenaradie-cz-heureka-cz-greagfsdabtrshthgreav.xml HTTP/1.1",
-                  "size": 627142,
-                  "status": 200,
-                  "time": "2016-05-15T08:18:13+00:00",
-                  "user": "-",
-                  "user_agent": "Heurekabot-Feed/1.0 (+http://sluzby.heureka.cz/napoveda/heurekabot/)"
-                },
-                {
-                  "https": false,
-                  "id": "127",
-                  "identity": "-",
-                  "ip": "555.666.777.888",
-                  "referer": "-",
-                  "request": "HEAD /naradiovemergado-cz-kurtmjyrasnaENBREANzgtsf.xml HTTP/1.1",
-                  "size": 0,
-                  "status": 200,
-                  "time": "2016-05-15T08:24:38+00:00",
-                  "user": "-",
-                  "user_agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; cs; rv:1) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 1)"
-                }
+                "data": [
+                    {
+                        "https": false,
+                        "id": "101",
+                        "identity": "-",
+                        "ip": "111.222.333.444",
+                        "referer": "-",
+                        "request": "GET /mergadovenaradie-cz-heureka-cz-greagfsdabtrshthgreav.xml HTTP/1.1",
+                        "size": 627142,
+                        "status": 200,
+                        "time": "2016-05-15T08:18:13+00:00",
+                        "user": "-",
+                        "user_agent": "Heurekabot-Feed/1.0 (+http://sluzby.heureka.cz/napoveda/heurekabot/)"
+                    },
+                    {
+                        "https": false,
+                        "id": "127",
+                        "identity": "-",
+                        "ip": "555.666.777.888",
+                        "referer": "-",
+                        "request": "HEAD /naradiovemergado-cz-kurtmjyrasnaENBREANzgtsf.xml HTTP/1.1",
+                        "size": 0,
+                        "status": 200,
+                        "time": "2016-05-15T08:24:38+00:00",
+                        "user": "-",
+                        "user_agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; cs; rv:1) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 1)"
+                    }
                 ],
                 "limit": 10,
                 "offset": 0
+            }
+
+
+## Enabled Apps
+Management of enabled apps by users.
+
++ Attributes
+
+    + app_name (string) - Name (ID) of the enabled app.
+    + entity_id (string) - ID of the entity for which the app is enabled.
+    + free_until (string) - Trial expiration date.
+    + paid_until (string) - Paid subscription expiration date.
+
+### List User Apps [GET /users/{id}/apps/{?limit,offset,fields}]
+Lists apps enabled by the given user.
+
+**OAuth2 Scope:** user.apps.read
+
++ Parameters
+
+    + id (string) - ID of a user.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "app_name": "userappone",
+                        "entity_id": "1",
+                        "free_until": "2015-01-09",
+                        "paid_until": "2016-01-08"
+                    },
+                    {
+                        "app_name": "userapptwo",
+                        "entity_id": "1",
+                        "free_until": "2015-02-24",
+                        "paid_until": "2015-03-23"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get User App [GET /users/{id}/apps/{name}/{?limit,offset,fields}]
+Fetches an app enabled by the given user.
+
+**OAuth2 Scope:** user.apps.read
+
++ Parameters
+
+    + id (string) - ID of a user.
+    + name (string) - Name of an app.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "userappone",
+                "entity_id": "1",
+                "free_until": "2015-01-09",
+                "paid_until": "2016-01-08"
+            }
+
+### Update User App [PATCH /users/{id}/apps/{name}/]
+Updates an app enabled by the given user.
+
+**OAuth2 Scope:** user.apps.write
+
++ Parameters
+
+    + id (string) - ID of a user.
+    + name (string) - Name of an app.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "paid_until": "2016-02-08"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "userappone",
+                "entity_id": "1",
+                "free_until": "2015-01-09",
+                "paid_until": "2016-02-08"
+            }
+
+### List Shop Apps [GET /shops/{id}/apps/{?limit,offset,fields}]
+Lists apps enabled for the given eshop.
+
+**OAuth2 Scope:** shop.apps.read
+
++ Parameters
+
+    + id (string) - ID of a shop.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "app_name": "shopappone",
+                        "entity_id": "1",
+                        "free_until": "2015-01-09",
+                        "paid_until": "2016-01-08"
+                    },
+                    {
+                        "app_name": "shopapptwo",
+                        "entity_id": "1",
+                        "free_until": "2015-02-24",
+                        "paid_until": "2015-03-23"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get Shop App [GET /shops/{id}/apps/{name}/{?limit,offset,fields}]
+Fetches an app enabled for the given shop.
+
+**OAuth2 Scope:** shop.apps.read
+
++ Parameters
+
+    + id (string) - ID of a shop.
+    + name (string) - Name of an app.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "shopappone",
+                "entity_id": "2",
+                "free_until": "2015-01-09",
+                "paid_until": "2016-01-08"
+            }
+
+
+### Update Shop App [PATCH /shops/{id}/apps/{name}/]
+Updates an app enabled for the given shop.
+
+**OAuth2 Scope:** shop.apps.write
+
++ Parameters
+
+    + id (string) - ID of a shop.
+    + name (string) - Name of an app.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "paid_until": "2017-02-08"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "shopappone",
+                "entity_id": "2",
+                "free_until": "2015-01-09",
+                "paid_until": "2017-02-08"
+            }
+
+### List Project Apps [GET /projects/<id>/apps/{?limit,offset,fields}]
+Lists apps enabled for the given project.
+
+**OAuth2 Scope:** project.apps.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "app_name": "projectappone",
+                        "entity_id": "6",
+                        "free_until": "2015-01-09",
+                        "paid_until": "2016-01-08"
+                    },
+                    {
+                        "app_name": "projectapptwo",
+                        "entity_id": "6",
+                        "free_until": "2015-02-24",
+                        "paid_until": "2015-03-23"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get Project App [GET /projects/{id}/apps/{name}/{?limit,offset,fields}]
+Fetches an app enabled by the given project.
+
+**OAuth2 Scope:** project.apps.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+    + name (string) - Name of an app.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "projectappone",
+                "entity_id": "6",
+                "free_until": "2015-01-09",
+                "paid_until": "2016-01-08"
+            }
+
+### Update User App [PATCH /projects/{id}/apps/{name}/]
+Updates an app enabled for the given project.
+
+**OAuth2 Scope:** project.apps.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+    + name (string) - Name of an app.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "paid_until": "2016-04-08"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "projectpppone",
+                "entity_id": "6",
+                "free_until": "2015-01-09",
+                "paid_until": "2016-04-08"
             }
 
 # Group Statistics
