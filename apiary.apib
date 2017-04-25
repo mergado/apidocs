@@ -85,7 +85,7 @@ Returns a list of IDs of all supported XML feed's formats.
             Content-Type: application/json
 
     + Body
-    
+
             [
                 "heureka.cz",
                 "hledejceny.cz",
@@ -117,11 +117,11 @@ Returns definitions of all rules and required data for their instantiation.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -213,7 +213,7 @@ Lists all users the authenticated client has access to.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "limit": 10,
                 "offset": 0,
@@ -256,7 +256,7 @@ Returns currently authenticated user.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "6",
                 "first_name": "Lorem",
@@ -297,7 +297,7 @@ Returns a user.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "6",
                 "first_name": "Lorem",
@@ -345,7 +345,7 @@ Lists all permissions (accesses to eshops) of a specific user.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -392,7 +392,7 @@ Returns eshops the user can access.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "limit": 10,
                 "offset": 0,
@@ -432,7 +432,7 @@ Returns an eshop with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "1",
                 "owner_id": "1",
@@ -487,9 +487,9 @@ Show additional eshop information and statistics.
     + Headers
 
             Content-Type: application/json
-    
+
     + Body
-    
+
             {
                 "number_of_projects": 3,
                 "stats_collection": {
@@ -557,7 +557,7 @@ Returns projects of an eshop.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "limit": 10,
                 "offset": 0,
@@ -602,7 +602,7 @@ Returns a project with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "8",
                 "shop_id": "1",
@@ -642,9 +642,9 @@ Show additional project information and statistics.
     + Headers
 
             Content-Type: application/json
-    
+
     + Body
-    
+
             {
                 "number_of_elements": 17
             }
@@ -680,7 +680,7 @@ Returns project's products.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -764,7 +764,7 @@ Returns a product with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "1693",
                 "output_changed_at": null,
@@ -804,15 +804,15 @@ Returns products that satisfy a condition defined by the given query.
 + Parameters
 
     + id (string) - ID of the query.
-    
+
 + Response 200
 
     + Headers
 
             Content-Type: application/json
 
-    + Body  
-    
+    + Body
+
             {
                 "data": [
                     {
@@ -941,7 +941,7 @@ Creates an element inside a project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "SHIPPING",
                 "hidden": false
@@ -955,7 +955,7 @@ Creates an element inside a project.
             Location: "https://app.mergado.com/api/elements/123"
 
     + Body
-    
+
             {
                 "id": "123",
                 "project_id": "1",
@@ -976,11 +976,11 @@ Lists all project's elements.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -1035,11 +1035,11 @@ Returns an element.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "hidden": false,
                 "id": "6",
@@ -1085,7 +1085,7 @@ Performes update of element's attributes.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "hidden": true
             }
@@ -1098,7 +1098,7 @@ Performes update of element's attributes.
             Location: "https://app.mergado.com/api/elements/123"
 
     + Body
-    
+
             {
                 "id": "123",
                 "project_id": "1",
@@ -1149,7 +1149,7 @@ Creates a new variable inside a project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "DESCRIPTION_A",
                 "project_element_id": "1",
@@ -1166,7 +1166,7 @@ Creates a new variable inside a project.
             Location: "https://app.mergado.com/api/variables/1521/"
 
     + Body
-    
+
             {
                 "id": "1521",
                 "name": "DESCRIPTION_A",
@@ -1190,11 +1190,11 @@ Lists all project's variables.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -1224,11 +1224,11 @@ Returns a variable.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "1521",
                 "name": "DESCRIPTION_A",
@@ -1277,7 +1277,7 @@ Performes update of variable's attributes.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "DESCRIPTION_OMG"
             }
@@ -1290,7 +1290,7 @@ Performes update of variable's attributes.
             Location: "https://app.mergado.com/api/variables/1521"
 
     + Body
-    
+
             {
                 "id": "1521",
                 "name": "DESCRIPTION_OMG",
@@ -1345,7 +1345,7 @@ Creates a new rule inside the specified project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "Cena",
                 "type": "rewriting",
@@ -1374,7 +1374,7 @@ Creates a new rule inside the specified project.
             Location: "https://app.mergado.com/api/rules/15/"
 
     + Body
-    
+
             {
                 "id": "15",
                 "name": "Cena",
@@ -1407,11 +1407,11 @@ Creates a new rule inside the specified project.
 + Request
 
     + Headers
-    
+
             Content-Type: application/json
-    
+
     + Body
-    
+
             {
                 "name": "Cena 2 BATCH",
                 "project_element_id": "5",
@@ -1441,7 +1441,7 @@ Creates a new rule inside the specified project.
             Location: "https://app.mergado.com/api/rules/16/"
 
     + Body
-    
+
             {
                 "applies": true,
                 "is_deletable": true,
@@ -1496,7 +1496,7 @@ Lists all rules' instances that were created inside the specified project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -1546,7 +1546,7 @@ Returns a specific rule instance.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "15",
                 "project_id": "1",
@@ -1601,7 +1601,7 @@ Performes update of rule's attributes.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "PRODUCTNAME: Added Free Car",
                 "data": {
@@ -1617,7 +1617,7 @@ Performes update of rule's attributes.
             Location: "https://app.mergado.com/api/rules/112"
 
     + Body
-    
+
             {
                 "id": "112",
                 "project_id": "2",
@@ -1652,7 +1652,7 @@ for one to many (O2M) rules with a lot of records.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -1703,7 +1703,7 @@ Creates a new query inside the specified project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "PRICE less then 200 Kč",
                 "query": "PRICE < 200",
@@ -1719,7 +1719,7 @@ Creates a new query inside the specified project.
             Location: "https://app.mergado.com/api/queries/d3o9v/"
 
     + Body
-    
+
             {
                 "id": "d3o9v",
                 "name": "PRICE less then 200 Kč",
@@ -1748,7 +1748,7 @@ Returns the requrested query.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "2",
                 "name": null,
@@ -1798,7 +1798,7 @@ Performes update of the specified query.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "query": "PRICE > 200"
             }
@@ -1811,7 +1811,7 @@ Performes update of the specified query.
             Location: "https://app.mergado.com/api/queries/d3o9v/"
 
     + Body
-    
+
             {
                 "id": "d3o9v",
                 "name": "PRICE more then 200 Kč",
@@ -1840,7 +1840,7 @@ Lists all queries that were created inside the specified project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -1886,7 +1886,7 @@ Lists all queries that were created for the specified rule.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -1934,7 +1934,7 @@ The body parameters also must uniquely identify a query. If the query is already
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "d3o9v"
             }
@@ -1947,7 +1947,7 @@ The body parameters also must uniquely identify a query. If the query is already
             Location: "https://app.mergado.com/api/rules/d3o9v/queries/"
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -1973,7 +1973,7 @@ The body parameters also must uniquely identify a query. If the query is already
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "PRICE more then 200 Kč",
                 "query": "PRICE > 200"
@@ -1987,7 +1987,7 @@ The body parameters also must uniquely identify a query. If the query is already
             Location: "https://app.mergado.com/api/rules/d3o9v/queries/"
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2071,7 +2071,7 @@ given priority.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "title": "Eshop problem",
                 "body": "There seems to be a problem in your eshop.",
@@ -2089,7 +2089,7 @@ given priority.
             Location: "https://app.mergado.com/api/notifications/30/"
 
     + Body
-    
+
             {
                 "id": "30",
                 "title": "Eshop problem",
@@ -2114,7 +2114,7 @@ given priority.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "title": "User settings change",
                 "body": "Your settings has been updated.",
@@ -2131,7 +2131,7 @@ given priority.
             Location: "https://app.mergado.com/api/notifications/32/"
 
     + Body
-    
+
             {
                 "id": "32",
                 "title": "User settings change",
@@ -2156,7 +2156,7 @@ given priority.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "30",
                 "title": "Eshop problem",
@@ -2166,7 +2166,7 @@ given priority.
                 "priority": "high",
                 "scope": "owner"
             }
-            
+
 ### Get Users Notifications [GET /users/{id}/notifications/{?fields}]
 **OAuth2 Scope:** user.notify.read
 
@@ -2181,7 +2181,7 @@ given priority.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2208,7 +2208,7 @@ given priority.
                 "limit": 10,
                 "offset": 0
             }
-            
+
 ## Tasks [/projects/{id}/tasks/{?limit,offset,fields}]
 Tasks represent a way to synchronize XML feeds with Mergado, apply changes or
 export products for shopping services.
@@ -2239,7 +2239,7 @@ Creates a tasks and runs it. Returns information about created task.
 + Parameters
 
     + id (string) - ID of a project.
-    
+
 + Request
 
     + Headers
@@ -2247,12 +2247,12 @@ Creates a tasks and runs it. Returns information about created task.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "actions": ["import", "apply"],
                 "force": true
             }
-    
+
 + Response 201
 
     + Headers
@@ -2261,7 +2261,7 @@ Creates a tasks and runs it. Returns information about created task.
             Location: "https://app.mergado.com/api/tasks/15/"
 
     + Body
-    
+
             {
               "actions": [
                 "import",
@@ -2276,7 +2276,7 @@ Creates a tasks and runs it. Returns information about created task.
               "started_at": "2016-05-23T11:49:47+00:00",
               "status": "in_progress"
             }
-            
+
 ### List Project Tasks [GET]
 Lists tasks belonging to given project.
 
@@ -2293,7 +2293,7 @@ Lists tasks belonging to given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
               "data": [
                 {
@@ -2329,7 +2329,7 @@ Lists tasks belonging to given project.
               "limit": 10,
               "offset": 0
             }
-            
+
 ### Get a Task [GET /tasks/{id}/{?fields}]
 Fetch a specific task.
 
@@ -2346,7 +2346,7 @@ Fetch a specific task.
             Content-Type: application/json
 
     + Body
-    
+
             {
               "actions": [
                 "import",
@@ -2361,7 +2361,7 @@ Fetch a specific task.
               "started_at": "2016-05-20T14:42:56+00:00",
               "status": "done"
             }
-            
+
 ## Logs [/projects/{id}/logs/]
 Core actions like import, export, an application of rules or download by a shopping
 service are logged separately. Note that each log entry is available only for 30 days.
@@ -2374,7 +2374,7 @@ Fetches all import logs for given project.
 + Parameters
 
     + id (string) - ID of a project.
-    
+
 + Response 200
 
     + Headers
@@ -2382,7 +2382,7 @@ Fetches all import logs for given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
               "data": [
                 {
@@ -2423,7 +2423,7 @@ Fetches all apply logs for given project.
 + Parameters
 
     + id (string) - ID of a project.
-    
+
 + Response 200
 
     + Headers
@@ -2431,7 +2431,7 @@ Fetches all apply logs for given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
               "data": [
                 {
@@ -2454,7 +2454,7 @@ Fetches all apply logs for given project.
               "limit": 10,
               "offset": 0
             }
-            
+
 ### Get Export Log [GET /projects/{id}/logs/export/{?limit,offset,fields}]
 Fetches all export logs for given project.
 
@@ -2463,7 +2463,7 @@ Fetches all export logs for given project.
 + Parameters
 
     + id (string) - ID of a project.
-    
+
 + Response 200
 
     + Headers
@@ -2471,7 +2471,7 @@ Fetches all export logs for given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
               "data": [
                 {
@@ -2498,7 +2498,7 @@ Fetches all export logs for given project.
               "limit": 10,
               "offset": 0
             }
-            
+
 ### Get Access Log [GET /projects/{id}/logs/access/{?limit,offset,fields}]
 Fetches all export logs for given project.
 
@@ -2507,7 +2507,7 @@ Fetches all export logs for given project.
 + Parameters
 
     + id (string) - ID of a project.
-    
+
 + Response 200
 
     + Headers
@@ -2515,7 +2515,7 @@ Fetches all export logs for given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
               "data": [
                 {
@@ -2548,6 +2548,90 @@ Fetches all export logs for given project.
                 "limit": 10,
                 "offset": 0
             }
+
+## Tariff [/tariffs/{?limit,offset,fields}]
+Tariffs in Mergado.
+
++ Attributes
+
+    + id (number) - Tariff identification number.
+    + name (string) - Name of the tariff.
+    + price_czk (number) - Price of the tariff in CZK currency.
+    + price_eur (number) - Price of the tariff in EUR currency.
+    + price_pln (number) - Price of the tariff in PLN currency.
+
+### List Tariff [GET]
+List all billing tariffs in Mergado.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "data": [
+                    {
+                        "id": 13,
+                        "name": "Basic",
+                        "price_czk": 286,
+                        "price_eur": 11,
+                        "price_pln": 49
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+            ## Tariff [/tariffs/{?limit,offset,fields}]
+            Tariffs in Mergado.
+
+            + Attributes
+
+                + id (number) - Tariff identification number.
+                + name (string) - Name of the tariff.
+                + price_czk (number) - Price of the tariff in CZK currency.
+                + price_eur (number) - Price of the tariff in EUR currency.
+                + price_pln (number) - Price of the tariff in PLN currency.
+
+            ### List Tariff [GET]
+            List all billing tariffs in Mergado.
+
+            + Request
+
+                + Headers
+
+                        Content-Type: application/json
+
+            + Response 200
+
+                + Headers
+
+                        Content-Type: application/json
+
+                + Body
+
+                        {
+                            "data": [
+                                {
+                                    "id": 13,
+                                    "name": "Basic",
+                                    "price_czk": 286,
+                                    "price_eur": 11,
+                                    "price_pln": 49
+                                }
+                            ],
+                            "limit": 10,
+                            "offset": 0
+                        }
 
 # Group Statistics
 API for statistics collected from eshops, shopping services and other resources.
@@ -2662,11 +2746,11 @@ Returns latest summarized statistics and other information of an eshop.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2822,11 +2906,11 @@ are returned. This can be changed by the query string parameter `date`.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "product_id": "4191",
                 "date": "2015-01-01",
@@ -2871,8 +2955,8 @@ are returned. This can be changed by the query string parameter `date`.
                     "url": "https://www.example.comkazeta-s-cernou-paskou"
                 }
             }
- 
- 
+
+
 ### Statistics of All Products [GET /projects/{id}/stats/products/{?fields,limit,offset,date,filter_by}]
 Returns statistics of all products, by default only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`
@@ -2889,11 +2973,11 @@ are returned. This can be changed by the query string parameter `date`
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                 {
@@ -2960,16 +3044,16 @@ are returned. This can be changed by the field `date`
 + Request
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Attributes (object)
         + date (string) - Date of the collection of the requested statistics.
         + filter_by (string) - Currently only filtering by `item id` is supported.
           See the section [Additional GET parameters](#introduction/additional-get-parameters).
-    
+
     + Body
-    
+
             {
                 "date": "2016-02-02",
                 "filter_by": {
@@ -2980,11 +3064,11 @@ are returned. This can be changed by the field `date`
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3066,11 +3150,11 @@ for given `CATEGORYTEXT`).
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3122,11 +3206,11 @@ Returns list of performed audits.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3162,11 +3246,11 @@ Returns a performed audit.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "163-160419",
                 "date": "2016-04-19",
@@ -3252,11 +3336,11 @@ Returns list of issues of an audit.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3335,7 +3419,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
 + Parameters
 
     + id (string) - ID of the project.
-    
+
 + Request
 
     + Headers
@@ -3343,7 +3427,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "parser_type": "heureka.cz",
                 "feed_types": ["heureka.cz"],
@@ -3359,7 +3443,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
             Location: "https://app.mergado.com/api/projects/57334061ba4989170e78dbf3/feedaudits/"
 
     + Body
-    
+
             {
                 "id": "51768ba7ed14f444772d6137",
                 "error": null,
@@ -3392,7 +3476,7 @@ Returns list of all audits.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3432,7 +3516,7 @@ Returns the requested audit resource.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "51768ba7ed14f444772d6137",
                 "error": null,
@@ -3487,7 +3571,7 @@ Returns all issues (problematic validations) of a specific audit.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3524,7 +3608,7 @@ Returns single issue with given `id`.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "51768ba7ed14f444772d6138",
                 "checked_at": "2013-04-23 13:24:55+0000",
@@ -3555,7 +3639,7 @@ Returns all issues (problematic validations) of a specific product.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3604,7 +3688,7 @@ Returns all products of a specific audit.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3638,7 +3722,7 @@ Returns a single product resource.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "51768ba7ed14f444772d6120",
                 "audit_id": "51768ba7ed14f444772d6137",
@@ -3649,12 +3733,12 @@ Returns a single product resource.
                     {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
                 ]
             }
-            
+
 # Group Heureka
 API for various Heureka.cz helpers and resources.
 
 ## Heureka Categories [/categories/]
-API for Heureka categories. Categories have a _min cpc_ value attached to it. 
+API for Heureka categories. Categories have a _min cpc_ value attached to it.
 But not every category displays this value. If you want to find a _min cpc_ value of a category,
 you need to traverse its parents until you find a category with _min cpc_ displayed. This _min cpc_ then applies
 to all children categories.
@@ -3686,7 +3770,7 @@ Returns a single Heureka category.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "68",
                 "name": "Poker",
@@ -3744,7 +3828,7 @@ Returns a single Heureka category.
                     }
                 ]
             }
-            
+
 ### List a Categories [GET /heureka/categories/{?limit,offset,fields,}]
 Returns list of all Heureka categories.
 
@@ -3756,7 +3840,7 @@ Returns list of all Heureka categories.
             Content-Type: application/json
 
     + Body
-    
+
             [
                 {
                     "id": "1",
@@ -3848,9 +3932,9 @@ value in ascending order. Groups of results can be created using `dimensions` qu
     + Headers
 
             Content-Type: application/json
-    
+
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3916,9 +4000,9 @@ value in ascending order. Groups of results can be created using `dimensions` qu
     + Headers
 
             Content-Type: application/json
-    
+
     + Body
-    
+
             {
                 "data": [
                     {
