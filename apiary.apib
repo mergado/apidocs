@@ -136,13 +136,6 @@ Returns available tariffs which are automatically chosen for each eshop.
                         "price_pln": 219
                     },
                     {
-                        "id": "5",
-                        "name": "Special",
-                        "price_czk": null,
-                        "price_eur": null,
-                        "price_pln": null
-                    },
-                    {
                         "id": "6",
                         "name": "Special 300",
                         "price_czk": 1786,
@@ -364,7 +357,7 @@ Billing is need for automatically billing via Fakturoid.
                 + entity_type (enum[string]) - What is type of application.
                     + Members
                         + user
-                        + eshop
+                        + shop
                         + project
                 + entity_id (number) - ID of the entity which application is bound to. Entity can be user or eshop or project.
                 + is_old (boolean) - If application is new od old.
@@ -2862,7 +2855,6 @@ Management of enabled apps by users.
 + Attributes
 
     + app_name (string) - Name (ID) of the enabled app.
-    + entity_id (string) - ID of the entity for which the app is enabled.
     + free_until (string) - Trial expiration date.
     + paid_until (string) - Paid subscription expiration date.
 
@@ -2887,13 +2879,11 @@ Lists apps enabled by the given user.
                 "data": [
                     {
                         "app_name": "userappone",
-                        "entity_id": "1",
                         "free_until": "2015-01-09",
                         "paid_until": "2016-01-08"
                     },
                     {
                         "app_name": "userapptwo",
-                        "entity_id": "1",
                         "free_until": "2015-02-24",
                         "paid_until": "2015-03-23"
                     }
@@ -2922,7 +2912,6 @@ Fetches an app enabled by the given user.
     
             {
                 "app_name": "userappone",
-                "entity_id": "1",
                 "free_until": "2015-01-09",
                 "paid_until": "2016-01-08"
             }
@@ -2959,7 +2948,6 @@ Updates an app enabled by the given user.
     
             {
                 "app_name": "userappone",
-                "entity_id": "1",
                 "free_until": "2015-01-09",
                 "paid_until": "2016-02-08"
             }
@@ -2985,13 +2973,11 @@ Lists apps enabled for the given eshop.
                 "data": [
                     {
                         "app_name": "shopappone",
-                        "entity_id": "1",
                         "free_until": "2015-01-09",
                         "paid_until": "2016-01-08"
                     },
                     {
                         "app_name": "shopapptwo",
-                        "entity_id": "1",
                         "free_until": "2015-02-24",
                         "paid_until": "2015-03-23"
                     }
@@ -3020,7 +3006,6 @@ Fetches an app enabled for the given shop.
     
             {
                 "app_name": "shopappone",
-                "entity_id": "2",
                 "free_until": "2015-01-09",
                 "paid_until": "2016-01-08"
             }
@@ -3058,7 +3043,6 @@ Updates an app enabled for the given shop.
     
             {
                 "app_name": "shopappone",
-                "entity_id": "2",
                 "free_until": "2015-01-09",
                 "paid_until": "2017-02-08"
             }
@@ -3084,13 +3068,11 @@ Lists apps enabled for the given project.
                 "data": [
                     {
                         "app_name": "projectappone",
-                        "entity_id": "6",
                         "free_until": "2015-01-09",
                         "paid_until": "2016-01-08"
                     },
                     {
                         "app_name": "projectapptwo",
-                        "entity_id": "6",
                         "free_until": "2015-02-24",
                         "paid_until": "2015-03-23"
                     }
@@ -3119,7 +3101,6 @@ Fetches an app enabled by the given project.
     
             {
                 "app_name": "projectappone",
-                "entity_id": "6",
                 "free_until": "2015-01-09",
                 "paid_until": "2016-01-08"
             }
@@ -3155,8 +3136,7 @@ Updates an app enabled for the given project.
     + Body
     
             {
-                "app_name": "projectpppone",
-                "entity_id": "6",
+                "app_name": "projectappone",
                 "free_until": "2015-01-09",
                 "paid_until": "2016-04-08"
             }
