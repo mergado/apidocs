@@ -820,6 +820,11 @@ Show additional eshop information and statistics.
                         + hledejceny.cz
                         + google_analytics
                 + currency (string) - Currency in ISO 4217 or a `null` if the currency is not known.
+                + status (enum[string]) - Status of the connection.
+                    + members
+                        + ok
+                        + error
+                + error (string) - Short description of the error (if status is not `ok`).
 
     + Headers
 
@@ -838,15 +843,21 @@ Show additional eshop information and statistics.
                 "connections": [
                     {
                         "currency": "EUR",
-                        "name": "heureka.sk"
+                        "name": "heureka.sk",
+                        "status": "ok",
+                        "error": null
                     },
                     {
                         "currency": "CZK",
-                        "name": "zbozi.cz"
+                        "name": "zbozi.cz",
+                        "status": "error",
+                        "error": "zbozi_auth_error"
                     },
                     {
                         "currency": null,
-                        "name": "google_analytics"
+                        "name": "google_analytics",
+                        "status": "ok",
+                        "error": null
                     }
                 ]
             }
