@@ -98,6 +98,115 @@ Returns a list of IDs of all supported XML feed's formats.
                 "pricemania.sk"
             ]
 
+## Tariffs [/tariffs/]
+Lists tariffs available for users.
+
+### List Available Tariffs [GET]
+Returns available tariffs which are automatically chosen for each eshop.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "limit": 10,
+                "data": [
+                    {
+                        "id": "2",
+                        "name": "Basic",
+                        "price_czk": 286,
+                        "price_eur": 11,
+                        "price_pln": 49,
+                        "price_usd": 12,
+                        "price_gbp": 9
+                    },
+                    {
+                        "id": "3",
+                        "name": "Standard",
+                        "price_czk": 586,
+                        "price_eur": 22,
+                        "price_pln": 99,
+                        "price_usd": 22,
+                        "price_gbp": 19
+                    },
+                    {
+                        "id": "4",
+                        "name": "Advanced",
+                        "price_czk": 1286,
+                        "price_eur": 49,
+                        "price_pln": 219,
+                        "price_usd": 52,
+                        "price_gbp": 49
+                    },
+                    {
+                        "id": "6",
+                        "name": "Special 300",
+                        "price_czk": 1786,
+                        "price_eur": 70,
+                        "price_pln": 299,
+                        "price_usd": 72,
+                        "price_gbp": 59
+                    },
+                    {
+                        "id": "7",
+                        "name": "Special 400",
+                        "price_czk": 2286,
+                        "price_eur": 89,
+                        "price_pln": 379,
+                        "price_usd": 92,
+                        "price_gbp": 75
+                    },
+                    {
+                        "id": "8",
+                        "name": "Special 500",
+                        "price_czk": 2768,
+                        "price_pln": 459,
+                        "price_eur": 108,
+                        "price_usd": 112,
+                        "price_gbp": 89
+                    },
+                    {
+                        "id": "9",
+                        "name": "Special 600",
+                        "price_czk": 3286,
+                        "price_eur": 129,
+                        "price_pln": 549,
+                        "price_usd": 132,
+                        "price_gbp": 105
+                    }
+                ],
+                "offset": 0
+            }
+
+### Get Tariff [GET /tariffs/{id}/{?fields}]
+Returns requested tariff by its ID.
+
++ Parameters
+
+    + id (string) - Tariff ID.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "3",
+                "name": "Standard",
+                "price_czk": 586,
+                "price_eur": 22,
+                "price_pln": 99,
+                "price_usd": 22,
+                "price_gbp": 19
+            }
+
 ## Rule Definitions [/rules/definitions/{?limit,offset,fields}]
 Definition of rules so that developers can see which rules expect what data.
 
@@ -287,7 +396,7 @@ Billing is need for automatically billing via Fakturoid.
                 + entity_type (enum[string]) - What is type of application.
                     + Members
                         + user
-                        + eshop
+                        + shop
                         + project
                 + entity_id (number) - ID of the entity which application is bound to. Entity can be user or eshop or project.
                 + is_old (boolean) - If application is new od old.
@@ -545,6 +654,8 @@ Eshops in Mergado.
     + owner_id (string) - ID of the user who is the owner of the shop in Mergado
       (that is usualy the user who created the eshop).
     + tariff_id (string) - ID of the tariff the eshop has ordered.
+    + tariff_validity (string) - Datetime when the tariff expires.
+    + web (string) - Web sites of the eshop.
     + name (string) - Unique name of the eshop.
     + xml_domain (string) - XML domain of the eshop as detected from an XML feed.
     + exported_items (number) - Sum of exported items in all exports.
@@ -576,6 +687,7 @@ Returns eshops the user can access.
                         "id": "1",
                         "owner_id": "1",
                         "tariff_id": "7",
+                        "tariff_validity": "2015-12-01T10:02:51+00:00",
                         "name": "Example.com",
                         "web": "http://example.com/",
                         "xml_domain": "example.com",
@@ -612,9 +724,59 @@ Returns an eshop with the given ID.
                 "id": "1",
                 "owner_id": "1",
                 "tariff_id": "7",
+                "tariff_validity": "2015-12-01T10:02:51+00:00",
                 "name": "Example.com",
                 "web": "http://example.com/",
                 "xml_domain": "example.com",
+                "exported_items": 256,
+                "created_at": "2015-11-04T12:31:18+00:00",
+                "permissions": [
+                    {
+                        "role": "reader",
+                        "user_id": "2"
+                    }
+                ]
+            }
+
+### Update an Eshop [PATCH /shops/{id}/{?fields}]
+Updates an eshop with the given ID.
+
+**OAuth2 Scope:** shop.write
+
++ Parameters
+
+    + id (string) - ID of a shop.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "name": "Mergado.cz",
+                "web": "http://mergado.cz/",
+                "xml_domain": "mergado.cz",
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "1",
+                "owner_id": "1",
+                "tariff_id": "7",
+                "tariff_validity": "2015-12-01T10:02:51+00:00",
+                "name": "Mergado.cz",
+                "web": "http://mergado.cz/",
+                "xml_domain": "mergado.cz",
                 "exported_items": 256,
                 "created_at": "2015-11-04T12:31:18+00:00",
                 "permissions": [
@@ -658,6 +820,11 @@ Show additional eshop information and statistics.
                         + hledejceny.cz
                         + google_analytics
                 + currency (string) - Currency in ISO 4217 or a `null` if the currency is not known.
+                + status (enum[string]) - Status of the connection.
+                    + members
+                        + ok
+                        + error
+                + error (string) - Short description of the error (if status is not `ok`).
 
     + Headers
 
@@ -676,18 +843,25 @@ Show additional eshop information and statistics.
                 "connections": [
                     {
                         "currency": "EUR",
-                        "name": "heureka.sk"
+                        "name": "heureka.sk",
+                        "status": "ok",
+                        "error": null
                     },
                     {
                         "currency": "CZK",
-                        "name": "zbozi.cz"
+                        "name": "zbozi.cz",
+                        "status": "error",
+                        "error": "zbozi_auth_error"
                     },
                     {
                         "currency": null,
-                        "name": "google_analytics"
+                        "name": "google_analytics",
+                        "status": "ok",
+                        "error": null
                     }
                 ]
             }
+
 
 ## Projects [/shops/{id}/projects/{?limit,offset,fields}]
 Project is created when a user imports an XML feed in Mergado. This feed may come in different formats
@@ -2438,18 +2612,18 @@ Creates a tasks and runs it. Returns information about created task.
     + Body
     
             {
-              "actions": [
-                "import",
-                "apply"
-              ],
-              "current_action": null,
-              "duration": 0,
-              "error": null,
-              "finished_at": null,
-              "id": "224",
-              "project_id": "30",
-              "started_at": "2016-05-23T11:49:47+00:00",
-              "status": "in_progress"
+                "actions": [
+                    "import",
+                    "apply"
+                ],
+                "current_action": null,
+                "duration": 0,
+                "error": null,
+                "finished_at": null,
+                "id": "224",
+                "project_id": "30",
+                "started_at": "2016-05-23T11:49:47+00:00",
+                "status": "in_progress"
             }
             
 ### List Project Tasks [GET]
@@ -2470,39 +2644,39 @@ Lists tasks belonging to given project.
     + Body
     
             {
-              "data": [
-                {
-                  "actions": [
-                    "import",
-                    "apply"
-                  ],
-                  "current_action": null,
-                  "duration": 4.607,
-                  "error": null,
-                  "finished_at": "2016-05-18T15:16:26+00:00",
-                  "id": "199",
-                  "project_id": "30",
-                  "started_at": "2016-05-18T15:16:22+00:00",
-                  "status": "done"
-                },
-                {
-                  "actions": [
-                    "import",
-                    "apply",
-                    "export"
-                  ],
-                  "current_action": null,
-                  "duration": 10.582,
-                  "error": null,
-                  "finished_at": "2016-05-18T15:17:22+00:00",
-                  "id": "200",
-                  "project_id": "30",
-                  "started_at": "2016-05-18T15:17:12+00:00",
-                  "status": "done"
-                }
-              ],
-              "limit": 10,
-              "offset": 0
+                "data": [
+                    {
+                        "actions": [
+                            "import",
+                            "apply"
+                        ],
+                        "current_action": null,
+                        "duration": 4.607,
+                        "error": null,
+                        "finished_at": "2016-05-18T15:16:26+00:00",
+                        "id": "199",
+                        "project_id": "30",
+                        "started_at": "2016-05-18T15:16:22+00:00",
+                        "status": "done"
+                    },
+                    {
+                        "actions": [
+                            "import",
+                            "apply",
+                            "export"
+                        ],
+                        "current_action": null,
+                        "duration": 10.582,
+                        "error": null,
+                        "finished_at": "2016-05-18T15:17:22+00:00",
+                        "id": "200",
+                        "project_id": "30",
+                        "started_at": "2016-05-18T15:17:12+00:00",
+                        "status": "done"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
             
 ### Get a Task [GET /tasks/{id}/{?fields}]
@@ -2523,18 +2697,18 @@ Fetch a specific task.
     + Body
     
             {
-              "actions": [
-                "import",
-                "apply"
-              ],
-              "current_action": null,
-              "duration": 3.309,
-              "error": null,
-              "finished_at": "2016-05-20T14:42:59+00:00",
-              "id": "223",
-              "project_id": "30",
-              "started_at": "2016-05-20T14:42:56+00:00",
-              "status": "done"
+                "actions": [
+                  "import",
+                  "apply"
+                ],
+                "current_action": null,
+                "duration": 3.309,
+                "error": null,
+                "finished_at": "2016-05-20T14:42:59+00:00",
+                "id": "223",
+                "project_id": "30",
+                "started_at": "2016-05-20T14:42:56+00:00",
+                "status": "done"
             }
             
 ## Logs [/projects/{id}/logs/]
@@ -2559,34 +2733,34 @@ Fetches all import logs for given project.
     + Body
     
             {
-              "data": [
-                {
-                  "duration": 2.352,
-                  "finished_at": "2016-05-18T15:16:25+00:00",
-                  "id": "75",
-                  "items": 1,
-                  "items_created": 1,
-                  "items_processed": 1,
-                  "items_removed": 0,
-                  "items_updated": 0,
-                  "started_at": "2016-05-18T15:16:23+00:00",
-                  "user_id": "1"
-                },
-                {
-                  "duration": 1.423,
-                  "finished_at": "2016-05-18T15:17:21+00:00",
-                  "id": "76",
-                  "items": 1,
-                  "items_created": 0,
-                  "items_processed": 1,
-                  "items_removed": 0,
-                  "items_updated": 0,
-                  "started_at": "2016-05-18T15:17:20+00:00",
-                  "user_id": null
-                }
-              ],
-              "limit": 10,
-              "offset": 0
+                "data": [
+                    {
+                        "duration": 2.352,
+                        "finished_at": "2016-05-18T15:16:25+00:00",
+                        "id": "75",
+                        "items": 1,
+                        "items_created": 1,
+                        "items_processed": 1,
+                        "items_removed": 0,
+                        "items_updated": 0,
+                        "started_at": "2016-05-18T15:16:23+00:00",
+                        "user_id": "1"
+                    },
+                    {
+                        "duration": 1.423,
+                        "finished_at": "2016-05-18T15:17:21+00:00",
+                        "id": "76",
+                        "items": 1,
+                        "items_created": 0,
+                        "items_processed": 1,
+                        "items_removed": 0,
+                        "items_updated": 0,
+                        "started_at": "2016-05-18T15:17:20+00:00",
+                        "user_id": null
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
 
 
@@ -2608,26 +2782,26 @@ Fetches all apply logs for given project.
     + Body
     
             {
-              "data": [
-                {
-                  "duration": 1.548,
-                  "finished_at": "2016-05-18T15:16:26+00:00",
-                  "id": "155",
-                  "items": 1,
-                  "started_at": "2016-05-18T15:16:25+00:00",
-                  "user_id": "1"
-                },
-                {
-                  "duration": 1.464,
-                  "finished_at": "2016-05-18T15:17:22+00:00",
-                  "id": "156",
-                  "items": 1,
-                  "started_at": "2016-05-18T15:17:21+00:00",
-                  "user_id": null
-                }
-              ],
-              "limit": 10,
-              "offset": 0
+                "data": [
+                    {
+                        "duration": 1.548,
+                        "finished_at": "2016-05-18T15:16:26+00:00",
+                        "id": "155",
+                        "items": 1,
+                        "started_at": "2016-05-18T15:16:25+00:00",
+                        "user_id": "1"
+                    },
+                    {
+                        "duration": 1.464,
+                        "finished_at": "2016-05-18T15:17:22+00:00",
+                        "id": "156",
+                        "items": 1,
+                        "started_at": "2016-05-18T15:17:21+00:00",
+                        "user_id": null
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
             
 ### Get Export Log [GET /projects/{id}/logs/export/{?limit,offset,fields}]
@@ -2648,30 +2822,30 @@ Fetches all export logs for given project.
     + Body
     
             {
-              "data": [
-                {
-                  "duration": 5,
-                  "finished_at": null,
-                  "id": "1",
-                  "initial": false,
-                  "items": 20,
-                  "processed_items": 20,
-                  "started_at": "2016-06-01T15:52:45+00:00",
-                  "user_id": "1"
-                },
-                {
-                  "duration": 10,
-                  "finished_at": "2016-06-01T15:54:44+00:00",
-                  "id": "2",
-                  "initial": false,
-                  "items": 100,
-                  "processed_items": 100,
-                  "started_at": "2016-06-01T15:54:30+00:00",
-                  "user_id": "1"
-                }
-              ],
-              "limit": 10,
-              "offset": 0
+                "data": [
+                    {
+                        "duration": 5,
+                        "finished_at": null,
+                        "id": "1",
+                        "initial": false,
+                        "items": 20,
+                        "processed_items": 20,
+                        "started_at": "2016-06-01T15:52:45+00:00",
+                        "user_id": "1"
+                    },
+                    {
+                        "duration": 10,
+                        "finished_at": "2016-06-01T15:54:44+00:00",
+                        "id": "2",
+                        "initial": false,
+                        "items": 100,
+                        "processed_items": 100,
+                        "started_at": "2016-06-01T15:54:30+00:00",
+                        "user_id": "1"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
             }
             
 ### Get Access Log [GET /projects/{id}/logs/access/{?limit,offset,fields}]
@@ -2692,36 +2866,329 @@ Fetches all export logs for given project.
     + Body
     
             {
-              "data": [
-                {
-                  "https": false,
-                  "id": "101",
-                  "identity": "-",
-                  "ip": "111.222.333.444",
-                  "referer": "-",
-                  "request": "GET /mergadovenaradie-cz-heureka-cz-greagfsdabtrshthgreav.xml HTTP/1.1",
-                  "size": 627142,
-                  "status": 200,
-                  "time": "2016-05-15T08:18:13+00:00",
-                  "user": "-",
-                  "user_agent": "Heurekabot-Feed/1.0 (+http://sluzby.heureka.cz/napoveda/heurekabot/)"
-                },
-                {
-                  "https": false,
-                  "id": "127",
-                  "identity": "-",
-                  "ip": "555.666.777.888",
-                  "referer": "-",
-                  "request": "HEAD /naradiovemergado-cz-kurtmjyrasnaENBREANzgtsf.xml HTTP/1.1",
-                  "size": 0,
-                  "status": 200,
-                  "time": "2016-05-15T08:24:38+00:00",
-                  "user": "-",
-                  "user_agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; cs; rv:1) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 1)"
-                }
+                "data": [
+                    {
+                        "https": false,
+                        "id": "101",
+                        "identity": "-",
+                        "ip": "111.222.333.444",
+                        "referer": "-",
+                        "request": "GET /mergadovenaradie-cz-heureka-cz-greagfsdabtrshthgreav.xml HTTP/1.1",
+                        "size": 627142,
+                        "status": 200,
+                        "time": "2016-05-15T08:18:13+00:00",
+                        "user": "-",
+                        "user_agent": "Heurekabot-Feed/1.0 (+http://sluzby.heureka.cz/napoveda/heurekabot/)"
+                    },
+                    {
+                        "https": false,
+                        "id": "127",
+                        "identity": "-",
+                        "ip": "555.666.777.888",
+                        "referer": "-",
+                        "request": "HEAD /naradiovemergado-cz-kurtmjyrasnaENBREANzgtsf.xml HTTP/1.1",
+                        "size": 0,
+                        "status": 200,
+                        "time": "2016-05-15T08:24:38+00:00",
+                        "user": "-",
+                        "user_agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; cs; rv:1) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 1)"
+                    }
                 ],
                 "limit": 10,
                 "offset": 0
+            }
+
+
+## Enabled Apps
+Management of enabled apps by users.
+
++ Attributes
+
+    + app_name (string) - Name (ID) of the enabled app.
+    + free_until (string) - Trial expiration date.
+    + paid_until (string) - Paid subscription expiration date.
+
+### List User Apps [GET /users/{id}/apps/{?limit,offset,fields}]
+Lists apps enabled by the given user.
+
+**OAuth2 Scope:** user.apps.read
+
++ Parameters
+
+    + id (string) - ID of a user.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "app_name": "userappone",
+                        "free_until": "2015-01-09",
+                        "paid_until": "2016-01-08"
+                    },
+                    {
+                        "app_name": "userapptwo",
+                        "free_until": "2015-02-24",
+                        "paid_until": "2015-03-23"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get User App [GET /users/{id}/apps/{name}/{?limit,offset,fields}]
+Fetches an app enabled by the given user.
+
+**OAuth2 Scope:** user.apps.read
+
++ Parameters
+
+    + id (string) - ID of a user.
+    + name (string) - Name of an app.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "userappone",
+                "free_until": "2015-01-09",
+                "paid_until": "2016-01-08"
+            }
+
+### Update User App [PATCH /users/{id}/apps/{name}/]
+Updates an app enabled by the given user.
+
+**OAuth2 Scope:** user.apps.write
+
++ Parameters
+
+    + id (string) - ID of a user.
+    + name (string) - Name of an app.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "paid_until": "2016-02-08"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "userappone",
+                "free_until": "2015-01-09",
+                "paid_until": "2016-02-08"
+            }
+
+### List Shop Apps [GET /shops/{id}/apps/{?limit,offset,fields}]
+Lists apps enabled for the given eshop.
+
+**OAuth2 Scope:** shop.apps.read
+
++ Parameters
+
+    + id (string) - ID of a shop.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "app_name": "shopappone",
+                        "free_until": "2015-01-09",
+                        "paid_until": "2016-01-08"
+                    },
+                    {
+                        "app_name": "shopapptwo",
+                        "free_until": "2015-02-24",
+                        "paid_until": "2015-03-23"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get Shop App [GET /shops/{id}/apps/{name}/{?limit,offset,fields}]
+Fetches an app enabled for the given shop.
+
+**OAuth2 Scope:** shop.apps.read
+
++ Parameters
+
+    + id (string) - ID of a shop.
+    + name (string) - Name of an app.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "shopappone",
+                "free_until": "2015-01-09",
+                "paid_until": "2016-01-08"
+            }
+
+
+### Update Shop App [PATCH /shops/{id}/apps/{name}/]
+Updates an app enabled for the given shop.
+
+**OAuth2 Scope:** shop.apps.write
+
++ Parameters
+
+    + id (string) - ID of a shop.
+    + name (string) - Name of an app.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "paid_until": "2017-02-08"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "shopappone",
+                "free_until": "2015-01-09",
+                "paid_until": "2017-02-08"
+            }
+
+### List Project Apps [GET /projects/<id>/apps/{?limit,offset,fields}]
+Lists apps enabled for the given project.
+
+**OAuth2 Scope:** project.apps.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "app_name": "projectappone",
+                        "free_until": "2015-01-09",
+                        "paid_until": "2016-01-08"
+                    },
+                    {
+                        "app_name": "projectapptwo",
+                        "free_until": "2015-02-24",
+                        "paid_until": "2015-03-23"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Get Project App [GET /projects/{id}/apps/{name}/{?limit,offset,fields}]
+Fetches an app enabled by the given project.
+
+**OAuth2 Scope:** project.apps.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+    + name (string) - Name of an app.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "projectappone",
+                "free_until": "2015-01-09",
+                "paid_until": "2016-01-08"
+            }
+
+### Update User App [PATCH /projects/{id}/apps/{name}/]
+Updates an app enabled for the given project.
+
+**OAuth2 Scope:** project.apps.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+    + name (string) - Name of an app.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "paid_until": "2016-04-08"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "app_name": "projectappone",
+                "free_until": "2015-01-09",
+                "paid_until": "2016-04-08"
             }
 
 # Group Statistics
