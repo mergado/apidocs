@@ -4034,3 +4034,22 @@ value in ascending order. Groups of results can be created using `dimensions` qu
                 "limit": 10,
                 "offset": 0
             }
+
+### Google Analytics access token [GET /google/access_token/{id}]
+Get Google Analytics access token for make available whole Google Analytics from M3.
+
++ Request
+
+    + id (number) - ID of project
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+        {
+            "access_token": "some long access token"
+        }
