@@ -4439,6 +4439,42 @@ Returns list of all Heureka categories.
 # Group Google
 API for various Google tools, helpers and resources.
 
+## Google Credentials [/shops/{id}/google/credentials/]
+Credentials for accessing Google APIs.
+
+### List Credentials [GET /shops/{id}/google/credentials/{?fields,limit,offset,token_refresh}]
+
++ Parameters
+
+    + id (number) - ID of the shop.
+    + token_refresh (enum[integer], optional) - Whether to refresh access token (if needed at all).
+        + Default: `1`
+        + Members
+            + `0` - Return credentials without refreshing access token.
+            + `1` - Return credentials with valid access token.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "id": "7",
+                        "is_valid": true,
+                        "access_token": "abc",
+                        "scope": "https://www.googleapis.com/auth/analytics.readonly",
+                        "token_expiry": "2017-06-13 16:23:07+0000"
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
 ## Google Analytics [/projects/{id}/google/analytics/]
 
 + Attributes
