@@ -758,7 +758,7 @@ Updates an eshop with the given ID.
             {
                 "name": "Mergado.cz",
                 "web": "http://mergado.cz/",
-                "xml_domain": "mergado.cz",
+                "xml_domain": "mergado.cz"
             }
 
 + Response 200
@@ -1145,6 +1145,69 @@ Returns a product with the given ID.
                 }
             }
 
+### Update a Product [GET /products/{id}/{?fields}]
+Updates a product with the given ID.
+
+**Note:** Currently, it is possible tu update only the field `updated_at` which can be used
+to force Mergado to refresh the product (apply rules) during the next (lazy) rebuild.
+
+**OAuth2 Scope:** project.products.write
+
++ Parameters
+
+    + id (string) - ID of a product.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "updated_at": "2017-05-21T00:00:00+00:00"
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "1693",
+                "output_changed_at": null,
+                "updated_at": "2017-05-21T00:00:00+00:00",
+                "created_at": "2016-03-27T17:18:45+00:00",
+                "data": {
+                    "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
+                    "DELIVERY_DATE": "0",
+                    "DESCRIPTION": "Toner HP Q7551X",
+                    "DUES": "0",
+                    "IMGURL": "http://www.example.com/img/755.jpg",
+                    "MANUFACTURER": "PIRANHA",
+                    "PRICE": "808.18",
+                    "PRODUCT": "Toner HP Q7551X",
+                    "URL": "http://www.comps.cz/toner-hp-755",
+                    "VAT": "21.0"
+                },
+                "input_data": {
+                    "CATEGORYTEXT": "Tonery do tiskáren | Kompatibilní tonery",
+                    "DELIVERY_DATE": "0",
+                    "DESCRIPTION": "Toner HP Q7551X",
+                    "DUES": "0",
+                    "IMGURL": "http://www.example.com/img/755.jpg",
+                    "MANUFACTURER": "PIRANHA",
+                    "PRICE": "808.18",
+                    "PRODUCT": "Toner HP Q7551X",
+                    "URL": "http://www.comps.cz/toner-hp-755",
+                    "VAT": "21.0"
+                }
+            }
+
 ### Query Products [GET /queries/{id}/products/{?limit,offset,fields}]
 Returns products that satisfy a condition defined by the given query.
 
@@ -1256,6 +1319,32 @@ Returns products that satisfy a condition defined by the given query.
                 "limit": 10,
                 "offset": 0
             }
+
+### Update products [GET /queries/{id}/products/{?fields}]
+Updates products matching a query.
+
+**Note:** Currently, it is possible tu update only the field `updated_at` which can be used
+to force Mergado to refresh the products (apply rules) during the next (lazy) rebuild.
+
+**OAuth2 Scope:** project.products.write
+
++ Parameters
+
+    + id (string) - ID of a product.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "updated_at": "2017-05-21T00:00:00+00:00"
+            }
+
++ Response 204
 
 ## Elements [/projects/{id}/elements/]
 Elements are named attributes of products.
