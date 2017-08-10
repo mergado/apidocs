@@ -825,6 +825,10 @@ Show additional eshop information and statistics.
                         + ok
                         + error
                 + error (string) - Short description of the error (if status is not `ok`).
+                + info (object) - Additional info about the connection.
+                    + name (string) - Name of the connection (account's name, eshop's name and so on).
+                    + valid_credentials (boolean) - Whether the credentials the user supplied are valid.
+                    + ... - Other fields specific for each connection.
 
     + Headers
 
@@ -845,19 +849,39 @@ Show additional eshop information and statistics.
                         "currency": "EUR",
                         "name": "heureka.sk",
                         "status": "ok",
-                        "error": null
+                        "error": null,
+                        "info": {
+                            "name": "Example.com",
+                            "valid_credentials": true,
+                            "heureka_id": "321",
+                            "username": "test@example.com",
+                            "url_slug": "example-com"
+                        }
                     },
                     {
                         "currency": "CZK",
                         "name": "zbozi.cz",
                         "status": "error",
-                        "error": "zbozi_auth_error"
+                        "error": "zbozi_auth_error",
+                        "info": {
+                            "name": "Example.com",
+                            "valid_credentials": false,
+                            "zbozi_id": "123",
+                            "username": "test@example.com"
+                        }
                     },
                     {
                         "currency": null,
                         "name": "google_analytics",
                         "status": "ok",
-                        "error": null
+                        "error": null,
+                        "info": {
+                            "name": "Example.com",
+                            "valid_credentials": true,
+                            "credentials_id": "325",
+                            "account_id": "193",
+                            "profile_id": "796"
+                        }
                     }
                 ]
             }
@@ -1145,7 +1169,7 @@ Returns a product with the given ID.
                 }
             }
 
-### Update a Product [GET /products/{id}/{?fields}]
+### Update a Product [PATCH /products/{id}/{?fields}]
 Updates a product with the given ID.
 
 **Note:** Currently, it is possible tu update only the field `updated_at` which can be used
