@@ -4426,6 +4426,11 @@ to all children categories.
         + (object)
             + id (string) - ID of the child.
             + name (string) - Name of the child.
+    + min_cpcs (array) - List of CPC values that apply to all children of the category unless explicitely
+      specified by the child.
+        + (object)
+            + to_price (float) - Max price of the product in the category.
+            + value (float) - Max CPC for the product given its price.
 
 ### Get a Category [GET /heureka/categories/{id}/{?fields}]
 Returns a single Heureka category.
@@ -4475,27 +4480,27 @@ Returns a single Heureka category.
                 "min_cpcs": [
                     {
                         "to_price": "10.0",
-                        "value": "0.03"
+                        "value": 0.03
                     },
                     {
                         "to_price": "40.0",
-                        "value": "0.05"
+                        "value": 0.05
                     },
                     {
                         "to_price": "110.0",
-                        "value": "0.05"
+                        "value": 0.05
                     },
                     {
                         "to_price": "185.0",
-                        "value": "0.07"
+                        "value": 0.07
                     },
                     {
                         "to_price": "370.0",
-                        "value": "0.09"
+                        "value": 0.09
                     },
                     {
                         "to_price": null,
-                        "value": "0.11"
+                        "value": 0.11
                     }
                 ]
             }
