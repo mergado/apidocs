@@ -809,6 +809,23 @@ Show additional eshop information and statistics.
             + error (string)
             + started_at (string)
             + finished_at (string)
+            + info (array)
+                + (object)
+                    + type (enum[string])
+                        + members
+                            + mergado.output_feed
+                            + mergado.costs_feed
+                            + heureka.conversions_feed
+                            + heureka.sortiment_feed
+                            + mergado.report
+                    + status (enum[string])
+                        + members
+                            + done
+                            + in_progress
+                            + error
+                    + error (string)
+                    + started_at (string)
+                    + finished_at (string)
         + connections (array) - List of objects representing connections to third-party services.
             + (object)
                 + name (enum[string]) - Name of the service.
@@ -842,7 +859,37 @@ Show additional eshop information and statistics.
                     "status": "done",
                     "error": null,
                     "started_at": "2015-11-04T12:31:18+00:00",
-                    "finished_at": "2015-11-04T14:31:18+00:00"
+                    "finished_at": "2015-11-04T14:31:18+00:00",
+                    "info": [
+                        {
+                            "status": "done",
+                            "finished_at": "2017-10-20 04:53:11+0000",
+                            "started_at": "2017-10-20 04:50:03+0000",
+                            "type": "heureka.conversions_feed",
+                            "error": null
+                        },
+                        {
+                            "status": "done",
+                            "finished_at": "2017-10-20 04:51:53+0000",
+                            "started_at": "2017-10-20 04:50:03+0000",
+                            "type": "mergado.output_feed",
+                            "error": null
+                        },
+                        {
+                            "status": "done",
+                            "finished_at": "2017-10-20 05:33:57+0000",
+                            "started_at": "2017-10-20 04:50:03+0000",
+                            "type": "mergado.report",
+                            "error": null
+                        },
+                        {
+                            "status": "done",
+                            "finished_at": "2017-10-20 05:33:45+0000",
+                            "started_at": "2017-10-20 04:50:03+0000",
+                            "type": "heureka.sortiment_feed",
+                            "error": null
+                        }
+                    ],
                 },
                 "connections": [
                     {
@@ -2737,6 +2784,14 @@ Creates a tasks and runs it. Returns information about created task.
                 "project_id": "30",
                 "started_at": "2016-05-23T11:49:47+00:00",
                 "status": "in_progress"
+            }
+
++ Response 423
+
+    + Body
+    
+            {
+                "message": "Project is read only."
             }
             
 ### List Project Tasks [GET]
