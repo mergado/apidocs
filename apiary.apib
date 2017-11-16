@@ -960,6 +960,8 @@ and it is very common that one eshop has several projects each maaged for a diff
     + last_access (string) - Last access to the project by a user.
     + xml_synced_at (string) - The last time an input feed was imported.
     + xml_updated_at (string) - The last time the project was updated by a change in the input XML feed.
+    + is_dirty (boolean) - Dirty project means that during the next rebuild of the project, all rules to
+      all products will be applied.
 
 ### List Shop Projects [GET]
 Returns projects of an eshop.
@@ -1001,7 +1003,8 @@ Returns projects of an eshop.
                         "update_period": 14400,
                         "last_access": "2015-12-10T12:51:59+00:00",
                         "xml_synced_at": "2015-11-18T13:19:59+00:00",
-                        "xml_updated_at": "2015-11-11T15:42:50+00:00"
+                        "xml_updated_at": "2015-11-11T15:42:50+00:00",
+                        "is_dirty": false
                     }
                 ]
             }
@@ -1043,6 +1046,62 @@ Returns a project with the given ID.
                 "last_access": "2015-12-10T12:51:59+00:00",
                 "xml_synced_at": "2015-11-18T13:19:59+00:00",
                 "xml_updated_at": "2015-11-11T15:42:50+00:00"
+                "is_dirty": false
+            }
+
+### Update a Project [PATCH /projects/{id}/{?fields}]
+Updates a project with the given ID.
+
+**Note:** Currently, it is possible tu update only the field `is_dirty` which can be used
+to force Mergado to apply all rules to products during the next (lazy) rebuild.
+
+**OAuth2 Scope:** project.write
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "is_dirty": true
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "8",
+                "shop_id": "1",
+                "creator_id": "1",
+                "name": "Billiger.de",
+                "url": "https://dummy.mergado.com/example-com.xml",
+                "activated": true,
+                "created": "2015-11-11T15:42:33+00:00",
+                "exported_items": 0,
+                "input_format": "zbozi.cz",
+                "output_format": "billiger.de",
+                "pairing_elements": "URL",
+                "readonly": false,
+                "rules_changed_at": "2015-11-18T13:20:21+00:00",
+                "slug": "example-com-heureka-cz-asdf",
+                "turned_off": true,
+                "update_period": 14400,
+                "last_access": "2015-12-10T12:51:59+00:00",
+                "xml_synced_at": "2015-11-18T13:19:59+00:00",
+                "xml_updated_at": "2015-11-11T15:42:50+00:00"
+                "is_dirty": true
             }
 
 ### Show Project Info [GET /projects/{id}/info/]
@@ -2726,7 +2785,7 @@ export products for shopping services.
 
     + id (string) - ID of the task.
     + project_id (string) - ID of the project the task was performed in.
-    + actions - A list of actions to perform. Allowed actioins are `import`
+    + actions - A list of actions performed. Allowed actioins are `import`
       `apply` and `export`.
     + current_action (string) - Action currently being performed.
     + duration (number) - Number of seconds the task runs.
@@ -2740,60 +2799,6 @@ export products for shopping services.
             + error
             + done
 
-### Create a Task [POST]
-Creates a tasks and runs it. Returns information about created task.
-
-**OAuth2 Scope:** project.tasks.write
-
-+ Parameters
-
-    + id (string) - ID of a project.
-    
-+ Request
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-    
-            {
-                "actions": ["import", "apply"],
-                "force": true
-            }
-    
-+ Response 201
-
-    + Headers
-
-            Content-Type: application/json
-            Location: "https://app.mergado.com/api/tasks/15/"
-
-    + Body
-    
-            {
-                "actions": [
-                    "import",
-                    "apply"
-                ],
-                "current_action": null,
-                "duration": 0,
-                "error": null,
-                "finished_at": null,
-                "id": "224",
-                "project_id": "30",
-                "started_at": "2016-05-23T11:49:47+00:00",
-                "status": "in_progress"
-            }
-
-+ Response 423
-
-    + Body
-    
-            {
-                "message": "Project is read only."
-            }
-            
 ### List Project Tasks [GET]
 Lists tasks belonging to given project.
 
@@ -4474,6 +4479,7 @@ to all children categories.
     + id (string) - ID of the category.
     + name (string) - Name of the category.
     + full_name (string) - Full name of the category.
+    + heureka_id (string) - ID of the category in Heureka.
     + parent (object) - Parent of the category.
         + id (string) - ID of the parent.
         + name (string) - Name of the parent.
@@ -4506,6 +4512,7 @@ Returns a single Heureka category.
                 "id": "68",
                 "name": "Poker",
                 "full_name": "Šport | Poker",
+                "heureka_id": "502",
                 "parent": {
                     "id": "7",
                     "name": "Šport"
@@ -4560,7 +4567,7 @@ Returns a single Heureka category.
                 ]
             }
             
-### List a Categories [GET /heureka/categories/{?limit,offset,fields,}]
+### List Categories [GET /heureka/categories/{?limit,offset,fields,}]
 Returns list of all Heureka categories.
 
 
@@ -4577,6 +4584,7 @@ Returns list of all Heureka categories.
                     "id": "1",
                     "name": "Heureka.cz",
                     "full_name": "Heureka.cz",
+                    "heureka_id": "123",
                     "parent": null,
                     "children": [
                         {
@@ -4594,6 +4602,7 @@ Returns list of all Heureka categories.
                     "id": "2",
                     "name": "Heureka.sk",
                     "full_name": "Heureka.sk",
+                    "heureka_id": "768",
                     "parent": null,
                     "children": [
                         {
