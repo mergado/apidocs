@@ -3377,6 +3377,11 @@ export (project) formats:
 Collections here represent collected statistics of eshops from various
 comparison shopping services (Zboží.cz, Heureka.cz, etc.).
 
+### Get Statistics [GET]
+Returns latest summarized statistics and other information of an eshop.
+
+**OAuth2 Scope:** project.stats.read
+
 + Attributes
 
     + date (string) - Date of collection of the statistics.
@@ -3465,11 +3470,6 @@ comparison shopping services (Zboží.cz, Heureka.cz, etc.).
     + zbozi_xml_feed (string) - URL of XML feed containing products entered
       in Zbozi.cz administration.
 
-### Get Statistics [GET]
-Returns latest summarized statistics and other information of an eshop.
-
-**OAuth2 Scope:** project.stats.read
-
 + Parameters
 
     + id (string) - ID of the eshop.
@@ -3529,6 +3529,87 @@ Returns latest summarized statistics and other information of an eshop.
                 "limit": 10,
                 "offset": 0
             }
+            
+### List All Sources [GET /shops/{id}/stats/sources/{?limit,offset,fields}]
+Returns a list of all sources of a specific shop.
+
+**OAuth2 Scope:** shop.stats.source.read
+
++ Attributes
+
+    + id (string) - Id of the source.
+    + feed_url (string) - URL of the source.
+    + type (string) - Type of the source, e.g. heureka.
+    + shop_id (string) - Id of the shop.
+    
++ Parameters
+
+    + id (string) - ID of the eshop.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "data": [
+                {
+                  "feed_url": "http://feeds.mergado.com/mironet-cz-heureka-cz-da8e66749aafb138fbb5742ffaac8289.xml",
+                  "id": "65",
+                  "shop_id": "1",
+                  "type": "feed"
+                },
+                {
+                  "feed_url": "https://www.heureka.cz/direct/xml-export/shops/roi/C59E6B2AF58927BF910BC02B004AC113/mironet-cz_day.xml.gz",
+                  "id": "66",
+                  "shop_id": "1",
+                  "type": "heureka"
+                },
+                {
+                  "feed_url": "https://feeds.mergado.com/extratrika-cz-mergado-statisticke-xml-d1c6085cf4324cd4ed93f007e7c173b0.xml",
+                  "id": "64",
+                  "shop_id": "1",
+                  "type": "mergado"
+                }
+              ],
+              "limit": 10,
+              "offset": 0
+            }
+
+### Get a Source [GET /stats/sources/{id}/]
+Return a source of statistics.
+
+**OAuth2 Scope:** shop.stats.source.read
+
++ Attributes
+
+    + id (string) - Id of the source.
+    + feed_url (string) - URL of the source.
+    + type (string) - Type of the source, e.g. heureka.
+    + shop_id (string) - Id of the shop.
+    
++ Parameters
+
+    + id (string) - ID of the source.
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+              "feed_url": "https://feeds.mergado.com/extratrika-cz-mergado-statisticke-xml-d1c6085cf4324cd4ed93f007e7c173b0.xml",
+              "id": "64",
+              "shop_id": "1",
+              "type": "mergado"
+            }
+
 
 ## Product Statistics [/products/{id}/stats/]
 Statistics of products, this includes attributes like URL, PRICE etc.
