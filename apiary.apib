@@ -2883,12 +2883,43 @@ Fetch a specific task.
                 "started_at": "2016-05-20T14:42:56+00:00",
                 "status": "done"
             }
+
             
-## Logs [/projects/{id}/logs/]
+## Logs [/projects/{id}/logtype/]
 Core actions like import, export, an application of rules or download by a shopping
 service are logged separately. Note that each log entry is available only for 30 days.
 
-### Get Import Log [GET /projects/{id}/logs/import/{?limit,offset,fields}]
+### Get an Import Log [GET /importlogs/{id}/{?fields}]
+Fetches an import log with the given ID.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a log.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "duration": 2.352,
+                "finished_at": "2016-05-18T15:16:25+00:00",
+                "id": "75",
+                "items": 1,
+                "items_created": 1,
+                "items_processed": 1,
+                "items_removed": 0,
+                "items_updated": 0,
+                "started_at": "2016-05-18T15:16:23+00:00",
+                "user_id": "1"
+            }
+
+### Get Import Logs [GET /projects/{id}/importlogs/{?limit,offset,fields}]
 Fetches all import logs for given project.
 
 **OAuth2 Scope:** project.logs.read
@@ -2935,9 +2966,41 @@ Fetches all import logs for given project.
                 "limit": 10,
                 "offset": 0
             }
+            
+### Get an Apply Log [GET /applylogs/{id}/{?fields}]
+Fetches an apply log with the given ID. 
 
+**OAuth2 Scope:** project.logs.read
 
-### Get Apply Log [GET /projects/{id}/logs/apply/{?limit,offset,fields}]
++ Parameters
+
+    + id (string) - ID of a log.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "duration": 1.548,
+                "finished_at": "2016-05-18T15:16:26+00:00",
+                "id": "155",
+                "items": 1,
+                "started_at": "2016-05-18T15:16:25+00:00",
+                "rules": [
+                    {
+                        "processed_products": 64, 
+                        "products": 64, 
+                        "rule_id": "1"
+                    }
+                ],
+                "user_id": "1"
+            }
+
+### Get Apply Logs [GET /projects/{id}/applylogs/{?limit,offset,fields}]
 Fetches all apply logs for given project.
 
 **OAuth2 Scope:** project.logs.read
@@ -2996,7 +3059,35 @@ Fetches all apply logs for given project.
                 "offset": 0
             }
             
-### Get Export Log [GET /projects/{id}/logs/export/{?limit,offset,fields}]
+### Get an Export Log [GET /exportlogs/{id}/{?fields}]
+Fetches an export log with the given ID.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a log.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "duration": 5,
+                "finished_at": null,
+                "id": "1",
+                "initial": false,
+                "items": 20,
+                "processed_items": 20,
+                "started_at": "2016-06-01T15:52:45+00:00",
+                "user_id": "1"
+            }
+            
+### Get Export Logs [GET /projects/{id}/exportlogs/{?limit,offset,fields}]
 Fetches all export logs for given project.
 
 **OAuth2 Scope:** project.logs.read
@@ -3040,7 +3131,50 @@ Fetches all export logs for given project.
                 "offset": 0
             }
             
-### Get Access Log [GET /projects/{id}/logs/access/{?limit,offset,fields}]
+### Get an Access Log [GET /accesslogs/{id}/{?fields}]
+Fetches an access log with the given ID. If the related project has been deleted, 410 is returned instead.
+
+**OAuth2 Scope:** project.logs.read
+
++ Parameters
+
+    + id (string) - ID of a log.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "https": false,
+                "id": "101",
+                "identity": "-",
+                "ip": "111.222.333.444",
+                "referer": "-",
+                "request": "GET /mergadovenaradie-cz-heureka-cz-greagfsdabtrshthgreav.xml HTTP/1.1",
+                "size": 627142,
+                "status": 200,
+                "time": "2016-05-15T08:18:13+00:00",
+                "user": "-",
+                "user_agent": "Heurekabot-Feed/1.0 (+http://sluzby.heureka.cz/napoveda/heurekabot/)"
+            }
+    
++ Response 410
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "message": "The associated project for this log has been deleted"
+            }
+            
+### Get Access Logs [GET /projects/{id}/accesslogs/{?limit,offset,fields}]
 Fetches all access logs for given project.
 
 **OAuth2 Scope:** project.logs.read
