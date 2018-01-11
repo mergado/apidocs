@@ -321,9 +321,9 @@ Returns application for given application name.
     + Body
 
             {
-                "creation_date": "2016-11-02 09:12:09",
+                "creation_date": "2016-11-02T09:12:09+00:00",
                 "forum_url": "logbook",
-                "latest_release_date": "2016-11-02 09:12:10",
+                "latest_release_date": "2016-11-02T09:12:10+00:00",
                 "title": "Log Book Application",
                 "trial_period": 10,
                 "type": "project"
@@ -349,9 +349,9 @@ Lists all applications in Mergado.
             {
                 "data": [
                     {
-                        "creation_date": "2016-11-02 09:12:09",
+                        "creation_date": "2016-11-02T09:12:09+00:00",
                         "forum_url": "bidding-fox",
-                        "latest_release_date": "2016-11-02 09:12:10",
+                        "latest_release_date": "2016-11-02T09:12:10+00:00",
                         "title": "Bidding Fox",
                         "trial_period": 10,
                         "type": "project"
@@ -431,8 +431,8 @@ Returns whole billing details for given user.
                             "instance_id": 1,
                             "current_price": 777.1,
                             "retail_price": 666.2,
-                            "in_trial_until": "2017-00-15 05:07:13",
-                            "is_prepaid_until": "2017-04-20 01:02:03",
+                            "in_trial_until": "2017-00-15",
+                            "is_prepaid_until": "2017-04-20",
                             "app_type": "user",
                             "subject_id": 1,
                             "is_old": true
@@ -446,8 +446,8 @@ Returns whole billing details for given user.
                     "shops": [
                         {
                             "current_price": 678.9,
-                            "in_trial_until": "1970-01-01 13:10:00",
-                            "is_prepaid_until": "2017-04-20 01:02:03",
+                            "in_trial_until": "1970-01-01",
+                            "is_prepaid_until": "2017-04-20",
                             "retail_price": 56.7,
                             "shop_id": "3"
                         }
@@ -863,29 +863,29 @@ Show additional eshop information and statistics.
                     "info": [
                         {
                             "status": "done",
-                            "finished_at": "2017-10-20 04:53:11+0000",
-                            "started_at": "2017-10-20 04:50:03+0000",
+                            "finished_at": "2017-10-20T04:53:11+00:00",
+                            "started_at": "2017-10-20T04:50:03+00:00",
                             "type": "heureka.conversions_feed",
                             "error": null
                         },
                         {
                             "status": "done",
-                            "finished_at": "2017-10-20 04:51:53+0000",
-                            "started_at": "2017-10-20 04:50:03+0000",
+                            "finished_at": "2017-10-20T04:51:53+00:00",
+                            "started_at": "2017-10-20T04:50:03+00:00",
                             "type": "mergado.output_feed",
                             "error": null
                         },
                         {
                             "status": "done",
-                            "finished_at": "2017-10-20 05:33:57+0000",
-                            "started_at": "2017-10-20 04:50:03+0000",
+                            "finished_at": "2017-10-20T05:33:57+00:00",
+                            "started_at": "2017-10-20T04:50:03+00:00",
                             "type": "mergado.report",
                             "error": null
                         },
                         {
                             "status": "done",
-                            "finished_at": "2017-10-20 05:33:45+0000",
-                            "started_at": "2017-10-20 04:50:03+0000",
+                            "finished_at": "2017-10-20T05:33:45+00:00",
+                            "started_at": "2017-10-20T04:50:03+00:00",
                             "type": "heureka.sortiment_feed",
                             "error": null
                         }
@@ -2663,7 +2663,7 @@ given priority.
                 "title": "Eshop problem",
                 "body": "There seems to be a problem in your eshop.",
                 "channels": ["email"],
-                "created_at": "2016-05-11 14:43:18",
+                "created_at": "2016-05-11T14:43:18+00:00",
                 "priority": "high",
                 "scope": "owner"
             }
@@ -2705,7 +2705,7 @@ given priority.
                 "title": "User settings change",
                 "body": "Your settings has been updated.",
                 "channels": ["frontend"],
-                "created_at": "2016-05-11 14:43:18",
+                "created_at": "2016-05-11T14:43:18+00:00",
                 "priority": "low",
                 "scope": "user"
             }
@@ -2730,7 +2730,7 @@ given priority.
                 "title": "Eshop problem",
                 "body": "There seems to be a problem in your eshop.",
                 "channels": ["email"],
-                "created_at": "2016-05-11 14:43:18",
+                "created_at": "2016-05-11T14:43:18+00:00",
                 "priority": "high",
                 "scope": "owner"
             }
@@ -3949,15 +3949,15 @@ Returns list of performed audits.
                         "error": null,
                         "finished_at": null,
                         "id": "163-160503",
-                        "started_at": "2016-05-04 04:50:06+0000",
+                        "started_at": "2016-05-04T04:50:06+00:00",
                         "status": "in_progress"
                     },
                     {
                         "date": "2016-05-02",
                         "error": "required_stats_unavailable",
-                        "finished_at": "2016-05-03 20:57:09+0000",
+                        "finished_at": "2016-05-03T20:57:09+00:00",
                         "id": "163-160502",
-                        "started_at": "2016-05-03 04:50:06+0000",
+                        "started_at": "2016-05-03T04:50:06+00:00",
                         "status": "error"
                     }
                 ],
@@ -3987,9 +3987,9 @@ Returns a performed audit.
                 "date": "2016-04-19",
                 "error": null,
                 "status": "done",
-                "finished_at": "2016-04-20 12:22:49+0000",
+                "finished_at": "2016-04-20T12:22:49+00:00",
                 "product_count": 24989,
-                "started_at": "2016-04-20 11:56:50+0000",
+                "started_at": "2016-04-20T11:56:50+00:00",
                 "issues": {
                     "heureka_category_name": {
                         "ok": {
@@ -4189,7 +4189,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
                 "expired_at": null,
                 "product_count": 8367,
                 "progress": 40,
-                "started_at": "2013-04-23 13:24:55+0000",
+                "started_at": "2013-04-23T13:24:55+00:00",
                 "finished_at": null
             }
 
@@ -4223,7 +4223,7 @@ Returns list of all audits.
                         "time": 254,
                         "product_count": 8367,
                         "progress": 40,
-                        "started_at": "2013-04-23 13:24:55+0000",
+                        "started_at": "2013-04-23T13:24:55+00:00",
                         "finished_at": null
                     }
                 ],
@@ -4261,7 +4261,7 @@ Returns the requested audit resource.
                 "time": 254,
                 "product_count": 8367,
                 "progress": 40,
-                "started_at": "2013-04-23 13:24:55+0000",
+                "started_at": "2013-04-23T13:24:55+00:00",
                 "finished_at": null
             }
 
@@ -4342,7 +4342,7 @@ Returns single issue with given `id`.
     
             {
                 "id": "51768ba7ed14f444772d6138",
-                "checked_at": "2013-04-23 13:24:55+0000",
+                "checked_at": "2013-04-23T13:24:55+00:00",
                 "verdict": "error",
                 "info": {
                     "element": "PRODUCT"
@@ -4377,7 +4377,7 @@ Returns all issues (problematic validations) of a specific product.
                         "id": "51768ba7ed14f444772d6138",
                         "product_id": "51768ba7ed14f444772d6120",
                         "audit_id": "51768ba7ed14f444772d6137",
-                        "checked_at": "2013-04-23 13:24:55+0000",
+                        "checked_at": "2013-04-23T13:24:55+00:00",
                         "verdict": "error",
                         "info": {
                             "element": "PRODUCT"
@@ -4650,7 +4650,7 @@ Credentials for accessing Google APIs.
                         "is_valid": true,
                         "access_token": "abc",
                         "scope": "https://www.googleapis.com/auth/analytics.readonly",
-                        "token_expiry": "2017-06-13 16:23:07+0000"
+                        "token_expiry": "2017-06-13T16:23:07+00:00"
                     }
                 ],
                 "limit": 10,
