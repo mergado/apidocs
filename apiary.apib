@@ -2894,7 +2894,7 @@ Fetch a specific task.
             }
 
             
-## Logs [/projects/{id}/logtype/]
+## Logs [/projects/{id}/]
 Core actions like import, export, an application of rules or download by a shopping
 service are logged separately. Note that each log entry is available only for 30 days.
 
@@ -2981,6 +2981,17 @@ Fetches an apply log with the given ID.
 
 **OAuth2 Scope:** project.logs.read
 
++ Attributes
+
+    + id (string) - ID of the log.
+    + duration (number) - How long the action took.
+    + started_at (string) - When the action started.
+    + finished_at (string) - When the action ended.
+    + rules (array) - Info about each applied rule.
+    + user_id (string) - ID of the user who started the action.
+    + applied_to_all_items (boolean) - Whether the action has
+      been performed on all products.
+
 + Parameters
 
     + id (string) - ID of a log.
@@ -3006,13 +3017,25 @@ Fetches an apply log with the given ID.
                         "rule_id": "1"
                     }
                 ],
-                "user_id": "1"
+                "user_id": "1",
+                "applied_to_all_items": true
             }
 
 ### Get Apply Logs [GET /projects/{id}/applylogs/{?limit,offset,fields}]
 Fetches all apply logs for given project.
 
 **OAuth2 Scope:** project.logs.read
+
++ Attributes
+
+    + id (string) - ID of the log.
+    + duration (number) - How long the action took.
+    + started_at (string) - When the action started.
+    + finished_at (string) - When the action ended.
+    + rules (array) - Info about each applied rule.
+    + user_id (string) - ID of the user who started the action.
+    + applied_to_all_items (boolean) - Whether the action has
+      been performed on all products.
 
 + Parameters
 
@@ -3041,7 +3064,8 @@ Fetches all apply logs for given project.
                                 "rule_id": "1"
                             }
                         ],
-                        "user_id": "1"
+                        "user_id": "1",
+                        "applied_to_all_items": true
                     },
                     {
                         "duration": 1.464,
@@ -3057,11 +3081,12 @@ Fetches all apply logs for given project.
                             },
                             {
                                 "processed_products": 64, 
-                                "products": 64, 
+                                "products": 64,
                                 "rule_id": "5"
                             }
                         ],
-                        "user_id": null
+                        "user_id": null,
+                        "applied_to_all_items": false
                     }
                 ],
                 "limit": 10,
