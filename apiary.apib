@@ -1907,7 +1907,18 @@ format (e.g. from Heureka.cz to Google Merchant).
       the rule will be applied to all products.
 
 ### Create a Rule [POST]
-Creates a new rule inside the specified project.
+Creates a new rule inside the specified project. 
+
+There are two ways how to specify priority. You can either use the *sequence* parameter and specify 
+the id of the rule that the newly created one is supposed to **follow** or **precede**. 
+Or you can set the *priority* value directly. Parameters *priority* and *sequence* are optional, but at least
+one of them must be specified.
+
+Note that if there already is a rule with the given priority, the priority of the new rule will be adjusted 
+so that the new rule follows the one with conflicting priority.
+
+To determine the priority on server side, we first check the value of *sequence[after]*, 
+then the value of *sequence [before]* and lastly the value of *priority* itself.
 
 **OAuth2 Scope:** project.rules.write
 
@@ -1928,7 +1939,10 @@ Creates a new rule inside the specified project.
                 "type": "rewriting",
                 "project_element_id": "5",
                 "applies": true,
-                "priority": 3,
+                "priority": "3",
+                "sequence": {
+                    "after": "1"
+                }
                 "is_deletable": true,
                 "is_movable": true,
                 "is_editable": true,
@@ -1963,7 +1977,7 @@ Creates a new rule inside the specified project.
                 "is_movable": true,
                 "is_editable": true,
                 "is_pausable": true,
-                "priority": 3,
+                "priority": "3.5",
                 "data": {
                     "new_content": "%CATEGORYTEXT%"
                 },
@@ -1994,7 +2008,7 @@ Creates a new rule inside the specified project.
                 "project_element_id": "5",
                 "applies": true,
                 "deletable": true,
-                "priority": 3,
+                "priority": "3",
                 "type": "batch_rewriting",
                 "data": [
                     {
@@ -2027,7 +2041,7 @@ Creates a new rule inside the specified project.
                 "is_pausable": true,
                 "id": "39",
                 "name": "Cena 2 BATCH",
-                "priority": 3,
+                "priority": "3",
                 "project_element_id": "5",
                 "project_id": "33",
                 "type": "batch_rewriting",
@@ -2086,7 +2100,7 @@ Lists all rules' instances that were created inside the specified project.
                         "is_editable": true,
                         "is_pausable": true,
                         "name": null,
-                        "priority": 0,
+                        "priority": "0",
                         "type": "format_converter"
                     },
                     {
@@ -2099,7 +2113,7 @@ Lists all rules' instances that were created inside the specified project.
                         "is_editable": true,
                         "is_pausable": true,
                         "name": "Cena",
-                        "priority": 3,
+                        "priority": "3",
                         "type": "batch_rewriting"
                     }
                 ],
@@ -2134,7 +2148,7 @@ Returns a specific rule instance.
                 "is_editable": true,
                 "is_pausable": true,
                 "name": "Cena",
-                "priority": 3,
+                "priority": "3",
                 "type": "rewriting",
                 "data": {
                     "new_content": "%CATEGORYTEXT%"
@@ -2163,7 +2177,8 @@ Delete the specified rule.
             Content-Type: application/json
 
 ### Update a Rule [PATCH /rules/{id}/]
-Performes update of rule's attributes.
+Performs update of rule's attributes. Refer to the doc for rule creation to find out more about
+how priority is calculated.
 
 **OAuth2 Scope:** project.rules.write
 
@@ -2205,7 +2220,9 @@ Performes update of rule's attributes.
                 "is_editable": true,
                 "is_pausable": true,
                 "name": "PRODUCTNAME: Added Free Car",
-                "priority": 3,
+                "sequence": {
+                    "before": "111"
+                }
                 "type": "rewriting",
                 "data": {
                     "new_content": "%CATEGORYTEXT% + Car"
