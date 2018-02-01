@@ -933,7 +933,7 @@ Show additional eshop information and statistics.
                 ]
             }
 
-### Get Item Stats Report [GET /zbozi/shops/{id}/stats-report/{?datetime_from,datetime_to}]
+### Get Item Stats Report [GET /zbozi/shops/{id}/stats-report/{?datetime_from,datetime_to,fields,limit,offset}]
 Gathers Item Stats Report from Zbozi.cz. There are the following limitations:
 * Granularity is one hour.
 * Stats for a time interval are available 15 minutes after the end of the interval.
@@ -958,7 +958,7 @@ Note that the shop must be connected to a Zbozi.cz shop, otherwise 404 is return
     + Body
 
             {
-                "items": [
+                "data": [
                     {
                         "avg_position": 0,
                         "avg_top_position": 0,
@@ -992,8 +992,8 @@ Note that the shop must be connected to a Zbozi.cz shop, otherwise 404 is return
                         "product_name": "AMD FX-8300W"
                     }
                 ],
-                "status": 200,
-                "status_message": "OK"
+                "limit": 10,
+                "offset": 0
             }
 
 
