@@ -1909,16 +1909,18 @@ format (e.g. from Heureka.cz to Google Merchant).
 ### Create a Rule [POST]
 Creates a new rule inside the specified project. 
 
-There are two ways how to specify priority. You can either use the *sequence* parameter and specify 
+There are two ways how to specify priority. You can either use the *placement* parameter and specify 
 the id of the rule that the newly created one is supposed to **follow** or **precede**. 
-Or you can set the *priority* value directly. Parameters *priority* and *sequence* are optional, but at least
+Or you can set the *priority* value directly. Parameters *priority* and *placement* are optional, but at least
 one of them must be specified.
 
 Note that if there already is a rule with the given priority, the priority of the new rule will be adjusted 
-so that the new rule follows the one with conflicting priority.
+so that the new rule follows the one with conflicting priority. Also note that *placement* is only regarded
+when a rule is created or updated. Another rule may be placed between the created rule and the one it was originally
+placed before / after later on.
 
-To determine the priority on server side, we first check the value of *sequence[after]*, 
-then the value of *sequence [before]* and lastly the value of *priority* itself.
+To determine the priority on server side, we first check the value of *placement[after]*, 
+then the value of *placement [before]* and lastly the value of *priority* itself.
 
 **OAuth2 Scope:** project.rules.write
 
@@ -1940,7 +1942,7 @@ then the value of *sequence [before]* and lastly the value of *priority* itself.
                 "project_element_id": "5",
                 "applies": true,
                 "priority": "3",
-                "sequence": {
+                "placement": {
                     "after": "1"
                 }
                 "is_deletable": true,
@@ -2220,7 +2222,7 @@ how priority is calculated.
                 "is_editable": true,
                 "is_pausable": true,
                 "name": "PRODUCTNAME: Added Free Car",
-                "sequence": {
+                "placement": {
                     "before": "111"
                 }
                 "type": "rewriting",
