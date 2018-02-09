@@ -1016,6 +1016,7 @@ and it is very common that one eshop has several projects each maaged for a diff
     + pairing_elements (string) - List of pairing elements (used for sychronization of XML feed).
     + readonly (boolean) - If the project is set to readonly, import of XML feed is forbidden,
       rules cannot be applied, export is skipped.
+    + is_paused (boolean) - If the project is paused, automatic scheduled rebuilds are skipped.
     + rules_changed_at (string) - The last time someone created, deleted or updated a rule in the project.
     + slug (string) - Unique identifier used in output URL of the exported XML feed.
     + turned_off (boolean) - Whether the project was turned off or not.
@@ -1060,6 +1061,7 @@ Returns projects of an eshop.
                         "output_format": "billiger.de",
                         "pairing_elements": "URL",
                         "readonly": false,
+                        "is_paused": false,
                         "rules_changed_at": "2015-11-11T15:43:07+00:00",
                         "slug": "example-com-heureka-cz-asdf",
                         "turned_off": true,
@@ -1102,6 +1104,7 @@ Returns a project with the given ID.
                 "output_format": "billiger.de",
                 "pairing_elements": "URL",
                 "readonly": false,
+                "is_paused": false,
                 "rules_changed_at": "2015-11-11T15:43:07+00:00",
                 "slug": "example-com-heureka-cz-asdf",
                 "turned_off": true,
@@ -1157,6 +1160,7 @@ to force Mergado to apply all rules to products during the next (lazy) rebuild.
                 "output_format": "billiger.de",
                 "pairing_elements": "URL",
                 "readonly": false,
+                "is_paused": false,
                 "rules_changed_at": "2015-11-18T13:20:21+00:00",
                 "slug": "example-com-heureka-cz-asdf",
                 "turned_off": true,
