@@ -933,69 +933,6 @@ Show additional eshop information and statistics.
                 ]
             }
 
-### Get Item Stats Report [GET /zbozi/shops/{id}/stats-report/{?datetime_from,datetime_to,fields,limit,offset}]
-Gathers Item Stats Report from Zbozi.cz. There are the following limitations:
-* Granularity is one hour.
-* Stats for a time interval are available 15 minutes after the end of the interval.
-  That means that statistics for [9:00, 13:00) can not be queried before 13:15.
-* Max interval length is 24 hours.
-* Max 100000 items is returned.
-
-Note that the shop must be connected to a Zbozi.cz shop, otherwise 404 is returned.
-
-+ Parameters
-
-    + id (string) - ID of the shop.
-    + datetime_from (datetime) - Start of the interval from which to gather statistics.
-    + datetime_to (datetime) - End of the interval from which to gather statistics.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-            {
-                "data": [
-                    {
-                        "avg_position": 0,
-                        "avg_top_position": 0,
-                        "category_path": "Počítače/Počítačové komponenty/Procesory",
-                        "clicks": {
-                            "category_item": 0,
-                            "category_search_item": 0,
-                            "product_item": 1,
-                            "product_top_item": 0,
-                            "search_item": 0,
-                            "total": 1
-                        },
-                        "clicks_price": {
-                            "category_item": 0,
-                            "category_search_item": 0,
-                            "product_item": 1,
-                            "product_top_item": 0,
-                            "search_item": 0,
-                            "total": 1
-                        },
-                        "hits": {
-                            "category_item": 0,
-                            "category_search_item": 0,
-                            "product_item": 0,
-                            "product_top_item": 0,
-                            "search_item": 0,
-                            "total": 0
-                        },
-                        "item_id": "12345",
-                        "product_id": 123456,
-                        "product_name": "AMD FX-8300W"
-                    }
-                ],
-                "limit": 10,
-                "offset": 0
-            }
-
 
 ## Projects [/shops/{id}/projects/{?limit,offset,fields}]
 Project is created when a user imports an XML feed in Mergado. This feed may come in different formats
