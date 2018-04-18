@@ -4272,6 +4272,76 @@ Returns list of issues of an audit.
                 "offset": 0
             }
 
+## Logs of the Import of Statistics [/statslogs/{id}/]
+
+### Get a Log of the Import of Statistics [GET /statslogs/{id}/{?fields}]
+Returns a *log* of the import of statistics with the given ID.
+
+**OAuth2 Scope:** shop.stats.read
+
++ Parameters
+
+    + id (string) - ID of a log.
+    
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "id": "130",
+                "type": "heureka",
+                "status": "done",
+                "error": null,
+                "items": 21839,
+                "created_at": "2014-07-02T11:54:37.123456+00:00",
+                "finished_at": "2014-07-02T11:56:00.123456+00:00",
+                "shop_id": "2"
+            }
+
+### List All Logs of a Shop [GET /shops/{id}/statslogs/{?limit,offset,fields}]
+Returns all *logs* of the import of statistics.
+
+**OAuth2 Scope:** shop.stats.read
+
++ Parameters
+
+    + id (string) - ID of the shop.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            [
+                {
+                    "id": "130",
+                    "type": "heureka",
+                    "status": "done",
+                    "error": null,
+                    "items": 21839,
+                    "created_at": "2014-07-02T11:54:37.123456+00:00",
+                    "finished_at": "2014-07-02T11:56:00.123456+00:00",
+                    "shop_id": "2"
+                },
+                {
+                    "id": "129",
+                    "type": "sortiment",
+                    "status": "error",
+                    "error": "heureka_auth_error",
+                    "items": null,
+                    "created_at": "2014-07-02T11:54:37.123456+00:00",
+                    "finished_at": "2014-07-02T11:56:00.123456+00:00",
+                    "shop_id": "2"
+                }
+            ]
+
 # Group Feed Audits
 Audit of product feed.
 
