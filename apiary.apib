@@ -3469,11 +3469,8 @@ Updates an app enabled for the given project.
 # Group Statistics
 API for statistics collected from eshops, shopping services and other resources.
 
-**Warning:** Statistics are currently collected only for the following
-export (project) formats:
-
-* `heureka.cz`, `heureka.sk` - all listed endpoints are supported.
-* `zbozi.cz` - only eshop's statistics can be requested.
+**Warning:** Product and category statistics are currently collected only for `heureka.cz` and `heureka.sk`
+export (project) formats. This means that Audits are also performed on stats from these services.
 
 ## Eshop Statistics [/shops/{id}/stats/{?limit,offset,fields}]
 Collections here represent collected statistics of eshops from various
@@ -3482,7 +3479,7 @@ comparison shopping services (Zboží.cz, Heureka.cz, etc.).
 ### Get Statistics [GET]
 Returns latest summarized statistics and other information of an eshop.
 
-**OAuth2 Scope:** project.stats.read
+**OAuth2 Scope:** shop.stats.read
 
 + Attributes
 
@@ -3714,7 +3711,11 @@ Return a source of statistics.
 
 
 ## Product Statistics [/products/{id}/stats/]
-Statistics of products, this includes attributes like URL, PRICE etc.
+Statistics of products, including attributes like url, price etc. 
+If a project with format other than heureka is supplied, 
+only the common stats (`id`, `item_id`, `date`, `shop`, `cost`, `is_starter` and `is_topseller`) 
+will be returned.
+Note that `product_id` will not be included if mapping from `item_id` to `product_id` failed.
 
 + Attributes
 
@@ -3807,7 +3808,8 @@ Statistics of products, this includes attributes like URL, PRICE etc.
                 + decreased
 
 ### Statistics of a Product [GET /products/{id}/stats/{?fields,date}]
-Retruns statistics of a product, by default only the latest statistics (usualy from yesterday)
+Retruns the product statistics relevant to the project format. 
+By default, only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`.
 
 **OAuth2 Scope:** project.stats.read
@@ -3871,9 +3873,12 @@ are returned. This can be changed by the query string parameter `date`.
             }
  
  
-### Statistics of All Products [GET /projects/{id}/stats/products/{?fields,limit,offset,date,filter_by}]
-Returns statistics of all products, by default only the latest statistics (usualy from yesterday)
-are returned. This can be changed by the query string parameter `date`
+### Statistics of All Project Products [GET /projects/{id}/stats/products/{?fields,limit,offset,date,filter_by}]
+Returns statistics of all products associated with the project.
+By default, only the latest statistics (usualy from yesterday)
+are returned. This can be changed by the query string parameter `date`. Only the stats
+relevant to the project format are returned. Note that `product_id` is not returned if mapping from `item_id` to
+`product_id` failed.
 
 **OAuth2 Scope:** project.stats.read
 
@@ -3926,7 +3931,6 @@ are returned. This can be changed by the query string parameter `date`
                     }
                 },
                 {
-                    "product_id": null,
                     "date": "2015-02-02",
                     "stats": {
                         "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
@@ -3949,9 +3953,12 @@ are returned. This can be changed by the query string parameter `date`
                 "offset": 0
             }
 
-### Statistics of All Products using POST [POST /projects/{id}/stats/products/]
-Returns statistics of all products by POST, by default only the latest statistics (usualy from yesterday)
-are returned. This can be changed by the field `date`
+### Statistics of All Project Products using POST [POST /projects/{id}/stats/products/]
+Returns statistics of all products associated with the project.
+By default, only the latest statistics (usualy from yesterday)
+are returned. This can be changed by the query string parameter `date`. Only the stats
+relevant to the project format are returned. Note that `product_id` is not returned if mapping from `item_id` to
+`product_id` failed.
 
 **OAuth2 Scope:** project.stats.read
 
@@ -4017,7 +4024,174 @@ are returned. This can be changed by the field `date`
                         }
                     },
                     {
-                        "product_id": null,
+                        "date": "2015-02-02",
+                        "stats": {
+                            "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
+                            "cost": 1500.7,
+                            "delivery_date": 0,
+                            "heureka_cpc": null,
+                            "imgurl": "https://www.example.com/img/924.jpg",
+                            "is_starter": null,
+                            "is_topseller": null,
+                            "item_id": "924",
+                            "manufacturer": "Aqua Computer",
+                            "name": "Aqua Computer Cuplex Kryos XT",
+                            "price": 1651,
+                            "price_vat": 1997.7,
+                            "url": "https://www.example.com/aqua-computer-cuplex-kryos-xt"
+                        }
+                    }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+ 
+ 
+### Statistics of All Shop Products [GET /shops/{id}/stats/products/{?fields,limit,offset,date,filter_by}]
+Returns statistics of all products associated with the shop. 
+By default, only the latest statistics (usualy from yesterday)
+are returned. This can be changed by the query string parameter `date`. Note that `product_id` is not returned.
+
+**OAuth2 Scope:** shop.stats.read
+
++ Parameters
+
+    + id (string) - ID of the shop.
+    + date (date, optional) - Date of the collection of the requested statistics.
+    + filter_by (string, optional) - Currently only filtering by `item id` is supported.
+      See the section [Additional GET parameters](#introduction/additional-get-parameters)
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                {
+                    "date": "2015-02-02",
+                    "stats": {
+                        "categorytext": "Náhradní díly | LCD Display pro notebook",
+                        "cost": 1070.4,
+                        "delivery_date": 0,
+                        "heureka_avg_position": 1,
+                        "heureka_cpc": 2.05,
+                        "heureka_min_cpc": 1.5,
+                        "heureka_min_price": 2621,
+                        "heureka_name": "10.1 LCD LED Display univerzální notebook",
+                        "heureka_price_position": 1,
+                        "heureka_stats_clicks": 0,
+                        "heureka_stats_cost_of_sales": 0,
+                        "heureka_stats_cpc": 0,
+                        "heureka_stats_sales": 0,
+                        "heureka_stats_total_cost": 0,
+                        "heureka_stats_total_orders": 0,
+                        "heureka_url": "http://displeje-pro-notebooky.heureka.cz/10_1-lcd-led-display-univerzalni-notebook/",
+                        "imgurl": "https://www.example.com/img/990.jpg",
+                        "is_starter": null,
+                        "is_topseller": null,
+                        "item_id": "990",
+                        "manufacturer": "Samsung / Samsung LTN",
+                        "name": "10.1 LCD LED Display univerzální notebook",
+                        "price": 2166,
+                        "price_vat": 2620.9,
+                        "url": "https://www.example.com/101quot-lcd-led-display-univerzalni-notebook"
+                    }
+                },
+                {
+                    "date": "2015-02-02",
+                    "stats": {
+                        "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
+                        "cost": 1500.7,
+                        "delivery_date": 0,
+                        "heureka_cpc": null,
+                        "imgurl": "https://www.example.com/img/924.jpg",
+                        "is_starter": null,
+                        "is_topseller": null,
+                        "item_id": "924",
+                        "manufacturer": "Aqua Computer",
+                        "name": "Aqua Computer Cuplex Kryos XT",
+                        "price": 1651,
+                        "price_vat": 1997.7,
+                        "url": "https://www.example.com/aqua-computer-cuplex-kryos-xt"
+                    }
+                }
+                ],
+                "limit": 10,
+                "offset": 0
+            }
+
+### Statistics of All Shop Products using POST [POST /shops/{id}/stats/products/]
+Returns statistics of all products associated with the shop. 
+By default, only the latest statistics (usualy from yesterday)
+are returned. This can be changed by the query string parameter `date`.
+
+**OAuth2 Scope:** shop.stats.read
+
++ Request
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Attributes (object)
+        + date (string) - Date of the collection of the requested statistics.
+        + filter_by (string) - Currently only filtering by `item id` is supported.
+          See the section [Additional GET parameters](#introduction/additional-get-parameters).
+    
+    + Body
+    
+            {
+                "date": "2016-02-02",
+                "filter_by": {
+                    "item_id__in": ["a", "b", "c"]
+                }
+            }
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+
+    + Body
+    
+            {
+                "data": [
+                    {
+                        "date": "2015-02-02",
+                        "stats": {
+                            "categorytext": "Náhradní díly | LCD Display pro notebook",
+                            "cost": 1070.4,
+                            "delivery_date": 0,
+                            "heureka_avg_position": 1,
+                            "heureka_cpc": 2.05,
+                            "heureka_min_cpc": 1.5,
+                            "heureka_min_price": 2621,
+                            "heureka_name": "10.1 LCD LED Display univerzální notebook",
+                            "heureka_price_position": 1,
+                            "heureka_stats_clicks": 0,
+                            "heureka_stats_cost_of_sales": 0,
+                            "heureka_stats_cpc": 0,
+                            "heureka_stats_sales": 0,
+                            "heureka_stats_total_cost": 0,
+                            "heureka_stats_total_orders": 0,
+                            "heureka_url": "http://displeje-pro-notebooky.heureka.cz/10_1-lcd-led-display-univerzalni-notebook/",
+                            "imgurl": "https://www.example.com/img/990.jpg",
+                            "is_starter": null,
+                            "is_topseller": null,
+                            "item_id": "990",
+                            "manufacturer": "Samsung / Samsung LTN",
+                            "name": "10.1 LCD LED Display univerzální notebook",
+                            "price": 2166,
+                            "price_vat": 2620.9,
+                            "url": "https://www.example.com/101quot-lcd-led-display-univerzalni-notebook"
+                        }
+                    },
+                    {
                         "date": "2015-02-02",
                         "stats": {
                             "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
@@ -4055,7 +4229,7 @@ A collection of statistics about categories.
 Returns latest statistics of feed's categories (for example number of paired products
 for given `CATEGORYTEXT`).
 
-**OAuth2 Scope:** project.stats.read
+**OAuth2 Scope:** shop.stats.read
 
 + Parameters
 
@@ -4088,7 +4262,7 @@ for given `CATEGORYTEXT`).
                 "offset": 0
             }
 
-## Audited Statistics [/projects/{id}/stats/audits/]
+## Audited Statistics [/shops/{id}/stats/audits/]
 Audits evaluated in Mergado from the available data (other statistics).
 For example, we are able to detect if the offered price is too high as we store
 positions of products on Heureka.
@@ -4108,10 +4282,10 @@ positions of products on Heureka.
     + product_count (number) - Number of products in the audit.
     + issues (object) - Occurrences of issues in the audit.
 
-### List of Audits [GET /projects/{id}/stats/audits/{?fields,limit,offset}]
+### List of Audits [GET /shops/{id}/stats/audits/{?fields,limit,offset}]
 Returns list of performed audits.
 
-**OAuth2 Scope:** project.stats.read
+**OAuth2 Scope:** shop.stats.read
 
 + Parameters
 
@@ -4151,7 +4325,7 @@ Returns list of performed audits.
 ### Get an Audit [GET /stats/audits/{id}/{?fields}]
 Returns a performed audit.
 
-**OAuth2 Scope:** project.stats.read
+**OAuth2 Scope:** shop.stats.read
 
 + Parameters
 
@@ -4230,7 +4404,7 @@ Returns a performed audit.
 ### List Issues [GET /stats/audits/{id}/issues/{?fields,limit,offset,filter_by,order_by}]
 Returns list of issues of an audit.
 
-**OAuth2 Scope:** project.stats.read
+**OAuth2 Scope:** shop.stats.read
 
 + Attributes
 
