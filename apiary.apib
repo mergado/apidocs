@@ -3753,6 +3753,7 @@ Note that `product_id` will not be included if mapping from `item_id` to `produc
           attribute. Unfortunately at the moment no eshop provides this information.
         + mergado_is_topseller (boolean) - Whether the product is one of the most
           selling products in the eshop.
+        + heureka_id (string) - Product id from sortiment report
         + heureka_categorytext (string) - Value of the `CATEGORYTEXT` element.
         + heureka_delivery_date (string) - Delivery date set by the eshop.
         + heureka_shop_url (string) - URL of the product in eshop.
@@ -3892,6 +3893,7 @@ The stats are collected daily.
                     {
                         "date": "2018-08-08",
                         "stats": {
+                            "heureka_id": "123",
                             "heureka_shop_url": "https://www.example.cz/eshop/teplomer-s-vlhkomerem-tfa-30-5027-02.html",
                             "heureka_card_name": "TFA 30.5027.02",
                             "heureka_name": "Teploměr s vlhkoměrem TFA 30.5027.02",
@@ -3938,6 +3940,7 @@ The stats are collected daily.
                     {
                         "date": "2018-08-07",
                         "stats": {
+                            "heureka_id": "124",
                             "heureka_shop_url": "https://www.example.cz/eshop/teplomer-s-vlhkomerem-tfa-30-5027-02.html",
                             "heureka_card_name": "TFA 30.5027.02",
                             "heureka_name": "Teploměr s vlhkoměrem TFA 30.5027.02",
@@ -4016,6 +4019,7 @@ relevant to the project format are returned. Note that `product_id` is not retur
                     {
                         "date": "2018-08-08",
                         "stats": {
+                            "heureka_id": "123",
                             "heureka_shop_url": "https://www.example.cz/eshop/teplomer-s-vlhkomerem-tfa-30-5027-02.html",
                             "heureka_card_name": "TFA 30.5027.02",
                             "heureka_name": "Teploměr s vlhkoměrem TFA 30.5027.02",
@@ -4062,6 +4066,7 @@ relevant to the project format are returned. Note that `product_id` is not retur
                     {
                         "date": "2018-08-08",
                         "stats": {
+                            "heureka_id": "124",
                             "heureka_shop_url": "https://www.example.cz/eshop/zvlhcovac-vzduchu-lanaform-living.html",
                             "heureka_card_name": "Lanaform Living LA120602",
                             "heureka_name": "Lanaform Living LA120602",
@@ -4151,6 +4156,7 @@ relevant to the project format are returned. Note that `product_id` is not retur
                     {
                         "date": "2018-08-08",
                         "stats": {
+                            "heureka_id": "123",
                             "heureka_shop_url": "https://www.example.cz/eshop/teplomer-s-vlhkomerem-tfa-30-5027-02.html",
                             "heureka_card_name": "TFA 30.5027.02",
                             "heureka_name": "Teploměr s vlhkoměrem TFA 30.5027.02",
@@ -4197,6 +4203,7 @@ relevant to the project format are returned. Note that `product_id` is not retur
                     {
                         "date": "2018-08-08",
                         "stats": {
+                            "heureka_id": "124",
                             "heureka_shop_url": "https://www.example.cz/eshop/zvlhcovac-vzduchu-lanaform-living.html",
                             "heureka_card_name": "Lanaform Living LA120602",
                             "heureka_name": "Lanaform Living LA120602",
@@ -4272,6 +4279,7 @@ are returned. This can be changed by the query string parameter `date`. Note tha
                     {
                         "date": "2018-08-08",
                         "stats": {
+                            "heureka_id": "123",
                             "heureka_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-max-bio-sprej-spf-50.html",
                             "heureka_card_name": "Bioderma Photoderm Max spray na opalování bez parfemace SPF50+ 200 ml",
                             "heureka_name": "BIODERMA Photoderm MAX BIO Sprej SPF 50+ 200 ml",
@@ -4336,6 +4344,7 @@ are returned. This can be changed by the query string parameter `date`. Note tha
                     {
                         "date": "2018-08-08",
                         "stats": {
+                            "heureka_id": "124",
                             "heureka_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-family-sprej-spf30.html",
                             "heureka_name": "BIODERMA Photoderm Family – Sprej SPF 30",
                             "heureka_delivery_date": 5,
@@ -4443,6 +4452,7 @@ are returned. This can be changed by the query string parameter `date`.
                     {
                         "date": "2018-08-08",
                         "stats": {
+                            "heureka_id": "123",
                             "heureka_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-max-bio-sprej-spf-50.html",
                             "heureka_card_name": "Bioderma Photoderm Max spray na opalování bez parfemace SPF50+ 200 ml",
                             "heureka_name": "BIODERMA Photoderm MAX BIO Sprej SPF 50+ 200 ml",
@@ -4507,6 +4517,7 @@ are returned. This can be changed by the query string parameter `date`.
                     {
                         "date": "2018-08-08",
                         "stats": {
+                            "heureka_id": "124",
                             "heureka_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-family-sprej-spf30.html",
                             "heureka_name": "BIODERMA Photoderm Family – Sprej SPF 30",
                             "heureka_delivery_date": 5,
