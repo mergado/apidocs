@@ -54,6 +54,14 @@ a client ID and a secret key is assigned to your application).
 * [Basics of OAuth 2.0 in Mergado Apps](http://mergado.github.io/docs/api/authorization.html)
 * [List of all OAuth scopes](http://mergado.github.io/docs/api/oauth-scopes.html)
 
+## Versioning
+
+Versioning is implemented using the `Accept` request header. The valid syntax is:
+`application/mergado-vx+json`, eg. `application/mergado-v2+json`.
+If no Accept header is provided or the syntax is invalid, the _default_ version is used (v1).
+
+Note that all request and response examples match the latest version.
+
 # Group Base
 Various API resources that don't require any authentication.
 
@@ -813,11 +821,13 @@ Show additional eshop information and statistics.
                 + (object)
                     + type (enum[string])
                         + members
-                            + mergado.output_feed
+                            + mergado.output_feed_heureka
+                            + mergado.output_feed_zbozi
                             + mergado.costs_feed
+                            + mergado.audit
                             + heureka.conversions_feed
                             + heureka.sortiment_feed
-                            + mergado.report
+                            + zbozi.product_stats_report
                     + status (enum[string])
                         + members
                             + done
@@ -854,85 +864,92 @@ Show additional eshop information and statistics.
     + Body
     
             {
-                "number_of_projects": 3,
+                "number_of_projects": 2,
                 "stats_collection": {
                     "status": "done",
                     "error": null,
-                    "started_at": "2015-11-04T12:31:18+00:00",
-                    "finished_at": "2015-11-04T14:31:18+00:00",
+                    "started_at": "2018-08-09T06:50:16.415956+00:00",
+                    "finished_at": "2018-08-09T07:56:48.982153+00:00",
                     "info": [
                         {
                             "status": "done",
-                            "finished_at": "2017-10-20T04:53:11+00:00",
-                            "started_at": "2017-10-20T04:50:03+00:00",
-                            "type": "heureka.conversions_feed",
-                            "error": null
+                            "error": null,
+                            "finished_at": "2018-08-09T06:51:40.964592+00:00",
+                            "started_at": "2018-08-09T06:50:16.415956+00:00",
+                            "type": "mergado.output_feed_heureka"
                         },
                         {
                             "status": "done",
-                            "finished_at": "2017-10-20T04:51:53+00:00",
-                            "started_at": "2017-10-20T04:50:03+00:00",
-                            "type": "mergado.output_feed",
-                            "error": null
+                            "error": null,
+                            "finished_at": "2018-08-09T07:02:38.118057+00:00",
+                            "started_at": "2018-08-09T06:50:16.416440+00:00",
+                            "type": "mergado.output_feed_zbozi"
                         },
                         {
                             "status": "done",
-                            "finished_at": "2017-10-20T05:33:57+00:00",
-                            "started_at": "2017-10-20T04:50:03+00:00",
-                            "type": "mergado.report",
-                            "error": null
+                            "error": null,
+                            "finished_at": "2018-08-09T07:11:08.220681+00:00",
+                            "started_at": "2018-08-09T06:50:16.416785+00:00",
+                            "type": "heureka.conversions_feed"
                         },
                         {
                             "status": "done",
-                            "finished_at": "2017-10-20T05:33:45+00:00",
-                            "started_at": "2017-10-20T04:50:03+00:00",
-                            "type": "heureka.sortiment_feed",
-                            "error": null
+                            "error": null,
+                            "finished_at": "2018-08-09T07:16:03.342840+00:00",
+                            "started_at": "2018-08-09T06:50:16.417138+00:00",
+                            "type": "mergado.costs_feed"
+                        },
+                        {
+                            "status": "done",
+                            "error": null,
+                            "finished_at": "2018-08-09T07:56:48.820114+00:00",
+                            "started_at": "2018-08-09T06:50:16.418164+00:00",
+                            "type": "heureka.sortiment_feed"
+                        },
+                        {
+                            "status": "done",
+                            "error": null,
+                            "finished_at": "2018-08-09T07:56:48.901180+00:00",
+                            "started_at": "2018-08-09T06:50:16.418496+00:00",
+                            "type": "zbozi.product_stats_report"
+                        },
+                        {
+                            "status": "done",
+                            "error": null,
+                            "finished_at": "2018-08-09T07:56:48.982153+00:00",
+                            "started_at": "2018-08-09T06:50:16.418843+00:00",
+                            "type": "mergado.audit"
                         }
                     ]
                 },
                 "connections": [
                     {
-                        "currency": "EUR",
-                        "name": "heureka.sk",
-                        "status": "ok",
-                        "error": null,
-                        "info": {
-                            "name": "Example.com",
-                            "valid_credentials": true,
-                            "heureka_id": "321",
-                            "username": "test@example.com",
-                            "url_slug": "example-com"
-                        }
-                    },
-                    {
+                        "name": "heureka.cz",
                         "currency": "CZK",
-                        "name": "zbozi.cz",
-                        "status": "error",
-                        "error": "zbozi_auth_error",
+                        "error": null,
+                        "status": "ok",
                         "info": {
-                            "name": "Example.com",
-                            "valid_credentials": false,
-                            "zbozi_id": "123",
-                            "username": "test@example.com"
+                            "heureka_id": "1234",
+                            "name": "example.cz",
+                            "url_slug": "example-cz-eshop",
+                            "username": "user@example.cz",
+                            "valid_credentials": true
                         }
                     },
                     {
-                        "currency": null,
-                        "name": "google_analytics",
-                        "status": "ok",
+                        "name": "zbozi.cz",
+                        "currency": "CZK",
                         "error": null,
+                        "status": "ok",
                         "info": {
-                            "name": "Example.com",
-                            "valid_credentials": true,
-                            "credentials_id": "325",
-                            "account_id": "193",
-                            "profile_id": "796"
+                            "zbozi_id": "1234",
+                            "name": "example.cz",
+                            "username": "user@example.cz",
+                            "valid_credentials": true
                         }
                     }
                 ]
             }
-
 
 ## Projects [/shops/{id}/projects/{?limit,offset,fields}]
 Project is created when a user imports an XML feed in Mergado. This feed may come in different formats
@@ -3717,10 +3734,8 @@ Return a source of statistics.
 
 
 ## Product Statistics [/products/{id}/stats/]
-Statistics of products, including attributes like url, price etc. 
-If a project with format other than heureka is supplied, 
-only the common stats (`id`, `item_id`, `date`, `shop`, `cost`, `is_starter` and `is_topseller`) 
-will be returned.
+Statistics of products, including attributes like url, price_vat etc. 
+Common fields and fields relevant to the project format are returned.
 Note that `product_id` will not be included if mapping from `item_id` to `product_id` failed.
 
 + Attributes
@@ -3730,93 +3745,131 @@ Note that `product_id` will not be included if mapping from `item_id` to `produc
     + stats (object) - The statistics.
 
         + item_id (string) - ITEM_ID of the product.
-        + categorytext (string) - Value of the `CATEGORYTEXT` element.
-        + delivery_date (string) - Delivery date set by the eshop.
-        + url (string) - URL of the product in eshop.
-        + name (string) - Name of the product in eshop.
-        + price (number) - Price without VAT of the product.
-        + price_vat (number) - Price (with VAT included) of the product.
-        + manufacturer (string) - Manufacturer of the product set by the eshop.
-        + imgurl (string) - URL of the product's image.
-        + cost (number) - How much the eshop had to pay for the product.
-        + is_starter (boolean) - This indicates whether the product is something
+        + mergado_cost (number) - How much the eshop had to pay for the product.
+        + mergado_is_starter (boolean) - This indicates whether the product is something
           you usually buy with something else. Or to put it differently, let's
           say you buy the body of a DLSR (e.g. Nikon D5200) than it is very
           likely you also buy a lens or a tripod. This is indicated by this
           attribute. Unfortunately at the moment no eshop provides this information.
-        + is_topseller (boolean) - Whether the product is one of the most
+        + mergado_is_topseller (boolean) - Whether the product is one of the most
           selling products in the eshop.
+        + heureka_id (string) - Product id from sortiment report
+        + heureka_categorytext (string) - Value of the `CATEGORYTEXT` element.
+        + heureka_delivery_date (string) - Delivery date set by the eshop.
+        + heureka_shop_url (string) - URL of the product in eshop.
+        + heureka_name (string) - Name of the product in eshop.
+        + heureka_price_vat (number) - Price (with VAT included) of the product.
+        + heureka_manufacturer (string) - Manufacturer of the product set by the eshop.
+        + heureka_imgurl (string) - URL of the product's image.
         + heureka_avg_position (number) - Average bidding position of the product
           on Heureka. Unfortunately this is not very reliable information as
           the average is taken only from all actual clicks on the product.
           Also the product must be very popular, otherwise the information is
           completely missing.
         + heureka_category (string) - Name of category Heureka paired this product into.
-        + heureka_cpc (number) - Offered cost per click to Heureka by the eshop.
-        + heureka_is_paired (boolean) - Whether the product is paired to a
-          category on Heureka.
+        + heureka_feed_cpc (number) - Offered cost per click to Heureka by the eshop.
         + heureka_max_prices (array) - Ordered list of maximal prices of the
           product offered by other eshops.
-        + heureka_min_praces (array) - Ordered list of minimal prices of the
+        + heureka_min_prices (array) - Ordered list of minimal prices of the
           product offered by other eshops.
         + heureka_min_cpc (number) - The minimal CPC Heureka accepts for the
           product.
         + heureka_min_price (number) - Minimal offered price for the product
           from all eshops.
-        + heureka_name (string) - Name of the product shown on Heureka.
+        + heureka_card_name (string) - Name of the product shown on Heureka.
         + heureka_popularity (number) - Popularity of the product on Heureka.
           The bigger, the more popular. There is no maximal popularity of
           product since Heureka doesn't provide such information.
         + heureka_price_position (number) - Position of the product on by price
           on Heureka.
-        + heureka_profit (number) - Calculated eshop's profit from advertising
-          the product on Heureka.
         + heureka_segment (string) - The name of the section on Heureka the
           product was paired into.
         + heureka_shops_count (number) - Number of eshops that offer the same
           product on Heureka.
-        + heureka_stats_clicks (number) - Number of clicks on the product
+        + heureka_clicks (number) - Number of clicks on the product
           offered by this eshop on Heureka.
-        + heureka_stats_cost_of_sales (number) - Cost of sales for the product
+        + heureka_cost_of_sales (number) - Cost of sales for the product
           on Heureka.
-        + heureka_stats_cpc (number) - Paid costs per click for the product
+        + heureka_cpc (number) - Paid costs per click for the product
           on Heureka.
-        + heureka_stats_sales (number) - Sales from the product on Heureka.
-        + heureka_stats_total_cost (number) Total cost for advertisement of
+        + heureka_sales (number) - Sales from the product on Heureka.
+        + heureka_total_cost (number) Total cost for advertisement of
           the product on Heureka.
-        + heureka_stats_total_orders (number) - Number of total orders of
+        + heureka_total_orders (number) - Number of total orders of
           this product on Heureka.
         + heureka_url (string) - URL of the product on Heureka.
-        + heureka_price_status (enum[string]) - Indicates status of price
-          of the product on Heureka and is evaluated by Mergado from the
-          other available statistics.
-            + Members
-                + ok
-                + low
-                + increased
-                + high
-        + heureka_position_status (enum[string]) - This is an enum indication
-          position status on Heureka, evaluated by Mergado.
-            + Members
-                + ok
-                + low
-        + heureka_margin_status (enum[string]) - This is an enum indicating
-          status of margin from Heureka of the product evaluated by Mergado.
-            + Members
-                + ok
-                + low
-                + negative
-        + heureka_cpc_status (enum[string]) - This is an enum indicating status
-          of CPC on Heureka evaluated by Mergado.
-            + Members
-                + ok
-                + low
-                + decreased
+        + zbozi_conversion_cost_czk (number)
+        + zbozi_conversion_cost_czk_product_detail (number)
+        + zbozi_conversion_cost_czk_category_search (number)
+        + zbozi_conversion_cost_czk_top_product_detail (number)
+        + zbozi_conversion_cost_czk_category_listing (number)
+        + zbozi_conversion_cost_czk_search_result (number)
+        + zbozi_cpc_czk_product_detail (number)
+        + zbozi_cpc_czk_category_search (number)
+        + zbozi_cpc_czk_top_product_detail (number)
+        + zbozi_cpc_czk_category_listing (number)
+        + zbozi_cpc_czk_search_result (number)
+        + zbozi_cpc_czk_vat_product_detail (number)
+        + zbozi_cpc_czk_vat_category_search (number)
+        + zbozi_cpc_czk_vat_top_product_detail (number)
+        + zbozi_cpc_czk_vat_category_listing (number)
+        + zbozi_cpc_czk_vat_search_result (number)
+        + zbozi_conversions_value_czk_product_detail (number)
+        + zbozi_conversions_value_czk_category_search (number)
+        + zbozi_conversions_value_czk_top_product_detail (number)
+        + zbozi_conversions_value_czk_category_listing (number)
+        + zbozi_conversions_value_czk_search_result (number)
+        + zbozi_conversions_value_czk (number)
+        + zbozi_id
+        + zbozi_last_known_category
+        + zbozi_conversion_rate_product_detail (number)
+        + zbozi_conversion_rate_category_search (number)
+        + zbozi_conversion_rate_top_product_detail (number)
+        + zbozi_conversion_rate_category_listing (number)
+        + zbozi_conversion_rate_search_result (number)
+        + zbozi_conversion_rate (number)
+        + zbozi_cpr_product_detail (number)
+        + zbozi_cpr_category_search (number)
+        + zbozi_cpr_top_product_detail (number)
+        + zbozi_cpr_category_listing (number)
+        + zbozi_cpr_search_result (number)
+        + zbozi_cpr (number)
+        + zbozi_conversions_product_detail (number)
+        + zbozi_conversions_category_search (number)
+        + zbozi_conversions_top_product_detail (number)
+        + zbozi_conversions_category_listing (number)
+        + zbozi_conversions_search_result (number)
+        + zbozi_conversions (number)
+        + zbozi_products_sold_through_zbozi (number)
+        + zbozi_direct_conversions (number)
+        + zbozi_card_name
+        + zbozi_bid_click_through_product_detail (number)
+        + zbozi_bid_click_through_category_search (number)
+        + zbozi_bid_click_through_top_product_detail (number)
+        + zbozi_bid_click_through_category_listing (number)
+        + zbozi_bid_click_through_search_result (number)
+        + zbozi_bid_click_through (number)
+        + zbozi_avg_position_product_detail (number)
+        + zbozi_avg_position_top_product_detail (number)
+        + zbozi_views_product_detail (number)
+        + zbozi_views_category_search (number)
+        + zbozi_views_top_product_detail (number)
+        + zbozi_views_category_listing (number)
+        + zbozi_views_search_results (number)
+        + zbozi_name
+        + zbozi_delivery_date (number)
+        + zbozi_categorytext
+        + zbozi_max_cpc (number)
+        + zbozi_max_cpc_search (number)
+        + zbozi_manufacturer
+        + zbozi_brand
+        + zbozi_shop_url
+        + zbozi_imgurl
+        + zbozi_price_vat (number)
 
-### Statistics of a Product [GET /products/{id}/stats/{?fields,date}]
-Retruns the product statistics relevant to the project format. 
-By default, only the latest statistics (usualy from yesterday)
-are returned. This can be changed by the query string parameter `date`.
+### Statistics of a Product [GET /products/{id}/stats/{?fields,date,start_date,end_date}]
+Returns a list of product statistics relevant to the project format. 
+The stats are collected daily.
 
 **OAuth2 Scope:** project.stats.read
 
@@ -3824,6 +3877,8 @@ are returned. This can be changed by the query string parameter `date`.
 
     + id (string) - ID of the product.
     + date (date, optional) - Date of the collection of the statistics.
+    + start_date (date, optional) - The lower bound of the stats range.
+    + end_date (date, optional) - The upper bound of the stats range.
 
 + Response 200
 
@@ -3834,48 +3889,104 @@ are returned. This can be changed by the query string parameter `date`.
     + Body
     
             {
-                "product_id": "4191",
-                "date": "2015-01-01",
-                "stats": {
-                    "categorytext": "Elektronika | Počítače a kancelář",
-                    "cost": 88.9,
-                    "delivery_date": 0,
-                    "heureka_avg_position": 1,
-                    "heureka_category": "Barvící pásky",
-                    "heureka_cpc": 1.55,
-                    "heureka_cpc_status": "ok",
-                    "heureka_is_alone": false,
-                    "heureka_is_paired": true,
-                    "heureka_margin_status": "ok",
-                    "heureka_max_prices": [280.7, 128, null, null, null, null, null, null, null, null],
-                    "heureka_min_cpc": 1,
-                    "heureka_min_price": 128,
-                    "heureka_min_prices": [128, 280.7, null, null, null, null, null, null, null, null],
-                    "heureka_name": "Kazeta s černou páskou",
-                    "heureka_popularity": 4,
-                    "heureka_position_status": "ok",
-                    "heureka_price_position": 2,
-                    "heureka_price_status": "ok",
-                    "heureka_profit": 0,
-                    "heureka_segment": null,
-                    "heureka_shops_count": 2,
-                    "heureka_stats_clicks": 0,
-                    "heureka_stats_cost_of_sales": 0,
-                    "heureka_stats_cpc": 0,
-                    "heureka_stats_sales": 0,
-                    "heureka_stats_total_cost": 0,
-                    "heureka_stats_total_orders": 0,
-                    "heureka_url": "http://barvici-pasky.heureka.cz/kazeta-s-cernou-paskou/",
-                    "imgurl": "https://www.example.com/img/992.jpg",
-                    "is_starter": null,
-                    "is_topseller": null,
-                    "item_id": "992",
-                    "manufacturer": "Biostar",
-                    "name": "Kazeta s černou páskou",
-                    "price": 232,
-                    "price_vat": 280.7,
-                    "url": "https://www.example.comkazeta-s-cernou-paskou"
-                }
+                "data": [
+                    {
+                        "date": "2018-08-08",
+                        "stats": {
+                            "heureka_id": "123",
+                            "heureka_shop_url": "https://www.example.cz/eshop/teplomer-s-vlhkomerem-tfa-30-5027-02.html",
+                            "heureka_card_name": "TFA 30.5027.02",
+                            "heureka_name": "Teploměr s vlhkoměrem TFA 30.5027.02",
+                            "heureka_url": "https://merice-teploty-vlhkosti.heureka.cz/tfa-30_5027_02",
+                            "heureka_min_price": 350,
+                            "heureka_clicks": 0,
+                            "heureka_cpc": 0,
+                            "heureka_total_cost": 0,
+                            "heureka_total_orders": 0,
+                            "heureka_sales": 0,
+                            "heureka_cost_of_sales": 0,
+                            "heureka_min_cpc": 1.5,
+                            "heureka_segment": "Stavebniny",
+                            "heureka_shops_count": 6,
+                            "heureka_popularity": 53,
+                            "heureka_price_position": 1,
+                            "heureka_category": "Měřiče teploty a vlhkosti",
+                            "heureka_min_prices": [
+                                350,
+                                350,
+                                350,
+                                350,
+                                350,
+                                350
+                            ],
+                            "heureka_max_prices": [
+                                350,
+                                350,
+                                350,
+                                350,
+                                350,
+                                350
+                            ],
+                            "heureka_delivery_date": 0,
+                            "heureka_categorytext": "Zvlhčovače vzduchu",
+                            "heureka_feed_cpc": 12.65,
+                            "heureka_imgurl": "https://www.example.cz/eshop/data/1001/img/vlhkoměr_TFA.jpg",
+                            "heureka_manufacturer": "TFA",
+                            "heureka_price_vat": 350,
+                            "item_id": "1001"
+                        },
+                        "product_id": "2550458"
+                    },
+                    {
+                        "date": "2018-08-07",
+                        "stats": {
+                            "heureka_id": "124",
+                            "heureka_shop_url": "https://www.example.cz/eshop/teplomer-s-vlhkomerem-tfa-30-5027-02.html",
+                            "heureka_card_name": "TFA 30.5027.02",
+                            "heureka_name": "Teploměr s vlhkoměrem TFA 30.5027.02",
+                            "heureka_url": "https://merice-teploty-vlhkosti.heureka.cz/tfa-30_5027_02",
+                            "heureka_min_price": 350,
+                            "heureka_clicks": 0,
+                            "heureka_cpc": 0,
+                            "heureka_total_cost": 0,
+                            "heureka_total_orders": 0,
+                            "heureka_sales": 0,
+                            "heureka_cost_of_sales": 0,
+                            "heureka_min_cpc": 1.5,
+                            "heureka_segment": "Stavebniny",
+                            "heureka_shops_count": 6,
+                            "heureka_popularity": 53,
+                            "heureka_price_position": 1,
+                            "heureka_category": "Měřiče teploty a vlhkosti",
+                            "heureka_min_prices": [
+                                350,
+                                350,
+                                350,
+                                350,
+                                350,
+                                350
+                            ],
+                            "heureka_max_prices": [
+                                350,
+                                350,
+                                350,
+                                350,
+                                350,
+                                350
+                            ],
+                            "heureka_delivery_date": 0,
+                            "heureka_categorytext": "Zvlhčovače vzduchu",
+                            "heureka_feed_cpc": 11.98,
+                            "heureka_imgurl": "https://www.example.cz/eshop/data/1001/img/vlhkoměr_TFA.jpg",
+                            "heureka_manufacturer": "TFA",
+                            "heureka_price_vat": 350,
+                            "item_id": "1001"
+                        },
+                        "product_id": "2550458"
+                    }
+                ],
+                "offset": 0,
+                "limit": 10
             }
  
  
@@ -3905,58 +4016,102 @@ relevant to the project format are returned. Note that `product_id` is not retur
     
             {
                 "data": [
-                {
-                    "product_id": "123678",
-                    "date": "2015-02-02",
-                    "stats": {
-                        "categorytext": "Náhradní díly | LCD Display pro notebook",
-                        "cost": 1070.4,
-                        "delivery_date": 0,
-                        "heureka_avg_position": 1,
-                        "heureka_cpc": 2.05,
-                        "heureka_min_cpc": 1.5,
-                        "heureka_min_price": 2621,
-                        "heureka_name": "10.1 LCD LED Display univerzální notebook",
-                        "heureka_price_position": 1,
-                        "heureka_stats_clicks": 0,
-                        "heureka_stats_cost_of_sales": 0,
-                        "heureka_stats_cpc": 0,
-                        "heureka_stats_sales": 0,
-                        "heureka_stats_total_cost": 0,
-                        "heureka_stats_total_orders": 0,
-                        "heureka_url": "http://displeje-pro-notebooky.heureka.cz/10_1-lcd-led-display-univerzalni-notebook/",
-                        "imgurl": "https://www.example.com/img/990.jpg",
-                        "is_starter": null,
-                        "is_topseller": null,
-                        "item_id": "990",
-                        "manufacturer": "Samsung / Samsung LTN",
-                        "name": "10.1 LCD LED Display univerzální notebook",
-                        "price": 2166,
-                        "price_vat": 2620.9,
-                        "url": "https://www.example.com/101quot-lcd-led-display-univerzalni-notebook"
+                    {
+                        "date": "2018-08-08",
+                        "stats": {
+                            "heureka_id": "123",
+                            "heureka_shop_url": "https://www.example.cz/eshop/teplomer-s-vlhkomerem-tfa-30-5027-02.html",
+                            "heureka_card_name": "TFA 30.5027.02",
+                            "heureka_name": "Teploměr s vlhkoměrem TFA 30.5027.02",
+                            "heureka_url": "https://merice-teploty-vlhkosti.heureka.cz/tfa-30_5027_02",
+                            "heureka_min_price": 350,
+                            "heureka_clicks": 0,
+                            "heureka_cpc": 0,
+                            "heureka_total_cost": 0,
+                            "heureka_total_orders": 0,
+                            "heureka_sales": 0,
+                            "heureka_cost_of_sales": 0,
+                            "heureka_min_cpc": 1.5,
+                            "heureka_segment": "Stavebniny",
+                            "heureka_shops_count": 6,
+                            "heureka_popularity": 53,
+                            "heureka_price_position": 1,
+                            "heureka_category": "Měřiče teploty a vlhkosti",
+                            "heureka_min_prices": [
+                                350,
+                                350,
+                                350,
+                                350,
+                                350,
+                                350
+                            ],
+                            "heureka_max_prices": [
+                                350,
+                                350,
+                                350,
+                                350,
+                                350,
+                                350
+                            ],
+                            "heureka_delivery_date": 0,
+                            "heureka_categorytext": "Zvlhčovače vzduchu",
+                            "heureka_feed_cpc": 12.65,
+                            "heureka_imgurl": "https://www.example.cz/eshop/data/1001/img/vlhkoměr_TFA.jpg",
+                            "heureka_manufacturer": "TFA",
+                            "heureka_price_vat": 350,
+                            "item_id": "1001"
+                        },
+                        "product_id": "2550458"
+                    },
+                    {
+                        "date": "2018-08-08",
+                        "stats": {
+                            "heureka_id": "124",
+                            "heureka_shop_url": "https://www.example.cz/eshop/zvlhcovac-vzduchu-lanaform-living.html",
+                            "heureka_card_name": "Lanaform Living LA120602",
+                            "heureka_name": "Lanaform Living LA120602",
+                            "heureka_url": "https://cisticky-vzduchu-a-zvlhcovace.heureka.cz/lanaform-living-la120602",
+                            "heureka_min_price": 2790,
+                            "heureka_clicks": 0,
+                            "heureka_cpc": 0,
+                            "heureka_total_cost": 0,
+                            "heureka_total_orders": 0,
+                            "heureka_sales": 0,
+                            "heureka_cost_of_sales": 0,
+                            "heureka_avg_position": 2.4,
+                            "heureka_min_cpc": 4.5,
+                            "heureka_segment": "Bílé zboží",
+                            "heureka_shops_count": 5,
+                            "heureka_popularity": 6,
+                            "heureka_price_position": 4,
+                            "heureka_category": "Čističky vzduchu a zvlhčovače",
+                            "heureka_min_prices": [
+                                2790,
+                                3090,
+                                3090,
+                                3190,
+                                3950
+                            ],
+                            "heureka_max_prices": [
+                                2790,
+                                3090,
+                                3090,
+                                3190,
+                                3950
+                            ],
+                            "heureka_delivery_date": 2,
+                            "heureka_categorytext": "Heureka.cz | Bílé zboží | Klima | Čističky vzduchu a zvlhčovače",
+                            "heureka_feed_cpc": 18.88,
+                            "heureka_imgurl": "https://www.example.cz/eshop/data/1002/img/zvlhčovač_living.jpg",
+                            "heureka_manufacturer": "Lanaform",
+                            "heureka_price_vat": 3190,
+                            "item_id": "1002"
+                        },
+                        "product_id": "2550461"
                     }
-                },
-                {
-                    "date": "2015-02-02",
-                    "stats": {
-                        "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
-                        "cost": 1500.7,
-                        "delivery_date": 0,
-                        "heureka_cpc": null,
-                        "imgurl": "https://www.example.com/img/924.jpg",
-                        "is_starter": null,
-                        "is_topseller": null,
-                        "item_id": "924",
-                        "manufacturer": "Aqua Computer",
-                        "name": "Aqua Computer Cuplex Kryos XT",
-                        "price": 1651,
-                        "price_vat": 1997.7,
-                        "url": "https://www.example.com/aqua-computer-cuplex-kryos-xt"
-                    }
-                }
                 ],
-                "limit": 10,
-                "offset": 0
+                "offset": 0,
+                "limit": 10
             }
 
 ### Statistics of All Project Products using POST [POST /projects/{id}/stats/products/]
@@ -3999,57 +4154,101 @@ relevant to the project format are returned. Note that `product_id` is not retur
             {
                 "data": [
                     {
-                        "product_id": "123678",
-                        "date": "2015-02-02",
+                        "date": "2018-08-08",
                         "stats": {
-                            "categorytext": "Náhradní díly | LCD Display pro notebook",
-                            "cost": 1070.4,
-                            "delivery_date": 0,
-                            "heureka_avg_position": 1,
-                            "heureka_cpc": 2.05,
+                            "heureka_id": "123",
+                            "heureka_shop_url": "https://www.example.cz/eshop/teplomer-s-vlhkomerem-tfa-30-5027-02.html",
+                            "heureka_card_name": "TFA 30.5027.02",
+                            "heureka_name": "Teploměr s vlhkoměrem TFA 30.5027.02",
+                            "heureka_url": "https://merice-teploty-vlhkosti.heureka.cz/tfa-30_5027_02",
+                            "heureka_min_price": 350,
+                            "heureka_clicks": 0,
+                            "heureka_cpc": 0,
+                            "heureka_total_cost": 0,
+                            "heureka_total_orders": 0,
+                            "heureka_sales": 0,
+                            "heureka_cost_of_sales": 0,
                             "heureka_min_cpc": 1.5,
-                            "heureka_min_price": 2621,
-                            "heureka_name": "10.1 LCD LED Display univerzální notebook",
+                            "heureka_segment": "Stavebniny",
+                            "heureka_shops_count": 6,
+                            "heureka_popularity": 53,
                             "heureka_price_position": 1,
-                            "heureka_stats_clicks": 0,
-                            "heureka_stats_cost_of_sales": 0,
-                            "heureka_stats_cpc": 0,
-                            "heureka_stats_sales": 0,
-                            "heureka_stats_total_cost": 0,
-                            "heureka_stats_total_orders": 0,
-                            "heureka_url": "http://displeje-pro-notebooky.heureka.cz/10_1-lcd-led-display-univerzalni-notebook/",
-                            "imgurl": "https://www.example.com/img/990.jpg",
-                            "is_starter": null,
-                            "is_topseller": null,
-                            "item_id": "990",
-                            "manufacturer": "Samsung / Samsung LTN",
-                            "name": "10.1 LCD LED Display univerzální notebook",
-                            "price": 2166,
-                            "price_vat": 2620.9,
-                            "url": "https://www.example.com/101quot-lcd-led-display-univerzalni-notebook"
-                        }
+                            "heureka_category": "Měřiče teploty a vlhkosti",
+                            "heureka_min_prices": [
+                                350,
+                                350,
+                                350,
+                                350,
+                                350,
+                                350
+                            ],
+                            "heureka_max_prices": [
+                                350,
+                                350,
+                                350,
+                                350,
+                                350,
+                                350
+                            ],
+                            "heureka_delivery_date": 0,
+                            "heureka_categorytext": "Zvlhčovače vzduchu",
+                            "heureka_feed_cpc": 12.65,
+                            "heureka_imgurl": "https://www.example.cz/eshop/data/1001/img/vlhkoměr_TFA.jpg",
+                            "heureka_manufacturer": "TFA",
+                            "heureka_price_vat": 350,
+                            "item_id": "1001"
+                        },
+                        "product_id": "2550458"
                     },
                     {
-                        "date": "2015-02-02",
+                        "date": "2018-08-08",
                         "stats": {
-                            "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
-                            "cost": 1500.7,
-                            "delivery_date": 0,
-                            "heureka_cpc": null,
-                            "imgurl": "https://www.example.com/img/924.jpg",
-                            "is_starter": null,
-                            "is_topseller": null,
-                            "item_id": "924",
-                            "manufacturer": "Aqua Computer",
-                            "name": "Aqua Computer Cuplex Kryos XT",
-                            "price": 1651,
-                            "price_vat": 1997.7,
-                            "url": "https://www.example.com/aqua-computer-cuplex-kryos-xt"
-                        }
+                            "heureka_id": "124",
+                            "heureka_shop_url": "https://www.example.cz/eshop/zvlhcovac-vzduchu-lanaform-living.html",
+                            "heureka_card_name": "Lanaform Living LA120602",
+                            "heureka_name": "Lanaform Living LA120602",
+                            "heureka_url": "https://cisticky-vzduchu-a-zvlhcovace.heureka.cz/lanaform-living-la120602",
+                            "heureka_min_price": 2790,
+                            "heureka_clicks": 0,
+                            "heureka_cpc": 0,
+                            "heureka_total_cost": 0,
+                            "heureka_total_orders": 0,
+                            "heureka_sales": 0,
+                            "heureka_cost_of_sales": 0,
+                            "heureka_avg_position": 2.4,
+                            "heureka_min_cpc": 4.5,
+                            "heureka_segment": "Bílé zboží",
+                            "heureka_shops_count": 5,
+                            "heureka_popularity": 6,
+                            "heureka_price_position": 4,
+                            "heureka_category": "Čističky vzduchu a zvlhčovače",
+                            "heureka_min_prices": [
+                                2790,
+                                3090,
+                                3090,
+                                3190,
+                                3950
+                            ],
+                            "heureka_max_prices": [
+                                2790,
+                                3090,
+                                3090,
+                                3190,
+                                3950
+                            ],
+                            "heureka_delivery_date": 2,
+                            "heureka_categorytext": "Heureka.cz | Bílé zboží | Klima | Čističky vzduchu a zvlhčovače",
+                            "heureka_feed_cpc": 18.88,
+                            "heureka_imgurl": "https://www.example.cz/eshop/data/1002/img/zvlhčovač_living.jpg",
+                            "heureka_manufacturer": "Lanaform",
+                            "heureka_price_vat": 3190,
+                            "item_id": "1002"
+                        },
+                        "product_id": "2550461"
                     }
                 ],
-                "limit": 10,
-                "offset": 0
+                "offset": 0,
+                "limit": 10
             }
  
  
@@ -4077,57 +4276,140 @@ are returned. This can be changed by the query string parameter `date`. Note tha
     
             {
                 "data": [
-                {
-                    "date": "2015-02-02",
-                    "stats": {
-                        "categorytext": "Náhradní díly | LCD Display pro notebook",
-                        "cost": 1070.4,
-                        "delivery_date": 0,
-                        "heureka_avg_position": 1,
-                        "heureka_cpc": 2.05,
-                        "heureka_min_cpc": 1.5,
-                        "heureka_min_price": 2621,
-                        "heureka_name": "10.1 LCD LED Display univerzální notebook",
-                        "heureka_price_position": 1,
-                        "heureka_stats_clicks": 0,
-                        "heureka_stats_cost_of_sales": 0,
-                        "heureka_stats_cpc": 0,
-                        "heureka_stats_sales": 0,
-                        "heureka_stats_total_cost": 0,
-                        "heureka_stats_total_orders": 0,
-                        "heureka_url": "http://displeje-pro-notebooky.heureka.cz/10_1-lcd-led-display-univerzalni-notebook/",
-                        "imgurl": "https://www.example.com/img/990.jpg",
-                        "is_starter": null,
-                        "is_topseller": null,
-                        "item_id": "990",
-                        "manufacturer": "Samsung / Samsung LTN",
-                        "name": "10.1 LCD LED Display univerzální notebook",
-                        "price": 2166,
-                        "price_vat": 2620.9,
-                        "url": "https://www.example.com/101quot-lcd-led-display-univerzalni-notebook"
+                    {
+                        "date": "2018-08-08",
+                        "stats": {
+                            "heureka_id": "123",
+                            "heureka_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-max-bio-sprej-spf-50.html",
+                            "heureka_card_name": "Bioderma Photoderm Max spray na opalování bez parfemace SPF50+ 200 ml",
+                            "heureka_name": "BIODERMA Photoderm MAX BIO Sprej SPF 50+ 200 ml",
+                            "heureka_url": "https://pripravky-na-opalovani.heureka.cz/bioderma-photoderm-max-spray-na-opalovani-bez-parfemace-spf50-plus-200-ml",
+                            "heureka_min_price": 303,
+                            "heureka_clicks": 0,
+                            "heureka_cpc": 0,
+                            "heureka_total_cost": 0,
+                            "heureka_total_orders": 0,
+                            "heureka_sales": 0,
+                            "heureka_cost_of_sales": 0,
+                            "heureka_min_cpc": 2,
+                            "heureka_segment": "Kosmetika a zdraví",
+                            "heureka_shops_count": 80,
+                            "heureka_popularity": 106,
+                            "heureka_price_position": 25,
+                            "heureka_category": "Přípravky na opalování",
+                            "heureka_min_prices": [
+                                303,
+                                315,
+                                315,
+                                315,
+                                315,
+                                326,
+                                339,
+                                363,
+                                364,
+                                369
+                            ],
+                            "heureka_max_prices": [
+                                526.86,
+                                528,
+                                536,
+                                538,
+                                543,
+                                545,
+                                546,
+                                554,
+                                558,
+                                597
+                            ],
+                            "heureka_delivery_date": 60,
+                            "heureka_categorytext": "Kosmetika a zdraví | Kosmetika | Sluneční ochrana | Přípravky na opalování",
+                            "heureka_feed_cpc": 2,
+                            "heureka_imgurl": "https://www.example.cz/eshop/data/137/img/sprej_50+.jpg",
+                            "heureka_manufacturer": "Bioderma",
+                            "heureka_price_vat": 449,
+                            "zbozi_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-max-bio-sprej-spf-50.html?utm_campaign=Kosmetika+a+drogerie+%7C+Kosmetika+%7C+Opalov%C3%A1n%C3%AD+%7C+P%C5%99%C3%ADpravky+na+opalov%C3%A1n%C3%AD&utm_medium=product&utm_source=zbozi.cz",
+                            "zbozi_name": "BIODERMA Photoderm MAX BIO Sprej SPF 50+ 200 ml",
+                            "zbozi_imgurl": "https://www.example.cz/eshop/data/137/img/sprej_50+.jpg",
+                            "zbozi_categorytext": "Kosmetika a drogerie | Kosmetika | Opalování | Přípravky na opalování",
+                            "zbozi_max_cpc": 2.11,
+                            "zbozi_max_cpc_search": 1.11,
+                            "zbozi_manufacturer": "Bioderma",
+                            "zbozi_brand": "Bioderma",
+                            "zbozi_delivery_date": 60,
+                            "zbozi_price_vat": 449,
+                            "mergado_cost": 209.8,
+                            "item_id": "137"
+                        }
+                    },
+                    {
+                        "date": "2018-08-08",
+                        "stats": {
+                            "heureka_id": "124",
+                            "heureka_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-family-sprej-spf30.html",
+                            "heureka_name": "BIODERMA Photoderm Family – Sprej SPF 30",
+                            "heureka_delivery_date": 5,
+                            "heureka_categorytext": "Kosmetika a zdraví | Kosmetika | Sluneční ochrana | Přípravky na opalování",
+                            "heureka_feed_cpc": 4,
+                            "heureka_imgurl": "https://www.example.cz/eshop/data/142/img/photoderm-family-30-400ml_v.jpg",
+                            "heureka_manufacturer": "Bioderma",
+                            "heureka_price_vat": 359,
+                            "zbozi_id": "i534094664878843228",
+                            "zbozi_views_search_results": 0,
+                            "zbozi_views_top_product_detail": 0,
+                            "zbozi_views_product_detail": 1,
+                            "zbozi_views_category_listing": 0,
+                            "zbozi_views_category_search": 0,
+                            "zbozi_bid_click_through_search_result": 0,
+                            "zbozi_bid_click_through_top_product_detail": 0,
+                            "zbozi_bid_click_through_product_detail": 0,
+                            "zbozi_bid_click_through_category_listing": 0,
+                            "zbozi_bid_click_through_category_search": 0,
+                            "zbozi_bid_click_through": 0,
+                            "zbozi_cpc_czk_search_result": 0,
+                            "zbozi_cpc_czk_top_product_detail": 0,
+                            "zbozi_cpc_czk_product_detail": 0,
+                            "zbozi_cpc_czk_category_listing": 0,
+                            "zbozi_cpc_czk_category_search": 0,
+                            "zbozi_cpc_czk_vat_search_result": 0,
+                            "zbozi_cpc_czk_vat_top_product_detail": 0,
+                            "zbozi_cpc_czk_vat_product_detail": 0,
+                            "zbozi_cpc_czk_vat_category_listing": 0,
+                            "zbozi_cpc_czk_vat_category_search": 0,
+                            "zbozi_avg_position_top_product_detail": 0,
+                            "zbozi_avg_position_product_detail": 6,
+                            "zbozi_conversions_search_result": 0,
+                            "zbozi_conversions_top_product_detail": 0,
+                            "zbozi_conversions_product_detail": 0,
+                            "zbozi_conversions_category_listing": 0,
+                            "zbozi_conversions_category_search": 0,
+                            "zbozi_conversions": 0,
+                            "zbozi_conversions_value_czk_search_result": 0,
+                            "zbozi_conversions_value_czk_top_product_detail": 0,
+                            "zbozi_conversions_value_czk_product_detail": 0,
+                            "zbozi_conversions_value_czk_category_listing": 0,
+                            "zbozi_conversions_value_czk_category_search": 0,
+                            "zbozi_conversions_value_czk": 0,
+                            "zbozi_products_sold_through_zbozi": 0,
+                            "zbozi_direct_conversions": 0,
+                            "zbozi_card_name": "Bioderma Photoderm Family sprej SPF 30 200 ml ",
+                            "zbozi_last_known_category": "Kosmetika a drogerie/Kosmetika/Opalování/Přípravky na opalování",
+                            "zbozi_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-family-sprej-spf30.html?utm_campaign=Kosmetika+a+drogerie+%7C+Kosmetika+%7C+Opalov%C3%A1n%C3%AD+%7C+P%C5%99%C3%ADpravky+na+opalov%C3%A1n%C3%AD&utm_medium=product&utm_source=zbozi.cz",
+                            "zbozi_name": "BIODERMA Photoderm Family – Sprej SPF 30",
+                            "zbozi_imgurl": "https://www.example.cz/eshop/data/142/img/photoderm-family-30-400ml_v.jpg",
+                            "zbozi_categorytext": "Kosmetika a drogerie | Kosmetika | Opalování | Přípravky na opalování",
+                            "zbozi_max_cpc": 2.11,
+                            "zbozi_max_cpc_search": 1.11,
+                            "zbozi_manufacturer": "Bioderma",
+                            "zbozi_brand": "Bioderma",
+                            "zbozi_delivery_date": 5,
+                            "zbozi_price_vat": 359,
+                            "mergado_cost": 259.56,
+                            "item_id": "142"
+                        }
                     }
-                },
-                {
-                    "date": "2015-02-02",
-                    "stats": {
-                        "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
-                        "cost": 1500.7,
-                        "delivery_date": 0,
-                        "heureka_cpc": null,
-                        "imgurl": "https://www.example.com/img/924.jpg",
-                        "is_starter": null,
-                        "is_topseller": null,
-                        "item_id": "924",
-                        "manufacturer": "Aqua Computer",
-                        "name": "Aqua Computer Cuplex Kryos XT",
-                        "price": 1651,
-                        "price_vat": 1997.7,
-                        "url": "https://www.example.com/aqua-computer-cuplex-kryos-xt"
-                    }
-                }
                 ],
-                "limit": 10,
-                "offset": 0
+                "offset": 0,
+                "limit": 10
             }
 
 ### Statistics of All Shop Products using POST [POST /shops/{id}/stats/products/]
@@ -4168,56 +4450,139 @@ are returned. This can be changed by the query string parameter `date`.
             {
                 "data": [
                     {
-                        "date": "2015-02-02",
+                        "date": "2018-08-08",
                         "stats": {
-                            "categorytext": "Náhradní díly | LCD Display pro notebook",
-                            "cost": 1070.4,
-                            "delivery_date": 0,
-                            "heureka_avg_position": 1,
-                            "heureka_cpc": 2.05,
-                            "heureka_min_cpc": 1.5,
-                            "heureka_min_price": 2621,
-                            "heureka_name": "10.1 LCD LED Display univerzální notebook",
-                            "heureka_price_position": 1,
-                            "heureka_stats_clicks": 0,
-                            "heureka_stats_cost_of_sales": 0,
-                            "heureka_stats_cpc": 0,
-                            "heureka_stats_sales": 0,
-                            "heureka_stats_total_cost": 0,
-                            "heureka_stats_total_orders": 0,
-                            "heureka_url": "http://displeje-pro-notebooky.heureka.cz/10_1-lcd-led-display-univerzalni-notebook/",
-                            "imgurl": "https://www.example.com/img/990.jpg",
-                            "is_starter": null,
-                            "is_topseller": null,
-                            "item_id": "990",
-                            "manufacturer": "Samsung / Samsung LTN",
-                            "name": "10.1 LCD LED Display univerzální notebook",
-                            "price": 2166,
-                            "price_vat": 2620.9,
-                            "url": "https://www.example.com/101quot-lcd-led-display-univerzalni-notebook"
+                            "heureka_id": "123",
+                            "heureka_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-max-bio-sprej-spf-50.html",
+                            "heureka_card_name": "Bioderma Photoderm Max spray na opalování bez parfemace SPF50+ 200 ml",
+                            "heureka_name": "BIODERMA Photoderm MAX BIO Sprej SPF 50+ 200 ml",
+                            "heureka_url": "https://pripravky-na-opalovani.heureka.cz/bioderma-photoderm-max-spray-na-opalovani-bez-parfemace-spf50-plus-200-ml",
+                            "heureka_min_price": 303,
+                            "heureka_clicks": 0,
+                            "heureka_cpc": 0,
+                            "heureka_total_cost": 0,
+                            "heureka_total_orders": 0,
+                            "heureka_sales": 0,
+                            "heureka_cost_of_sales": 0,
+                            "heureka_min_cpc": 2,
+                            "heureka_segment": "Kosmetika a zdraví",
+                            "heureka_shops_count": 80,
+                            "heureka_popularity": 106,
+                            "heureka_price_position": 25,
+                            "heureka_category": "Přípravky na opalování",
+                            "heureka_min_prices": [
+                                303,
+                                315,
+                                315,
+                                315,
+                                315,
+                                326,
+                                339,
+                                363,
+                                364,
+                                369
+                            ],
+                            "heureka_max_prices": [
+                                526.86,
+                                528,
+                                536,
+                                538,
+                                543,
+                                545,
+                                546,
+                                554,
+                                558,
+                                597
+                            ],
+                            "heureka_delivery_date": 60,
+                            "heureka_categorytext": "Kosmetika a zdraví | Kosmetika | Sluneční ochrana | Přípravky na opalování",
+                            "heureka_feed_cpc": 2,
+                            "heureka_imgurl": "https://www.example.cz/eshop/data/137/img/sprej_50+.jpg",
+                            "heureka_manufacturer": "Bioderma",
+                            "heureka_price_vat": 449,
+                            "zbozi_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-max-bio-sprej-spf-50.html?utm_campaign=Kosmetika+a+drogerie+%7C+Kosmetika+%7C+Opalov%C3%A1n%C3%AD+%7C+P%C5%99%C3%ADpravky+na+opalov%C3%A1n%C3%AD&utm_medium=product&utm_source=zbozi.cz",
+                            "zbozi_name": "BIODERMA Photoderm MAX BIO Sprej SPF 50+ 200 ml",
+                            "zbozi_imgurl": "https://www.example.cz/eshop/data/137/img/sprej_50+.jpg",
+                            "zbozi_categorytext": "Kosmetika a drogerie | Kosmetika | Opalování | Přípravky na opalování",
+                            "zbozi_max_cpc": 2.11,
+                            "zbozi_max_cpc_search": 1.11,
+                            "zbozi_manufacturer": "Bioderma",
+                            "zbozi_brand": "Bioderma",
+                            "zbozi_delivery_date": 60,
+                            "zbozi_price_vat": 449,
+                            "mergado_cost": 209.8,
+                            "item_id": "137"
                         }
                     },
                     {
-                        "date": "2015-02-02",
+                        "date": "2018-08-08",
                         "stats": {
-                            "categorytext": "Komponenty | Chlazení | Vodní | Vodní bloky | Procesory",
-                            "cost": 1500.7,
-                            "delivery_date": 0,
-                            "heureka_cpc": null,
-                            "imgurl": "https://www.example.com/img/924.jpg",
-                            "is_starter": null,
-                            "is_topseller": null,
-                            "item_id": "924",
-                            "manufacturer": "Aqua Computer",
-                            "name": "Aqua Computer Cuplex Kryos XT",
-                            "price": 1651,
-                            "price_vat": 1997.7,
-                            "url": "https://www.example.com/aqua-computer-cuplex-kryos-xt"
+                            "heureka_id": "124",
+                            "heureka_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-family-sprej-spf30.html",
+                            "heureka_name": "BIODERMA Photoderm Family – Sprej SPF 30",
+                            "heureka_delivery_date": 5,
+                            "heureka_categorytext": "Kosmetika a zdraví | Kosmetika | Sluneční ochrana | Přípravky na opalování",
+                            "heureka_feed_cpc": 4,
+                            "heureka_imgurl": "https://www.example.cz/eshop/data/142/img/photoderm-family-30-400ml_v.jpg",
+                            "heureka_manufacturer": "Bioderma",
+                            "heureka_price_vat": 359,
+                            "zbozi_id": "i534094664878843228",
+                            "zbozi_views_search_results": 0,
+                            "zbozi_views_top_product_detail": 0,
+                            "zbozi_views_product_detail": 1,
+                            "zbozi_views_category_listing": 0,
+                            "zbozi_views_category_search": 0,
+                            "zbozi_bid_click_through_search_result": 0,
+                            "zbozi_bid_click_through_top_product_detail": 0,
+                            "zbozi_bid_click_through_product_detail": 0,
+                            "zbozi_bid_click_through_category_listing": 0,
+                            "zbozi_bid_click_through_category_search": 0,
+                            "zbozi_bid_click_through": 0,
+                            "zbozi_cpc_czk_search_result": 0,
+                            "zbozi_cpc_czk_top_product_detail": 0,
+                            "zbozi_cpc_czk_product_detail": 0,
+                            "zbozi_cpc_czk_category_listing": 0,
+                            "zbozi_cpc_czk_category_search": 0,
+                            "zbozi_cpc_czk_vat_search_result": 0,
+                            "zbozi_cpc_czk_vat_top_product_detail": 0,
+                            "zbozi_cpc_czk_vat_product_detail": 0,
+                            "zbozi_cpc_czk_vat_category_listing": 0,
+                            "zbozi_cpc_czk_vat_category_search": 0,
+                            "zbozi_avg_position_top_product_detail": 0,
+                            "zbozi_avg_position_product_detail": 6,
+                            "zbozi_conversions_search_result": 0,
+                            "zbozi_conversions_top_product_detail": 0,
+                            "zbozi_conversions_product_detail": 0,
+                            "zbozi_conversions_category_listing": 0,
+                            "zbozi_conversions_category_search": 0,
+                            "zbozi_conversions": 0,
+                            "zbozi_conversions_value_czk_search_result": 0,
+                            "zbozi_conversions_value_czk_top_product_detail": 0,
+                            "zbozi_conversions_value_czk_product_detail": 0,
+                            "zbozi_conversions_value_czk_category_listing": 0,
+                            "zbozi_conversions_value_czk_category_search": 0,
+                            "zbozi_conversions_value_czk": 0,
+                            "zbozi_products_sold_through_zbozi": 0,
+                            "zbozi_direct_conversions": 0,
+                            "zbozi_card_name": "Bioderma Photoderm Family sprej SPF 30 200 ml ",
+                            "zbozi_last_known_category": "Kosmetika a drogerie/Kosmetika/Opalování/Přípravky na opalování",
+                            "zbozi_shop_url": "https://www.example.cz/eshop/bioderma-photoderm-family-sprej-spf30.html?utm_campaign=Kosmetika+a+drogerie+%7C+Kosmetika+%7C+Opalov%C3%A1n%C3%AD+%7C+P%C5%99%C3%ADpravky+na+opalov%C3%A1n%C3%AD&utm_medium=product&utm_source=zbozi.cz",
+                            "zbozi_name": "BIODERMA Photoderm Family – Sprej SPF 30",
+                            "zbozi_imgurl": "https://www.example.cz/eshop/data/142/img/photoderm-family-30-400ml_v.jpg",
+                            "zbozi_categorytext": "Kosmetika a drogerie | Kosmetika | Opalování | Přípravky na opalování",
+                            "zbozi_max_cpc": 2.11,
+                            "zbozi_max_cpc_search": 1.11,
+                            "zbozi_manufacturer": "Bioderma",
+                            "zbozi_brand": "Bioderma",
+                            "zbozi_delivery_date": 5,
+                            "zbozi_price_vat": 359,
+                            "mergado_cost": 259.56,
+                            "item_id": "142"
                         }
                     }
                 ],
-                "limit": 10,
-                "offset": 0
+                "offset": 0,
+                "limit": 10
             }
 
 ## Category Statistics [/projects/{id}/stats/categories/]
@@ -4356,7 +4721,11 @@ Returns a performed audit.
                 "issues": {
                     "heureka_category_name": {
                         "ok": {
-                            "count": 144,
+                            "count": 114,
+                            "items": 383
+                        },
+                        "missing_stats": {
+                            "count": 30,
                             "items": 383
                         },
                         "wrong": {
