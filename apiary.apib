@@ -3990,12 +3990,16 @@ The stats are collected daily.
             }
  
  
-### Statistics of All Project Products [GET /projects/{id}/stats/products/{?fields,limit,offset,date,filter_by}]
+### Statistics of All Project Products [GET /projects/{id}/stats/products/{?fields,limit,offset,after,date,filter_by}]
 Returns statistics of all products associated with the project.
 By default, only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`. Only the stats
 relevant to the project format are returned. Note that `product_id` is not returned if mapping from `item_id` to
 `product_id` failed.
+`after` can be used instead of offset. The value of `after` should be
+`item_id` of the last product from the previous batch.
+The reason for using `after` is that high offset (> 10k)
+causes request timeouts on Elastic's side.
 
 **OAuth2 Scope:** project.stats.read
 
@@ -4120,6 +4124,10 @@ By default, only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`. Only the stats
 relevant to the project format are returned. Note that `product_id` is not returned if mapping from `item_id` to
 `product_id` failed.
+`after` can be used instead of offset. The value of `after` should be
+`item_id` of the last product from the previous batch.
+The reason for using `after` is that high offset (> 10k)
+causes request timeouts on Elastic's side.
 
 **OAuth2 Scope:** project.stats.read
 
@@ -4252,10 +4260,14 @@ relevant to the project format are returned. Note that `product_id` is not retur
             }
  
  
-### Statistics of All Shop Products [GET /shops/{id}/stats/products/{?fields,limit,offset,date,filter_by}]
+### Statistics of All Shop Products [GET /shops/{id}/stats/products/{?fields,limit,offset,after,date,filter_by}]
 Returns statistics of all products associated with the shop. 
 By default, only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`. Note that `product_id` is not returned.
+`after` can be used instead of offset. The value of `after` should be
+`item_id` of the last product from the previous batch.
+The reason for using `after` is that high offset (> 10k)
+causes request timeouts on Elastic's side.
 
 **OAuth2 Scope:** shop.stats.read
 
@@ -4416,6 +4428,10 @@ are returned. This can be changed by the query string parameter `date`. Note tha
 Returns statistics of all products associated with the shop. 
 By default, only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`.
+`after` can be used instead of offset. The value of `after` should be
+`item_id` of the last product from the previous batch.
+The reason for using `after` is that high offset (> 10k)
+causes request timeouts on Elastic's side.
 
 **OAuth2 Scope:** shop.stats.read
 
