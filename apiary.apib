@@ -33,7 +33,7 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 
 | Code | Status             | Description |
 |------|--------------------|-------------|
-| 200  | OK                 | The request was successful (some API calls may return 201 instead). |
+| 200  | OK                 | The request was successful (some API calls may return 201 instead). In case of arrays, `total_results` or `after` is returned as part of the envelope (together with `limit` and `offset`). It corresponds to the total amount of resources that match the request. |
 | 201  | Created            | The request was successful and a resource was created. |
 | 204  | No Content         | The request was successful but there is no representation to return (that is, the response is empty). |
 | 400  | Bad Request        | The request could not be understood or was missing required parameters. |
@@ -187,7 +187,8 @@ Returns available tariffs which are automatically chosen for each eshop.
                         "price_gbp": 105
                     }
                 ],
-                "offset": 0
+                "offset": 0,
+                "total_results": 8
             }
 
 ### Get Tariff [GET /tariffs/{id}/{?fields}]
@@ -285,6 +286,7 @@ Returns definitions of all rules and required data for their instantiation.
                     }
                 ],
                 "limit": 10,
+                "total_results": 3,
                 "offset": 0
             }
 
@@ -366,6 +368,7 @@ Lists all applications in Mergado.
                     }
                 ],
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -509,6 +512,7 @@ Lists all users the authenticated client has access to.
             {
                 "limit": 10,
                 "offset": 0,
+                "total_results": 1,
                 "data": [
                     {
                         "id": "6",
@@ -650,6 +654,7 @@ Lists all permissions (accesses to eshops) of a specific user.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -689,6 +694,7 @@ Returns eshops the user can access.
     
             {
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0,
                 "data": [
                     {
@@ -1001,6 +1007,7 @@ Returns projects of an eshop.
             {
                 "limit": 10,
                 "offset": 0,
+                "total_results": 1,
                 "data": [
                     {
                         "id": "8",
@@ -1254,6 +1261,7 @@ Returns project's products.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -1477,6 +1485,7 @@ Returns products that satisfy a condition defined by the given query.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -1618,6 +1627,7 @@ Lists all project's elements.
                     }
                 ],
                 "limit": 10,
+                "total_results": 5,
                 "offset": 0
             }
 
@@ -1807,6 +1817,7 @@ Lists all project's variables.
                     }
                 ],
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -2141,6 +2152,7 @@ Lists all rules' instances that were created inside the specified project.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -2484,6 +2496,7 @@ Lists all queries that were created inside the specified project.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -2530,6 +2543,7 @@ Lists all queries that were created for the specified rule.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -2580,6 +2594,7 @@ The body parameters also must uniquely identify a query. If the query is already
                     }
                 ],
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -2620,6 +2635,7 @@ The body parameters also must uniquely identify a query. If the query is already
                     }
                 ],
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -2823,6 +2839,7 @@ given priority.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -2905,6 +2922,7 @@ Fetches all import logs for given project.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
             
@@ -3022,6 +3040,7 @@ Fetches all apply logs for given project.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
             
@@ -3094,6 +3113,7 @@ Fetches all export logs for given project.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
             
@@ -3187,6 +3207,7 @@ Fetches all access logs for given project.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -3231,6 +3252,7 @@ Lists apps enabled by the given user.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -3325,6 +3347,7 @@ Lists apps enabled for the given eshop.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -3420,6 +3443,7 @@ Lists apps enabled for the given project.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -3649,6 +3673,7 @@ Returns latest summarized statistics and other information of an eshop.
                     }
                 ],
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0
             }
             
@@ -3698,6 +3723,7 @@ Returns a list of all sources of a specific shop.
                 }
               ],
               "limit": 10,
+              "total_results": 3,
               "offset": 0
             }
 
@@ -3986,6 +4012,7 @@ The stats are collected daily.
                     }
                 ],
                 "offset": 0,
+                "total_results": 2,
                 "limit": 10
             }
  
@@ -4115,6 +4142,7 @@ causes request timeouts on Elastic's side.
                     }
                 ],
                 "offset": 0,
+                "after": "1000",
                 "limit": 10
             }
 
@@ -4256,6 +4284,7 @@ causes request timeouts on Elastic's side.
                     }
                 ],
                 "offset": 0,
+                "total_results": 2,
                 "limit": 10
             }
  
@@ -4421,6 +4450,7 @@ causes request timeouts on Elastic's side.
                     }
                 ],
                 "offset": 0,
+                "total_results": 2,
                 "limit": 10
             }
 
@@ -4598,6 +4628,7 @@ causes request timeouts on Elastic's side.
                     }
                 ],
                 "offset": 0,
+                "total_results": 2,
                 "limit": 10
             }
 
@@ -4646,6 +4677,7 @@ for given `CATEGORYTEXT`).
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -4706,6 +4738,7 @@ Returns list of performed audits.
                     }
                 ],
                 "limit": 10,
+                "total_results": 2,
                 "offset": 0
             }
 
@@ -4834,6 +4867,7 @@ Returns list of issues of an audit.
                     }
                 ],
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -5046,6 +5080,7 @@ Returns list of all audits.
                     }
                 ],
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -5138,6 +5173,7 @@ Returns all issues (problematic validations) of a specific audit.
                     }
                 ],
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -5205,6 +5241,7 @@ Returns all issues (problematic validations) of a specific product.
                     }
                 ],
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -5252,6 +5289,7 @@ Returns all products of a specific audit.
                     }
                 ],
                 "limit": 10,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -5520,7 +5558,8 @@ value in ascending order. Groups of results can be created using `dimensions` qu
                         "sales_sum": 113470
                     }
                 ],
-                "limit": 10,
+                "limit": 4,
+                "total_results": 6,
                 "offset": 0
             }
 
@@ -5589,5 +5628,6 @@ value in ascending order. Groups of results can be created using `dimensions` qu
                     }
                 ],
                 "limit": 10,
+                "total_results": 4,
                 "offset": 0
             }
