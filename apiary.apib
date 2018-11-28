@@ -93,7 +93,7 @@ Returns a list of IDs of all supported XML feed's formats.
             Content-Type: application/json
 
     + Body
-    
+
             [
                 "heureka.cz",
                 "hledejceny.cz",
@@ -119,7 +119,7 @@ Returns available tariffs which are automatically chosen for each eshop.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "limit": 10,
                 "data": [
@@ -204,7 +204,7 @@ Returns requested tariff by its ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "3",
                 "name": "Standard",
@@ -234,11 +234,11 @@ Returns definitions of all rules and required data for their instantiation.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -505,7 +505,7 @@ Lists all users the authenticated client has access to.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "limit": 10,
                 "offset": 0,
@@ -548,7 +548,7 @@ Returns currently authenticated user.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "6",
                 "first_name": "Lorem",
@@ -589,7 +589,7 @@ Returns a user.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "6",
                 "first_name": "Lorem",
@@ -637,7 +637,7 @@ Lists all permissions (accesses to eshops) of a specific user.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -686,7 +686,7 @@ Returns eshops the user can access.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "limit": 10,
                 "offset": 0,
@@ -727,7 +727,7 @@ Returns an eshop with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "1",
                 "owner_id": "1",
@@ -762,7 +762,7 @@ Updates an eshop with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "Mergado.cz",
                 "web": "http://mergado.cz/",
@@ -776,7 +776,7 @@ Updates an eshop with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "1",
                 "owner_id": "1",
@@ -860,9 +860,9 @@ Show additional eshop information and statistics.
     + Headers
 
             Content-Type: application/json
-    
+
     + Body
-    
+
             {
                 "number_of_projects": 2,
                 "stats_collection": {
@@ -997,7 +997,7 @@ Returns projects of an eshop.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "limit": 10,
                 "offset": 0,
@@ -1044,7 +1044,7 @@ Returns a project with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "8",
                 "shop_id": "1",
@@ -1088,7 +1088,7 @@ to force Mergado to apply all rules to products during the next (lazy) rebuild.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "is_dirty": true
             }
@@ -1100,7 +1100,7 @@ to force Mergado to apply all rules to products during the next (lazy) rebuild.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "8",
                 "shop_id": "1",
@@ -1146,15 +1146,15 @@ Show additional project information and statistics.
     + Headers
 
             Content-Type: application/json
-    
+
     + Body
-    
+
             {
                 "metadata": {
-                    "stats_ga_medium": "agregator", 
+                    "stats_ga_medium": "agregator",
                     "stats_ga_source": "heureka.*.",
                     "generator": "mergado.magento.marketingpack.0_1"
-                }, 
+                },
                 "number_of_elements": 28
             }
 
@@ -1189,7 +1189,7 @@ Returns project's products.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -1273,7 +1273,7 @@ Returns a product with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "1693",
                 "output_changed_at": null,
@@ -1324,7 +1324,7 @@ to force Mergado to refresh the product (apply rules) during the next (lazy) reb
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "updated_at": "2017-05-21T00:00:00+00:00"
             }
@@ -1336,7 +1336,7 @@ to force Mergado to refresh the product (apply rules) during the next (lazy) reb
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "1693",
                 "output_changed_at": null,
@@ -1376,15 +1376,15 @@ Returns products that satisfy a condition defined by the given query.
 + Parameters
 
     + id (string) - ID of the query.
-    
+
 + Response 200
 
     + Headers
 
             Content-Type: application/json
 
-    + Body  
-    
+    + Body
+
             {
                 "data": [
                     {
@@ -1499,7 +1499,7 @@ to force Mergado to refresh the products (apply rules) during the next (lazy) re
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "updated_at": "2017-05-21T00:00:00+00:00"
             }
@@ -1539,7 +1539,7 @@ Creates an element inside a project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "SHIPPING",
                 "hidden": false
@@ -1553,7 +1553,7 @@ Creates an element inside a project.
             Location: "https://app.mergado.com/api/elements/123"
 
     + Body
-    
+
             {
                 "id": "123",
                 "project_id": "1",
@@ -1574,11 +1574,11 @@ Lists all project's elements.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -1633,11 +1633,11 @@ Returns an element.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "hidden": false,
                 "id": "6",
@@ -1683,7 +1683,7 @@ Performes update of element's attributes.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "hidden": true
             }
@@ -1696,7 +1696,7 @@ Performes update of element's attributes.
             Location: "https://app.mergado.com/api/elements/123"
 
     + Body
-    
+
             {
                 "id": "123",
                 "project_id": "1",
@@ -1747,7 +1747,7 @@ Creates a new variable inside a project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "DESCRIPTION_A",
                 "project_element_id": "1",
@@ -1764,7 +1764,7 @@ Creates a new variable inside a project.
             Location: "https://app.mergado.com/api/variables/1521/"
 
     + Body
-    
+
             {
                 "id": "1521",
                 "name": "DESCRIPTION_A",
@@ -1788,11 +1788,11 @@ Lists all project's variables.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -1822,11 +1822,11 @@ Returns a variable.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "1521",
                 "name": "DESCRIPTION_A",
@@ -1875,7 +1875,7 @@ Performes update of variable's attributes.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "DESCRIPTION_OMG"
             }
@@ -1888,7 +1888,7 @@ Performes update of variable's attributes.
             Location: "https://app.mergado.com/api/variables/1521"
 
     + Body
-    
+
             {
                 "id": "1521",
                 "name": "DESCRIPTION_OMG",
@@ -1928,19 +1928,19 @@ format (e.g. from Heureka.cz to Google Merchant).
       the rule will be applied to all products.
 
 ### Create a Rule [POST]
-Creates a new rule inside the specified project. 
+Creates a new rule inside the specified project.
 
-There are two ways how to specify priority. You can either use the *placement* parameter and specify 
-the id of the rule that the newly created one is supposed to **follow** or **precede**. 
+There are two ways how to specify priority. You can either use the *placement* parameter and specify
+the id of the rule that the newly created one is supposed to **follow** or **precede**.
 Or you can set the *priority* value directly. Parameters *priority* and *placement* are optional, but at least
 one of them must be specified.
 
-Note that if there already is a rule with the given priority, the priority of the new rule will be adjusted 
+Note that if there already is a rule with the given priority, the priority of the new rule will be adjusted
 so that the new rule follows the one with conflicting priority. Also note that *placement* is only regarded
 when a rule is created or updated. Another rule may be placed between the created rule and the one it was originally
 placed before / after later on.
 
-To determine the priority on server side, we first check the value of *placement[after]*, 
+To determine the priority on server side, we first check the value of *placement[after]*,
 then the value of *placement [before]* and lastly the value of *priority* itself.
 
 **OAuth2 Scope:** project.rules.write
@@ -1956,7 +1956,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "Cena",
                 "type": "rewriting",
@@ -1988,7 +1988,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
             Location: "https://app.mergado.com/api/rules/15/"
 
     + Body
-    
+
             {
                 "id": "15",
                 "name": "Cena",
@@ -2021,11 +2021,11 @@ then the value of *placement [before]* and lastly the value of *priority* itself
 + Request
 
     + Headers
-    
+
             Content-Type: application/json
-    
+
     + Body
-    
+
             {
                 "name": "Cena 2 BATCH",
                 "project_element_id": "5",
@@ -2055,7 +2055,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
             Location: "https://app.mergado.com/api/rules/16/"
 
     + Body
-    
+
             {
                 "applies": true,
                 "is_deletable": true,
@@ -2110,7 +2110,7 @@ Lists all rules' instances that were created inside the specified project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2160,7 +2160,7 @@ Returns a specific rule instance.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "15",
                 "project_id": "1",
@@ -2216,7 +2216,7 @@ how priority is calculated.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "PRODUCTNAME: Added Free Car",
                 "data": {
@@ -2232,7 +2232,7 @@ how priority is calculated.
             Location: "https://app.mergado.com/api/rules/112"
 
     + Body
-    
+
             {
                 "id": "112",
                 "project_id": "2",
@@ -2269,7 +2269,7 @@ for one to many (O2M) rules with a lot of records.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2320,7 +2320,7 @@ Creates a new query inside the specified project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "PRICE less then 200 Kč",
                 "query": "PRICE < 200",
@@ -2336,7 +2336,7 @@ Creates a new query inside the specified project.
             Location: "https://app.mergado.com/api/queries/d3o9v/"
 
     + Body
-    
+
             {
                 "id": "d3o9v",
                 "name": "PRICE less then 200 Kč",
@@ -2365,7 +2365,7 @@ Returns the requrested query.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "2",
                 "name": null,
@@ -2402,7 +2402,7 @@ Deletes a specific query.
 ### Update a Query [PATCH /queries/{id}/]
 Performes update of the specified query.
 
-**OAuth2 Scope:** project.queries.read
+**OAuth2 Scope:** project.queries.write
 
 + Parameters
 
@@ -2415,7 +2415,7 @@ Performes update of the specified query.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "query": "PRICE > 200"
             }
@@ -2428,7 +2428,7 @@ Performes update of the specified query.
             Location: "https://app.mergado.com/api/queries/d3o9v/"
 
     + Body
-    
+
             {
                 "id": "d3o9v",
                 "name": "PRICE more then 200 Kč",
@@ -2457,7 +2457,7 @@ Lists all queries that were created inside the specified project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2503,7 +2503,7 @@ Lists all queries that were created for the specified rule.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2551,7 +2551,7 @@ The body parameters also must uniquely identify a query. If the query is already
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "d3o9v"
             }
@@ -2564,7 +2564,7 @@ The body parameters also must uniquely identify a query. If the query is already
             Location: "https://app.mergado.com/api/rules/d3o9v/queries/"
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2590,7 +2590,7 @@ The body parameters also must uniquely identify a query. If the query is already
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "name": "PRICE more then 200 Kč",
                 "query": "PRICE > 200"
@@ -2604,7 +2604,7 @@ The body parameters also must uniquely identify a query. If the query is already
             Location: "https://app.mergado.com/api/rules/d3o9v/queries/"
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2688,7 +2688,7 @@ given priority.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "title": "Eshop problem",
                 "body": "There seems to be a problem in your eshop.",
@@ -2706,7 +2706,7 @@ given priority.
             Location: "https://app.mergado.com/api/notifications/30/"
 
     + Body
-    
+
             {
                 "id": "30",
                 "title": "Eshop problem",
@@ -2731,7 +2731,7 @@ given priority.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "title": "User settings change",
                 "body": "Your settings has been updated.",
@@ -2748,7 +2748,7 @@ given priority.
             Location: "https://app.mergado.com/api/notifications/32/"
 
     + Body
-    
+
             {
                 "id": "32",
                 "title": "User settings change",
@@ -2773,7 +2773,7 @@ given priority.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "30",
                 "title": "Eshop problem",
@@ -2783,7 +2783,7 @@ given priority.
                 "priority": "high",
                 "scope": "owner"
             }
-            
+
 ### Get Users Notifications [GET /users/{id}/notifications/{?fields}]
 **OAuth2 Scope:** user.notify.read
 
@@ -2798,7 +2798,7 @@ given priority.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2838,7 +2838,7 @@ Fetches an import log with the given ID.
 + Parameters
 
     + id (string) - ID of a log.
-    
+
 + Response 200
 
     + Headers
@@ -2846,7 +2846,7 @@ Fetches an import log with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "duration": 2.352,
                 "finished_at": "2016-05-18T15:16:25+00:00",
@@ -2868,7 +2868,7 @@ Fetches all import logs for given project.
 + Parameters
 
     + id (string) - ID of a project.
-    
+
 + Response 200
 
     + Headers
@@ -2876,7 +2876,7 @@ Fetches all import logs for given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2907,9 +2907,9 @@ Fetches all import logs for given project.
                 "limit": 10,
                 "offset": 0
             }
-            
+
 ### Get an Apply Log [GET /applylogs/{id}/{?fields}]
-Fetches an apply log with the given ID. 
+Fetches an apply log with the given ID.
 
 **OAuth2 Scope:** project.logs.read
 
@@ -2927,7 +2927,7 @@ Fetches an apply log with the given ID.
 + Parameters
 
     + id (string) - ID of a log.
-    
+
 + Response 200
 
     + Headers
@@ -2935,7 +2935,7 @@ Fetches an apply log with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "duration": 1.548,
                 "finished_at": "2016-05-18T15:16:26+00:00",
@@ -2944,8 +2944,8 @@ Fetches an apply log with the given ID.
                 "started_at": "2016-05-18T15:16:25+00:00",
                 "rules": [
                     {
-                        "processed_products": 64, 
-                        "products": 64, 
+                        "processed_products": 64,
+                        "products": 64,
                         "rule_id": "1"
                     }
                 ],
@@ -2972,7 +2972,7 @@ Fetches all apply logs for given project.
 + Parameters
 
     + id (string) - ID of a project.
-    
+
 + Response 200
 
     + Headers
@@ -2980,7 +2980,7 @@ Fetches all apply logs for given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -2991,8 +2991,8 @@ Fetches all apply logs for given project.
                         "started_at": "2016-05-18T15:16:25+00:00",
                         "rules": [
                             {
-                                "processed_products": 64, 
-                                "products": 64, 
+                                "processed_products": 64,
+                                "products": 64,
                                 "rule_id": "1"
                             }
                         ],
@@ -3007,12 +3007,12 @@ Fetches all apply logs for given project.
                         "started_at": "2016-05-18T15:17:21+00:00",
                         "rules": [
                             {
-                                "processed_products": 64, 
-                                "products": 64, 
+                                "processed_products": 64,
+                                "products": 64,
                                 "rule_id": "1"
                             },
                             {
-                                "processed_products": 64, 
+                                "processed_products": 64,
                                 "products": 64,
                                 "rule_id": "5"
                             }
@@ -3024,7 +3024,7 @@ Fetches all apply logs for given project.
                 "limit": 10,
                 "offset": 0
             }
-            
+
 ### Get an Export Log [GET /exportlogs/{id}/{?fields}]
 Fetches an export log with the given ID.
 
@@ -3033,7 +3033,7 @@ Fetches an export log with the given ID.
 + Parameters
 
     + id (string) - ID of a log.
-    
+
 + Response 200
 
     + Headers
@@ -3041,7 +3041,7 @@ Fetches an export log with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "duration": 5,
                 "finished_at": null,
@@ -3052,7 +3052,7 @@ Fetches an export log with the given ID.
                 "started_at": "2016-06-01T15:52:45+00:00",
                 "user_id": "1"
             }
-            
+
 ### Get Export Logs [GET /projects/{id}/exportlogs/{?limit,offset,fields}]
 Fetches all export logs for given project.
 
@@ -3061,7 +3061,7 @@ Fetches all export logs for given project.
 + Parameters
 
     + id (string) - ID of a project.
-    
+
 + Response 200
 
     + Headers
@@ -3069,7 +3069,7 @@ Fetches all export logs for given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3096,7 +3096,7 @@ Fetches all export logs for given project.
                 "limit": 10,
                 "offset": 0
             }
-            
+
 ### Get an Access Log [GET /accesslogs/{id}/{?fields}]
 Fetches an access log with the given ID. If the related project has been deleted, 410 is returned instead.
 
@@ -3105,7 +3105,7 @@ Fetches an access log with the given ID. If the related project has been deleted
 + Parameters
 
     + id (string) - ID of a log.
-    
+
 + Response 200
 
     + Headers
@@ -3113,7 +3113,7 @@ Fetches an access log with the given ID. If the related project has been deleted
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "https": false,
                 "id": "101",
@@ -3127,7 +3127,7 @@ Fetches an access log with the given ID. If the related project has been deleted
                 "user": "-",
                 "user_agent": "Heurekabot-Feed/1.0 (+http://sluzby.heureka.cz/napoveda/heurekabot/)"
             }
-    
+
 + Response 410
 
     + Headers
@@ -3135,11 +3135,11 @@ Fetches an access log with the given ID. If the related project has been deleted
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "message": "The associated project for this log has been deleted"
             }
-            
+
 ### Get Access Logs [GET /projects/{id}/accesslogs/{?limit,offset,fields}]
 Fetches all access logs for given project.
 
@@ -3148,7 +3148,7 @@ Fetches all access logs for given project.
 + Parameters
 
     + id (string) - ID of a project.
-    
+
 + Response 200
 
     + Headers
@@ -3156,7 +3156,7 @@ Fetches all access logs for given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3216,7 +3216,7 @@ Lists apps enabled by the given user.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3251,7 +3251,7 @@ Fetches an app enabled by the given user.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "app_name": "userappone",
                 "free_until": "2015-01-09",
@@ -3275,7 +3275,7 @@ Updates an app enabled by the given user.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "paid_until": "2016-02-08"
             }
@@ -3287,7 +3287,7 @@ Updates an app enabled by the given user.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "app_name": "userappone",
                 "free_until": "2015-01-09",
@@ -3310,7 +3310,7 @@ Lists apps enabled for the given eshop.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3345,7 +3345,7 @@ Fetches an app enabled for the given shop.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "app_name": "shopappone",
                 "free_until": "2015-01-09",
@@ -3370,7 +3370,7 @@ Updates an app enabled for the given shop.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "paid_until": "2017-02-08"
             }
@@ -3382,7 +3382,7 @@ Updates an app enabled for the given shop.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "app_name": "shopappone",
                 "free_until": "2015-01-09",
@@ -3405,7 +3405,7 @@ Lists apps enabled for the given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3440,14 +3440,14 @@ Fetches an app enabled by the given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "app_name": "projectappone",
                 "free_until": "2015-01-09",
                 "paid_until": "2016-01-08"
             }
 
-### Update User App [PATCH /projects/{id}/apps/{name}/]
+### Update Project App [PATCH /projects/{id}/apps/{name}/]
 Updates an app enabled for the given project.
 
 **OAuth2 Scope:** project.apps.write
@@ -3464,7 +3464,7 @@ Updates an app enabled for the given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "paid_until": "2016-04-08"
             }
@@ -3476,7 +3476,7 @@ Updates an app enabled for the given project.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "app_name": "projectappone",
                 "free_until": "2015-01-09",
@@ -3597,11 +3597,11 @@ Returns latest summarized statistics and other information of an eshop.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3651,7 +3651,7 @@ Returns latest summarized statistics and other information of an eshop.
                 "limit": 10,
                 "offset": 0
             }
-            
+
 ### List All Sources [GET /shops/{id}/stats/sources/{?limit,offset,fields}]
 Returns a list of all sources of a specific shop.
 
@@ -3663,7 +3663,7 @@ Returns a list of all sources of a specific shop.
     + feed_url (string) - URL of the source.
     + type (string) - Type of the source, e.g. heureka.
     + shop_id (string) - Id of the shop.
-    
+
 + Parameters
 
     + id (string) - ID of the eshop.
@@ -3671,11 +3671,11 @@ Returns a list of all sources of a specific shop.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
               "data": [
                 {
@@ -3712,7 +3712,7 @@ Return a source of statistics.
     + feed_url (string) - URL of the source.
     + type (string) - Type of the source, e.g. heureka.
     + shop_id (string) - Id of the shop.
-    
+
 + Parameters
 
     + id (string) - ID of the source.
@@ -3720,11 +3720,11 @@ Return a source of statistics.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
               "feed_url": "https://feeds.mergado.com/feed.xml",
               "id": "64",
@@ -3734,7 +3734,7 @@ Return a source of statistics.
 
 
 ## Product Statistics [/products/{id}/stats/]
-Statistics of products, including attributes like url, price_vat etc. 
+Statistics of products, including attributes like url, price_vat etc.
 Common fields and fields relevant to the project format are returned.
 Note that `product_id` will not be included if mapping from `item_id` to `product_id` failed.
 
@@ -3868,7 +3868,7 @@ Note that `product_id` will not be included if mapping from `item_id` to `produc
         + zbozi_price_vat (number)
 
 ### Statistics of a Product [GET /products/{id}/stats/{?fields,date,start_date,end_date}]
-Returns a list of product statistics relevant to the project format. 
+Returns a list of product statistics relevant to the project format.
 The stats are collected daily.
 
 **OAuth2 Scope:** project.stats.read
@@ -3883,11 +3883,11 @@ The stats are collected daily.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -3988,8 +3988,8 @@ The stats are collected daily.
                 "offset": 0,
                 "limit": 10
             }
- 
- 
+
+
 ### Statistics of All Project Products [GET /projects/{id}/stats/products/{?fields,limit,offset,after,date,filter_by}]
 Returns statistics of all products associated with the project.
 By default, only the latest statistics (usualy from yesterday)
@@ -4013,11 +4013,11 @@ causes request timeouts on Elastic's side.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -4134,16 +4134,16 @@ causes request timeouts on Elastic's side.
 + Request
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Attributes (object)
         + date (string) - Date of the collection of the requested statistics.
         + filter_by (string) - Currently only filtering by `item id` is supported.
           See the section [Additional GET parameters](#introduction/requests/additional-get-parameters).
-    
+
     + Body
-    
+
             {
                 "date": "2016-02-02",
                 "filter_by": {
@@ -4154,11 +4154,11 @@ causes request timeouts on Elastic's side.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -4258,10 +4258,10 @@ causes request timeouts on Elastic's side.
                 "offset": 0,
                 "limit": 10
             }
- 
- 
+
+
 ### Statistics of All Shop Products [GET /shops/{id}/stats/products/{?fields,limit,offset,after,date,filter_by}]
-Returns statistics of all products associated with the shop. 
+Returns statistics of all products associated with the shop.
 By default, only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`. Note that `product_id` is not returned.
 `after` can be used instead of offset. The value of `after` should be
@@ -4281,11 +4281,11 @@ causes request timeouts on Elastic's side.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -4425,7 +4425,7 @@ causes request timeouts on Elastic's side.
             }
 
 ### Statistics of All Shop Products using POST [POST /shops/{id}/stats/products/]
-Returns statistics of all products associated with the shop. 
+Returns statistics of all products associated with the shop.
 By default, only the latest statistics (usualy from yesterday)
 are returned. This can be changed by the query string parameter `date`.
 `after` can be used instead of offset. The value of `after` should be
@@ -4438,16 +4438,16 @@ causes request timeouts on Elastic's side.
 + Request
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Attributes (object)
         + date (string) - Date of the collection of the requested statistics.
         + filter_by (string) - Currently only filtering by `item id` is supported.
           See the section [Additional GET parameters](#introduction/additional-get-parameters).
-    
+
     + Body
-    
+
             {
                 "date": "2016-02-02",
                 "filter_by": {
@@ -4458,11 +4458,11 @@ causes request timeouts on Elastic's side.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -4625,11 +4625,11 @@ for given `CATEGORYTEXT`).
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -4681,11 +4681,11 @@ Returns list of performed audits.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -4721,11 +4721,11 @@ Returns a performed audit.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "163-160419",
                 "date": "2016-04-19",
@@ -4815,11 +4815,11 @@ Returns list of issues of an audit.
 + Response 200
 
     + Headers
-    
+
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -4847,7 +4847,7 @@ Returns a *log* of the import of statistics with the given ID.
 + Parameters
 
     + id (string) - ID of a log.
-    
+
 + Response 200
 
     + Headers
@@ -4855,7 +4855,7 @@ Returns a *log* of the import of statistics with the given ID.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "130",
                 "type": "heureka",
@@ -4968,7 +4968,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
 + Parameters
 
     + id (string) - ID of the project.
-    
+
 + Request
 
     + Headers
@@ -4976,7 +4976,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "parser_type": "heureka.cz",
                 "feed_types": ["heureka.cz"],
@@ -4992,7 +4992,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
             Location: "https://app.mergado.com/api/projects/57334061ba4989170e78dbf3/feedaudits/"
 
     + Body
-    
+
             {
                 "id": "51768ba7ed14f444772d6137",
                 "error": null,
@@ -5025,7 +5025,7 @@ Returns list of all audits.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -5065,7 +5065,7 @@ Returns the requested audit resource.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "51768ba7ed14f444772d6137",
                 "error": null,
@@ -5120,7 +5120,7 @@ Returns all issues (problematic validations) of a specific audit.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -5157,7 +5157,7 @@ Returns single issue with given `id`.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "51768ba7ed14f444772d6138",
                 "checked_at": "2013-04-23T13:24:55+00:00",
@@ -5188,7 +5188,7 @@ Returns all issues (problematic validations) of a specific product.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -5237,7 +5237,7 @@ Returns all products of a specific audit.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "data": [
                     {
@@ -5271,7 +5271,7 @@ Returns a single product resource.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "51768ba7ed14f444772d6120",
                 "audit_id": "51768ba7ed14f444772d6137",
@@ -5282,12 +5282,12 @@ Returns a single product resource.
                     {"tag": "PRICE_VAT", "value": 240.5, "elements": []}
                 ]
             }
-            
+
 # Group Heureka
 API for various Heureka.cz helpers and resources.
 
 ## Heureka Categories [/categories/]
-API for Heureka categories. Categories have a _min cpc_ value attached to it. 
+API for Heureka categories. Categories have a _min cpc_ value attached to it.
 But not every category displays this value. If you want to find a _min cpc_ value of a category,
 you need to traverse its parents until you find a category with _min cpc_ displayed. This _min cpc_ then applies
 to all children categories.
@@ -5325,7 +5325,7 @@ Returns a single Heureka category.
             Content-Type: application/json
 
     + Body
-    
+
             {
                 "id": "68",
                 "name": "Poker",
@@ -5384,7 +5384,7 @@ Returns a single Heureka category.
                     }
                 ]
             }
-            
+
 ### List Categories [GET /heureka/categories/{?limit,offset,fields,}]
 Returns list of all Heureka categories.
 
@@ -5396,7 +5396,7 @@ Returns list of all Heureka categories.
             Content-Type: application/json
 
     + Body
-    
+
             [
                 {
                     "id": "1",
@@ -5490,9 +5490,9 @@ value in ascending order. Groups of results can be created using `dimensions` qu
     + Headers
 
             Content-Type: application/json
-    
+
     + Body
-    
+
             {
                 "data": [
                     {
@@ -5558,9 +5558,9 @@ value in ascending order. Groups of results can be created using `dimensions` qu
     + Headers
 
             Content-Type: application/json
-    
+
     + Body
-    
+
             {
                 "data": [
                     {
