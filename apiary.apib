@@ -815,6 +815,7 @@ Show additional eshop information and statistics.
                     + in_progress
                     + error
             + error (string)
+            + created_at (string)
             + started_at (string)
             + finished_at (string)
             + info (array)
@@ -834,6 +835,7 @@ Show additional eshop information and statistics.
                             + in_progress
                             + error
                     + error (string)
+                    + created_at (string)
                     + started_at (string)
                     + finished_at (string)
         + connections (array) - List of objects representing connections to third-party services.
@@ -4874,6 +4876,7 @@ Returns a *log* of the import of statistics with the given ID.
                 "error": null,
                 "items": 21839,
                 "created_at": "2014-07-02T11:54:37.123456+00:00",
+                "started_at": "2014-07-02T11:55:34.123456+00:00",
                 "finished_at": "2014-07-02T11:56:00.123456+00:00",
                 "shop_id": "2"
             }
@@ -4903,6 +4906,7 @@ Returns all *logs* of the import of statistics.
                     "error": null,
                     "items": 21839,
                     "created_at": "2014-07-02T11:54:37.123456+00:00",
+                    "started_at": "2014-07-02T11:55:34.123456+00:00",
                     "finished_at": "2014-07-02T11:56:00.123456+00:00",
                     "shop_id": "2"
                 },
@@ -4913,6 +4917,7 @@ Returns all *logs* of the import of statistics.
                     "error": "heureka_auth_error",
                     "items": null,
                     "created_at": "2014-07-02T11:54:37.123456+00:00",
+                    "started_at": "2014-07-02T11:55:34.123456+00:00",
                     "finished_at": "2014-07-02T11:56:00.123456+00:00",
                     "shop_id": "2"
                 }
