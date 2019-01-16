@@ -1937,11 +1937,10 @@ format (e.g. from Heureka.cz to Google Merchant).
     + data - Parameters of the rule, some rules accept parameters, e.g.
       a value to write into an element, regular expressions, etc.
     + queries (array) - It is possible to control to what products each rule applies.
-      Queries exists for exactly this purpose. If no query is specified,
-      the rule will be applied to all products.
+      Queries exists for exactly this purpose.
 
 ### Create a Rule [POST]
-Creates a new rule inside the specified project.
+Creates a new rule inside the specified project. A list of queries must be supplied. It can contain a single element, such as ♥ALLPRODUCTS♥ query.
 
 There are two ways how to specify priority. You can either use the *placement* parameter and specify
 the id of the rule that the newly created one is supposed to **follow** or **precede**.
@@ -2215,7 +2214,8 @@ Delete the specified rule.
 
 ### Update a Rule [PATCH /rules/{id}/]
 Performs update of rule's attributes. Refer to the doc for rule creation to find out more about
-how priority is calculated.
+how priority is calculated. If no queries are present in the request, the queries will not be changed.
+If an empty list is sent, 400 will be returned.
 
 **OAuth2 Scope:** project.rules.write
 
