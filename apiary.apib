@@ -80,37 +80,6 @@ Various API resources that don't require any authentication.
                 "version": "0.2"
             }
 
-## Maintenance [/maintenance]
-
-### Show maintenance info [GET]
-Returns information about maintenance.
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-            {
-                "data": [
-                    {
-                        "from": "2018-08-08T13:00:00+00:00",
-                        "to": "2018-08-08T13:30:00+00:00",
-                        "type": "scheduled_maintenance",
-                    },
-                    {
-                        "from": "2018-07-26T13:00:00+00:00",
-                        "to": "2018-07-26T13:15:00+00:00",
-                        "type": "scheduled_maintenance",
-                    },
-                ],
-                "limit": 10,
-                "offset": 0,
-                "total_results": 2
-            }
-
 ## XML Formats [/formats/]
 Formats represent XML feeds and their specification supported by Mergado.
 
