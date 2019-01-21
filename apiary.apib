@@ -5584,7 +5584,7 @@ Uses only UTM parameters that were sent in the request.
 ### Project Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions,medium}]
 Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
-If user didn't set the UTM parameters (or are empty), medium is empty and source is taken from output format.
+If user didn't set the UTM parameters (or are empty), medium is empty and source is set to output format name, prefixed by tilde (~), e.g. ~heureka.cz.
 
 **OAuth2 Scope:** project.ga.read
 
