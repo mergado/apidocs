@@ -1136,6 +1136,7 @@ to force Mergado to apply all rules to products during the next (lazy) rebuild.
 
 ### Show Project Info [GET /projects/{id}/info/]
 Show additional project information and statistics.
+Returns the metadata that the user has set or none if user didn't set them.
 
 **Oauth2 Scope:** project.read
 
@@ -5509,6 +5510,7 @@ API for various Google tools, helpers and resources.
 ### Eshop Data [GET /shops/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,source,metrics,dimensions,medium}]
 Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
+Uses only UTM parameters that were sent in the request.
 
 **OAuth2 Scope:** shop.ga.read
 
@@ -5582,6 +5584,7 @@ value in ascending order. Groups of results can be created using `dimensions` qu
 ### Project Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions,medium}]
 Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
+If user didn't set the UTM parameters (or are empty), medium is empty and source is set to output format name, prefixed by tilde (~), e.g. ~heureka.cz.
 
 **OAuth2 Scope:** project.ga.read
 
