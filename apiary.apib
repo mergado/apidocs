@@ -4091,6 +4091,9 @@ relevant to the project format are returned. Note that `product_id` is not retur
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
+only the products that have those fields defined will be returned. 
+For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** project.stats.read
 
@@ -4222,6 +4225,9 @@ relevant to the project format are returned. Note that `product_id` is not retur
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
+only the products that have those fields defined will be returned. 
+For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** project.stats.read
 
@@ -4365,6 +4371,9 @@ are returned. This can be changed by the query string parameter `date`. Note tha
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
+only the products that have those fields defined will be returned. 
+For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** shop.stats.read
 
@@ -4532,6 +4541,9 @@ are returned. This can be changed by the query string parameter `date`.
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
+only the products that have those fields defined will be returned. 
+For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** shop.stats.read
 
