@@ -988,6 +988,9 @@ and it is very common that one eshop has several projects each maaged for a diff
     + xml_updated_at (string) - The last time the project was updated by a change in the input XML feed.
     + is_dirty (boolean) - Dirty project means that during the next rebuild of the project, all rules to
       all products will be applied.
+    + metadata (object) - Additional data such as UTM params set by the user.
+    + number_of_elements (number) - Total number of defined elements.
+    + all_products_query_id (string) - Id of the ♥ALLPRODUCTS♥ query.
 
 ### List Shop Projects [GET]
 Returns projects of an eshop.
@@ -1032,7 +1035,14 @@ Returns projects of an eshop.
                         "last_access": "2015-12-10T12:51:59+00:00",
                         "xml_synced_at": "2015-11-18T13:19:59+00:00",
                         "xml_updated_at": "2015-11-11T15:42:50+00:00",
-                        "is_dirty": false
+                        "is_dirty": false,
+                        "metadata": {
+                            "stats_ga_medium": "agregator",
+                            "stats_ga_source": "heureka.*.",
+                            "generator": "mergado.magento.marketingpack.0_1"
+                        },
+                        "number_of_elements": 28,
+                        "all_products_query_id": "1"
                     }
                 ]
             }
@@ -1075,7 +1085,14 @@ Returns a project with the given ID.
                 "last_access": "2015-12-10T12:51:59+00:00",
                 "xml_synced_at": "2015-11-18T13:19:59+00:00",
                 "xml_updated_at": "2015-11-11T15:42:50+00:00"
-                "is_dirty": false
+                "is_dirty": false,
+                "metadata": {
+                    "stats_ga_medium": "agregator",
+                    "stats_ga_source": "heureka.*.",
+                    "generator": "mergado.magento.marketingpack.0_1"
+                },
+                "number_of_elements": 28,
+                "all_products_query_id": "1"
             }
 
 ### Update a Project [PATCH /projects/{id}/{?fields}]
@@ -1130,15 +1147,24 @@ to force Mergado to apply all rules to products during the next (lazy) rebuild.
                 "update_period": 14400,
                 "last_access": "2015-12-10T12:51:59+00:00",
                 "xml_synced_at": "2015-11-18T13:19:59+00:00",
-                "xml_updated_at": "2015-11-11T15:42:50+00:00"
-                "is_dirty": true
+                "xml_updated_at": "2015-11-11T15:42:50+00:00",
+                "is_dirty": true,
+                "metadata": {
+                    "stats_ga_medium": "agregator",
+                    "stats_ga_source": "heureka.*.",
+                    "generator": "mergado.magento.marketingpack.0_1"
+                },
+                "number_of_elements": 28,
+                "all_products_query_id": "1"
             }
 
 ### Show Project Info [GET /projects/{id}/info/]
+**Warning:** Deprecated, will be removed after 30. 7. 2019
+
 Show additional project information and statistics.
 Returns the metadata that the user has set or none if user didn't set them.
 
-**Oauth2 Scope:** project.read
+**Oauth2 Scope:** project.elements.read
 
 + Parameters
 
@@ -1165,7 +1191,8 @@ Returns the metadata that the user has set or none if user didn't set them.
                     "stats_ga_source": "heureka.*.",
                     "generator": "mergado.magento.marketingpack.0_1"
                 },
-                "number_of_elements": 28
+                "number_of_elements": 28,
+                "all_products_query_id": "1"
             }
 
 ## Products [/projects/{id}/products/{?limit,offset,fields}]
