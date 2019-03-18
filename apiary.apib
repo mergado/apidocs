@@ -5722,3 +5722,160 @@ mapping (where the key corresponds to Project output format). Note the tilde at 
                 "total_results": 4,
                 "offset": 0
             }
+
+### GA API Proxy [ /shops/{id}/google/analytics/proxy]
+Serves as a proxy to GA API. Currently, versions 3 and 4 are supported.
+Parameters sent to Mergado API in request body under `args` are forwarded to GA API.
+Version parameter must be provided as well (either `v3` or `v4`).
+The request is authorized by Mergado using Keychain Credentials.
+Response content from GA is returned under `content`.
+Response code from GA is returned under `status` to allow different codes from
+Mergado API and GA API.
+
+**OAuth2 Scope:** shop.ga.read
+
++ Parameters
+
+    + id (string) - ID of the eshop.
+
++ Request 200 v3
+
+    + Body
+
+            {
+                "version": "v3",
+                "args": {
+                    "ids": "ga:0",
+                    "start-date": "2018-01-01",
+                    "end-date": "yesterday",
+                    "metrics": "ga:pageviews"
+                }
+            }
+
++ Request 200 v4
+
+    + Body
+
+            {
+                "version": "v4",
+                "args": {
+                    "reportRequests":
+                    [
+                        {
+                        "viewId": "0",
+                        "dateRanges": [{"startDate": "2019-03-01", "endDate": "2019-03-10"}],
+                        "metrics": [{"expression": "ga:users"}]
+                        }
+                    ]
+
+                }
+            }
+
++ Response 200 (v3)
+
+    + Body
+
+            {
+                "content": {
+                    "columnHeaders": [
+                        {
+                            "columnType": "METRIC",
+                            "dataType": "INTEGER",
+                            "name": "ga:pageviews"
+                        }
+                    ],
+                    "containsSampledData": false,
+                    "id": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:0&metrics=ga:pageviews&start-date=2018-01-01&end-date=yesterday",
+                    "itemsPerPage": 1000,
+                    "kind": "analytics#gaData",
+                    "profileInfo": {
+                        "accountId": "0",
+                        "internalWebPropertyId": "0",
+                        "profileId": "0",
+                        "profileName": "All Web Site Data",
+                        "tableId": "ga:0",
+                        "webPropertyId": "0"
+                    },
+                    "query": {
+                        "end-date": "yesterday",
+                        "ids": "ga:0",
+                        "max-results": 1000,
+                        "metrics": [
+                            "ga:pageviews"
+                        ],
+                        "start-date": "2018-01-01",
+                        "start-index": 1
+                    },
+                    "rows": [
+                        [
+                            "231"
+                        ]
+                    ],
+                    "selfLink": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:0&metrics=ga:pageviews&start-date=2018-01-01&end-date=yesterday",
+                    "totalResults": 1,
+                    "totalsForAllResults": {
+                        "ga:pageviews": "231"
+                    }
+                },
+                "status": 200
+            }
+
++ Response 200 (v4)
+
+    + Body
+
+            {
+                "content": {
+                    "reports": [
+                        {
+                            "columnHeader": {
+                                "metricHeader": {
+                                    "metricHeaderEntries": [
+                                        {
+                                            "name": "ga:users",
+                                            "type": "INTEGER"
+                                        }
+                                    ]
+                                }
+                            },
+                            "data": {
+                                "isDataGolden": true,
+                                "maximums": [
+                                    {
+                                        "values": [
+                                            "1"
+                                        ]
+                                    }
+                                ],
+                                "minimums": [
+                                    {
+                                        "values": [
+                                            "1"
+                                        ]
+                                    }
+                                ],
+                                "rowCount": 1,
+                                "rows": [
+                                    {
+                                        "metrics": [
+                                            {
+                                                "values": [
+                                                    "1"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "totals": [
+                                    {
+                                        "values": [
+                                            "1"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "status": 200
+            }
