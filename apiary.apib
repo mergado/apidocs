@@ -1022,7 +1022,7 @@ and it is very common that one eshop has several projects each maaged for a diff
     + metadata (object) - Additional data such as UTM params set by the user.
     + number_of_elements (number) - Total number of defined elements.
     + all_products_query_id (string) - Id of the ♥ALLPRODUCTS♥ query.
-    + sync_schedule - Data about project synchronization (eg. its type or schedule settings).
+    + sync_schedule (object) - Data about project synchronization. Contain its type and schedule settings (written in cron syntax).
 
 ### List Shop Projects [GET]
 Returns projects of an eshop.
