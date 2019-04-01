@@ -1022,7 +1022,7 @@ and it is very common that one eshop has several projects each maaged for a diff
     + metadata (object) - Additional data such as UTM params set by the user.
     + number_of_elements (number) - Total number of defined elements.
     + all_products_query_id (string) - Id of the ♥ALLPRODUCTS♥ query.
-    + sync_schedule (object) - Project synchronization data. Contain its type and schedule settings (written in cron syntax).
+    + sync_schedule (object) - Project synchronization data. Contains schedule settings (written in cron syntax).
 
 ### List Shop Projects [GET]
 Returns projects of an eshop.
@@ -1076,7 +1076,6 @@ Returns projects of an eshop.
                         "number_of_elements": 28,
                         "all_products_query_id": "1",
                         "sync_schedule": {
-                            "type": "automatic_scheduled",
                             "minute": "50",
                             "hour": "*/1",
                             "day_of_week": "*",
@@ -1134,7 +1133,6 @@ Returns a project with the given ID.
                 "number_of_elements": 28,
                 "all_products_query_id": "1",
                 "sync_schedule": {
-                    "type": "automatic_scheduled",
                     "minute": "50",
                     "hour": "*/1",
                     "day_of_week": "*",
@@ -1205,7 +1203,6 @@ to force Mergado to apply all rules to products during the next (lazy) rebuild.
                 "number_of_elements": 28,
                 "all_products_query_id": "1",
                 "sync_schedule": {
-                    "type": "automatic_scheduled",
                     "minute": "50",
                     "hour": "*/1",
                     "day_of_week": "*",
