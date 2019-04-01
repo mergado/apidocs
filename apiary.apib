@@ -5726,6 +5726,10 @@ mapping (where the key corresponds to Project output format). Note the tilde at 
 ### GA API Proxy [POST /shops/{id}/google/analytics/proxy]
 Serves as a proxy to GA API. Currently, versions 3 and 4 are supported.
 Parameters sent to Mergado API in request body under `args` are forwarded to GA API.
+In case of v3, the "args" in request body are transformed to query string args
+and forwarded to https://www.googleapis.com/analytics/v3/data/ga.
+In case of v4, the "args" in request body are simply forwarded to
+https://analyticsreporting.googleapis.com/v4/reports:batchGet.
 Version parameter must be provided as well (either `v3` or `v4`).
 The request is authorized by Mergado using Keychain Credentials.
 Response content from GA is returned under `content`.
