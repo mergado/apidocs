@@ -1022,6 +1022,7 @@ and it is very common that one eshop has several projects each maaged for a diff
     + metadata (object) - Additional data such as UTM params set by the user.
     + number_of_elements (number) - Total number of defined elements.
     + all_products_query_id (string) - Id of the ♥ALLPRODUCTS♥ query.
+    + sync_schedule (object) - Project synchronization data. Contains schedule settings (written in cron syntax).
 
 ### List Shop Projects [GET]
 Returns projects of an eshop.
@@ -1073,7 +1074,14 @@ Returns projects of an eshop.
                             "generator": "mergado.magento.marketingpack.0_1"
                         },
                         "number_of_elements": 28,
-                        "all_products_query_id": "1"
+                        "all_products_query_id": "1",
+                        "sync_schedule": {
+                            "minute": "50",
+                            "hour": "*/1",
+                            "day_of_week": "*",
+                            "day_of_month": "*",
+                            "month_of_year": "*",
+                        }
                     }
                 ]
             }
@@ -1123,7 +1131,14 @@ Returns a project with the given ID.
                     "generator": "mergado.magento.marketingpack.0_1"
                 },
                 "number_of_elements": 28,
-                "all_products_query_id": "1"
+                "all_products_query_id": "1",
+                "sync_schedule": {
+                    "minute": "50",
+                    "hour": "*/1",
+                    "day_of_week": "*",
+                    "day_of_month": "*",
+                    "month_of_year": "*",
+                }
             }
 
 ### Update a Project [PATCH /projects/{id}/{?fields}]
@@ -1186,7 +1201,14 @@ to force Mergado to apply all rules to products during the next (lazy) rebuild.
                     "generator": "mergado.magento.marketingpack.0_1"
                 },
                 "number_of_elements": 28,
-                "all_products_query_id": "1"
+                "all_products_query_id": "1",
+                "sync_schedule": {
+                    "minute": "50",
+                    "hour": "*/1",
+                    "day_of_week": "*",
+                    "day_of_month": "*",
+                    "month_of_year": "*",
+                }
             }
 
 ### Show Project Info [GET /projects/{id}/info/]
@@ -1223,7 +1245,15 @@ Returns the metadata that the user has set or none if user didn't set them.
                     "generator": "mergado.magento.marketingpack.0_1"
                 },
                 "number_of_elements": 28,
-                "all_products_query_id": "1"
+                "all_products_query_id": "1",
+                "sync_schedule": {
+                    "type": "automatic_scheduled",
+                    "minute": "50",
+                    "hour": "*/1",
+                    "day_of_week": "*",
+                    "day_of_month": "*",
+                    "month_of_year": "*",
+                }
             }
 
 ## Products [/projects/{id}/products/{?limit,offset,fields}]
