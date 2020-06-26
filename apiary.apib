@@ -689,6 +689,73 @@ Lists all permissions (accesses to eshops) of a specific user.
                 "offset": 0
             }
 
+### Get User Eshop Permissions [GET /users/{id}/permissions/eshop/{eshopId}]
+Returns user permission to given eshop.
+
+**OAuth2 Scope:** user.read
+
++ Parameters
+
+    + id (string) - ID of a user.
+    + eshopId (string) - ID of a eshop.
+
++ Response 200
+
+    + Attributes
+        + shop_id (string) - ID of the shop the role relates to.
+        + user_id (string) - ID of the user the role relates to.
+        + role (enum[string]) - User's role.
+            + members
+                + `writer` - User can edit eshop
+                + `reader` - User can read eshop
+                + `null` - User doesn't have access to this eshop
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "shop_id": "14",
+                "user_id": "2",
+                "role": "writer"
+            }
+
+### Get User Project Permissions [GET /users/{id}/permissions/project/{projectId}]
+Returns user permission to given project.
+
+**OAuth2 Scope:** user.read
+
++ Parameters
+
+    + id (string) - ID of a user.
+    + projectId (string) - ID of a project.
+
++ Response 200
+
+    + Attributes
+        + project_id (string) - ID of the project the role relates to.
+        + user_id (string) - ID of the user the role relates to.
+        + role (enum[string]) - User's role.
+            + members
+                + `writer` - User can edit project
+                + `reader` - User can read project
+                + `null` - User doesn't have access to this project
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "project_id": "14",
+                "user_id": "2",
+                "role": "writer"
+            }
+
+
 ## Eshops [/users/{id}/shops/{?limit,offset,fields}]
 Eshops in Mergado.
 
