@@ -79,7 +79,7 @@ Various API resources that don't require any authentication.
             {
                 "version": "0.2"
             }
-            
+
 ## Maintenance [/maintenance]
 
 ### Show maintenance info [GET]
@@ -109,7 +109,7 @@ Returns information about maintenance.
                 "limit": 10,
                 "offset": 0,
                 "total_results": 2
-}
+            }
 
 ## XML Formats [/formats/]
 Formats represent XML feeds and their specification supported by Mergado.
@@ -3369,6 +3369,84 @@ Fetches all access logs for given project.
                 "offset": 0
             }
 
+### Get E-shop Event Logs [GET /eshop/{id}/eventlogs/{?limit,offset}]
+Fetches all e-shop events logs.
+Possible sources:
+    - **project**
+        Possible events:
+            - `created` - Project created
+            - `deleted` - Project deleted
+            - `enabled` - Project enabled
+            - `disabled` - Project disabled
+    - **eshop**
+        Possible events:
+            - `invitation` - Invitation send
+    - **keychain** - Events of keychain app
+        Possible events:
+            - `created` - Connection to provider created
+            - `deleted` - Connection to provider deleted
+
+**OAuth2 Scope:** eshop.read
+
++ Parameters
+
+    + id (string) - ID of a e-shop.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "data": [
+                    {
+                        "id": "1",
+                        "created_at": "2020-09-18T08:20:14+00:00",
+                        "user_id": "1",
+                        "user_name": "Jon Doe",
+                        "source": "project",
+                        "event": "deleted",
+                        "subject_id": "1",
+                        "subject_name": "Heureka.cz"
+                    },
+                    {
+                        "id": "2",
+                        "created_at": "2020-09-18T09:09:01+00:00",
+                        "user_id": "1",
+                        "user_name": "Jon Doe",
+                        "source": "eshop",
+                        "event": "invitation",
+                        "subject_id": "3",
+                        "subject_name": "test@example.com - reader"
+                    },
+                    {
+                        "id": "3",
+                        "created_at": "2020-09-18T12:58:08+00:00",
+                        "user_id": "2",
+                        "user_name": "Rája Test",
+                        "source": "keychain",
+                        "event": "created",
+                        "subject_id": null,
+                        "subject_name": "googleanalytics"
+                    },
+                    {
+                        "id": "4",
+                        "created_at": "2020-09-18T13:02:37+00:00",
+                        "user_id": "1",
+                        "user_name": "Jon Doe",
+                        "source": "keychain",
+                        "event": "deleted",
+                        "subject_id": null,
+                        "subject_name": "google_analytics"
+                    }
+                ],
+                "offset": 0,
+                "limit": 10,
+                "total_results": 4
+            }
 
 ## Enabled Apps [/users/{id}/apps/]
 Management of enabled apps by users.
@@ -4190,8 +4268,8 @@ relevant to the project format are returned. Note that `product_id` is not retur
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
-If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
-only the products that have those fields defined will be returned. 
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value),
+only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** project.stats.read
@@ -4324,8 +4402,8 @@ relevant to the project format are returned. Note that `product_id` is not retur
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
-If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
-only the products that have those fields defined will be returned. 
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value),
+only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** project.stats.read
@@ -4470,8 +4548,8 @@ are returned. This can be changed by the query string parameter `date`. Note tha
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
-If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
-only the products that have those fields defined will be returned. 
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value),
+only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** shop.stats.read
@@ -4640,8 +4718,8 @@ are returned. This can be changed by the query string parameter `date`.
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
-If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
-only the products that have those fields defined will be returned. 
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value),
+only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** shop.stats.read
@@ -5753,8 +5831,8 @@ Uses only UTM parameters that were sent in the request.
 ### Project Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions,medium}]
 Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
-If user didn't set the UTM parameters (or the params are empty), 
-medium is empty and source is set to a regex based on [this](https://gist.github.com/MichalJanik/721d23bd6036b9f67526b1e5305f3a5c) 
+If user didn't set the UTM parameters (or the params are empty),
+medium is empty and source is set to a regex based on [this](https://gist.github.com/MichalJanik/721d23bd6036b9f67526b1e5305f3a5c)
 mapping (where the key corresponds to Project output format). Note the tilde at the start.
 
 **OAuth2 Scope:** project.ga.read
