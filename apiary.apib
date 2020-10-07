@@ -109,7 +109,7 @@ Returns information about maintenance.
                 "limit": 10,
                 "offset": 0,
                 "total_results": 2
-}
+            }
 
 ## XML Formats [/formats/]
 Formats represent XML feeds and their specification supported by Mergado.
@@ -1283,6 +1283,7 @@ to force Mergado to apply all rules to products during the next (lazy) rebuild.
 
 Show additional project information and statistics.
 Returns the metadata that the user has set or none if user didn't set them.
+Supports regular format as well as custom format mapping.
 
 **Oauth2 Scope:** project.elements.read
 
@@ -1322,6 +1323,38 @@ Returns the metadata that the user has set or none if user didn't set them.
                     "month_of_year": "*",
                 }
             }
+
+### Show Project Elements Mapping [GET /projects/{id}/mapping/]
+
+Show project elements mapping information.
+Returns the mapping of input, output and universal element name.
+
+**Oauth2 Scope:** project.elements.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            [
+                {
+                    "input": "ID",
+                    "output": "G:ID",
+                    "universal": "item_id",
+                },
+                {
+                    "input": "TITLE",
+                    "output": "G:TITLE",
+                    "universal": "title",
+                },
+            ]
 
 ## Products [/projects/{id}/products/{?limit,offset,fields}]
 A products represents one item in an XML feed.
@@ -5533,7 +5566,7 @@ to all children categories.
       specified by the child.
         + (object)
             + to_price (float) - Max price of the product in the category.
-            + value (float) - Max CPC for the product given its price.
+            + value (float) - Min CPC for the product given its price.
 
 ### Get a Category [GET /heureka/categories/{id}/{?fields}]
 Returns a single Heureka category.
