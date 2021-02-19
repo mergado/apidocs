@@ -1,5 +1,5 @@
 FORMAT: 1A9
-HOST: https://api.mergado.com/
+HOST: https://api.mergado.com
 
 # Mergado
 The Mergado API is based on REST principles. The request/response format is JSON.
@@ -53,6 +53,11 @@ a client ID and a secret key is assigned to your application).
 
 * [Basics of OAuth 2.0 in Mergado Apps](http://mergado.github.io/docs/api/authorization.html)
 * [List of all OAuth scopes](http://mergado.github.io/docs/api/oauth-scopes.html)
+
+### Online and offline access tokens
+Mergado API distinguishes between situations where your Mergado platform app accesses API **on behalf of some specific Mergado user** and where the app is accessing API **on behalf of the app itself**.
+
+Access tokens bound to some specific user ID are called ***online*** tokens. Access tokens bound only to the app itself are called ***offline*** tokens.
 
 ## Versioning
 
@@ -321,8 +326,130 @@ Returns definitions of all rules and required data for their instantiation.
                 "offset": 0
             }
 
+# Group Me
+
+Information about yourself - current client accessing the API _(identified by access token)_.
+
+## User [GET /me/{?fields}]
+**Access with ONLINE token only.**
+
+Returns currently authenticated user.
+
+**OAuth2 Scope:** user.read
+
++ Request
+    + Headers
+            Content-Type: application/json
+
++ Response 200
+    + Headers
+            Content-Type: application/json
+    + Body
+            {
+                "id": "6",
+                "first_name": "Lorem",
+                "last_name": "Ipsum",
+                "name": "Lorem Ipsum",
+                "username": "loremipsum",
+                "email": "lorem.ipsum@example.com",
+                "city": "Brno",
+                "company": "Mergado",
+                "country": "cz",
+                "dic": "00000000",
+                "ico": "00000000",
+                "fakturoid_id": null,
+                "invoice_months": 1,
+                "last_access": "2016-03-21T16:32:32+00:00",
+                "locale": "cs_CZ",
+                "postcode": "61200",
+                "registered_at": "2015-11-03T16:08:17+00:00",
+                "street": "Palackého 123/456",
+                "timezone": "Europe/Prague",
+                "timezone_offset": null,
+                "send_summary": false
+            }
+
+
+## App [/me/app/]
+Information about currently authenticated Mergado platform app.
+
+### List enabled instances [GET /me/app/enabled/{?fields}]
+**Access with OFFLINE token only.**
+
+Returns list of entities _(user, shop, project, based on your app type)_ where your Mergado platform app was enabled at least once. The list is sorted from the newest entries to the oldest ones.
+
++ Request
+    + Headers
+            Content-Type: application/json
+
++ Response 200
+    + Headers
+        Content-Type: application/json
+    + Body
+        {
+            "data": [
+                {
+                    "entity_id": 100,
+                    "is_enabled": true,
+                    "free_until": "2021-11-05",
+                    "paid_until": "2021-12-07"
+                },
+                {
+                    "entity_id": 101,
+                    "is_enabled": true,
+                    "free_until": "2021-06-05",
+                    "paid_until": "2021-08-06"
+                },
+                {
+                    "entity_id": 200,
+                    "is_enabled": false,
+                    "free_until": "2021-02-05",
+                    "paid_until": "2021-04-03"
+                }
+            ],
+            "offset": 0,
+            "limit": 10,
+            "total_results": 3
+        }
+
+#### Get app history for entity [GET /me/app/enabled/{entity_id}]
+**Access with OFFLINE token only.**
+
+Returns history of enabled/disabled state of your app for a specific entity ID.
+
++ Parameters
+
+    + entity_id (int) - Entity ID *(user, shop, project, based on your app type)*.
+
++ Request
+    + Headers
+        Content-Type: application/json
+
++ Response 200
+    + Headers
+        Content-Type: application/json
+    + Body
+        {
+            "data": [
+                {
+                    "enabled_at": "2020-11-05T09:08:19+00:00",
+                    "enabled_by_user_id": 1003,
+                    "disabled_at": null,
+                    "disabled_by_user_id": null
+                },
+                {
+                    "enabled_at": "2020-11-05T09:08:19+00:00",
+                    "enabled_by_user_id": 1001,
+                    "disabled_at": "2021-02-16T12:43:26+00:00",
+                    "disabled_by_user_id": 1003
+                }
+            ],
+            "offset": 0,
+            "limit": 10,
+            "total_results": 1
+        }
+
 # Group Core
-Management of users, eshops, projects and other core resources.
 
 ## Apps [/apps/{?limit,offset,fields}]
 Applications in Mergado.
@@ -569,43 +696,6 @@ Lists all users the authenticated client has access to.
                         "send_summary": false
                     }
                 ]
-            }
-
-### Authenticated User [GET /me/{?fields}]
-Returns currently authenticated user.
-
-**OAuth2 Scope:** user.read
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-            {
-                "id": "6",
-                "first_name": "Lorem",
-                "last_name": "Ipsum",
-                "name": "Lorem Ipsum",
-                "username": "loremipsum",
-                "email": "lorem.ipsum@example.com",
-                "city": "Brno",
-                "company": "Mergado",
-                "country": "cz",
-                "dic": "00000000",
-                "ico": "00000000",
-                "fakturoid_id": null,
-                "invoice_months": 1,
-                "last_access": "2016-03-21T16:32:32+00:00",
-                "locale": "cs_CZ",
-                "postcode": "61200",
-                "registered_at": "2015-11-03T16:08:17+00:00",
-                "street": "Palackého 123/456",
-                "timezone": "Europe/Prague",
-                "timezone_offset": null,
-                "send_summary": false
             }
 
 ### Get User [GET /users/{id}/{?fields}]
