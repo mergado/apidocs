@@ -21,13 +21,14 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 
 ### Additional GET parameters
 
-| Parameter                    | Example                                    | Description |
-|------------------------------|--------------------------------------------|-------------|
-| **fields**                   | `?fields=uri,shop.id`                      | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
-| **limit**, **offset**        | `?limit=5&offset=2`                        | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
-| **date**                     | `?date=2015-12-24`                         | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
-| **filter_by**                | `?filter_by={"item_id__in":["123456789"]}` | Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
-| **order_by**                 | `?order_by=validator,-verdict`             | Orders the result in ascending or descending order. |
+| Parameter                    | Example                                            | Description |
+|------------------------------|----------------------------------------------------|-------------|
+| **fields**                   | `?fields=uri,shop.id`                              | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
+| **limit**, **offset**        | `?limit=5&offset=2`                                | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
+| **date**                     | `?date=2015-12-24`                                 | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
+| **filter**                   | `?filter=[{"field": "id", "op": "<", "value": 7}]` | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fails. Only non-nested fields are expected. |
+| **order_by**                 | `?order_by=validator,-verdict`                     | Orders the result in ascending or descending order. |
+| filter_by                    | `?filter_by={"item_id__in":["123456789"]}`         | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
 
 ### Typical Server Responses
 
@@ -252,7 +253,7 @@ Returns requested tariff by its ID.
                 "price_gbp": 19
             }
 
-## Rule Definitions [/rules/definitions/{?limit,offset,fields}]
+## Rule Definitions [/rules/definitions/{?limit,offset,fields,filter}]
 Definition of rules so that developers can see which rules expect what data.
 
 + Attributes
@@ -451,7 +452,7 @@ Returns history of enabled/disabled state of your app for a specific entity ID.
 
 # Group Core
 
-## Apps [/apps/{?limit,offset,fields}]
+## Apps [/apps/{?limit,offset,fields,filter}]
 Applications in Mergado.
 
 + Attributes
@@ -627,7 +628,7 @@ Returns whole billing details for given user.
                 "total_retail_price": 1234.5
             }
 
-## Users [/users/{?limit,offset,fields}]
+## Users [/users/{?limit,offset,fields,filter}]
 Users with an account in Mergado.
 
 + Attributes
@@ -739,7 +740,7 @@ Returns a user.
                 "send_summary": false
             }
 
-### Get User Permissions [GET /users/{id}/permissions/{?limit,offset,fields}]
+### Get User Permissions [GET /users/{id}/permissions/{?limit,offset,fields,filter}]
 Lists all permissions (accesses to eshops) of a specific user.
 
 **OAuth2 Scope:** user.shops.read
@@ -846,7 +847,7 @@ Returns user permission to given project.
             }
 
 
-## Eshops [/users/{id}/shops/{?limit,offset,fields}]
+## Eshops [/users/{id}/shops/{?limit,offset,fields,filter}]
 Eshops in Mergado.
 
 + Attributes
@@ -1150,7 +1151,7 @@ Show additional eshop information and statistics.
                 ]
             }
 
-## Projects [/shops/{id}/projects/{?limit,offset,fields}]
+## Projects [/shops/{id}/projects/{?limit,offset,fields,filter}]
 Project is created when a user imports an XML feed in Mergado. This feed may come in different formats
 and it is very common that one eshop has several projects each maaged for a different shopping service.
 
@@ -1449,12 +1450,12 @@ Returns the mapping of input, output and universal element name.
                 },
             ]
 
-## Products [/projects/{id}/products/{?limit,offset,fields}]
-A products represents one item in an XML feed.
+## Products [/projects/{id}/products/{?limit,offset,fields,filter}]
+A products represents one item currently present in an XML feed.
 
 + Attributes
 
-    + id (string) - ID of the product.
+    + id (string) - ID of the product. Values correspond to pairings IDs.
     + output_changed_at (string) - The last time output data (values of elements)
       of this product changed.
     + updated_at (string) - The last time input data of this product changed.
@@ -1660,7 +1661,7 @@ to force Mergado to refresh the product (apply rules) during the next (lazy) reb
                 }
             }
 
-### Query Products [GET /queries/{id}/products/{?limit,offset,fields}]
+### Query Products [GET /queries/{id}/products/{?limit,offset,fields,filter}]
 Returns products that satisfy a condition defined by the given query.
 
 **OAuth2 Scope:** projects.products.read
@@ -1799,6 +1800,89 @@ to force Mergado to refresh the products (apply rules) during the next (lazy) re
 
 + Response 204
 
+## Pairings [/projects/{id}/pairings/{?limit,offset,fields,filter}]
+A pairing represents one item which has appeared at least once in an XML feed.
+
++ Attributes
+
+    + id (string) - ID of the pairings. Values correspond to products IDs.
+    + created_at (string) - The time when the product first appeared in the XML feed.
+    + deleted_at (string) - The time when the product last appeared in the XML feed.
+    + hash1 (string) - Hashed value of the product first pairing element.
+    + hash2 (string) - Hashed value of the product second pairing element.
+    + hash3 (string) - Hashed value of the product third pairing element.
+    + hash4 (string) - Hashed value of the product fourth pairing element.
+
+### List Pairings [GET]
+Returns project's pairings.
+
+**OAuth2 Scope:** project.products.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "data": [
+                    {
+                        "id": "1693",
+                        "created_at": "2016-04-28T17:18:50+00:00",
+                        "deleted_at": "2019-03-27T17:18:45+00:00",
+                        "hash1": "4358fe8cb49a7c4a83bea73fd9e824be",
+                        "hash2": "58fe8cb49ad64cdc452366e2784d1e5e",
+                        "hash3": "ad6b324d939341ec3f45faff3baf2acb",
+                        "hash4": null,
+                    },
+                    {
+                        "id": "1694",
+                        "created_at": "2016-04-28T17:18:50+00:00",
+                        "deleted_at": null,
+                        "hash1": "5706e0964b664cdc452366e2784d1e5e",
+                        "hash2": "4a83bea73fd9e824be4358fe8cb49a7c",
+                        "hash3": "f45faff3baf2ac4ad6b324d939341ec3",
+                        "hash4": null,
+                    }
+                ],
+                "limit": 10,
+                "total_results": 2,
+                "offset": 0
+            }
+
+### Get a Pairing [GET /pairings/{id}/{?fields}]
+Returns a pairing with the given ID.
+
+**OAuth2 Scope:** project.products.read
+
++ Parameters
+
+    + id (string) - ID of a pairing.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "id": "1693",
+                "created_at": "2016-04-28T17:18:50+00:00",
+                "deleted_at": "2019-03-27T17:18:45+00:00",
+                "hash1": "4358fe8cb49a7c4a83bea73fd9e824be",
+                "hash2": "58fe8cb49ad64cdc452366e2784d1e5e",
+                "hash3": "3d6b324d939341ec3f45faff3baf2acb",
+                "hash4": null,
+            }
+
 ## Elements [/projects/{id}/elements/]
 Elements are named attributes of products.
 
@@ -1855,7 +1939,7 @@ Creates an element inside a project.
                 "hidden": false
             }
 
-### List Project Elements [GET /projects/{id}/elements/{?limit,offset,fields}]
+### List Project Elements [GET /projects/{id}/elements/{?limit,offset,fields,filter}]
 Lists all project's elements.
 
 **OAuth2 Scope:** project.elements.read
@@ -2070,7 +2154,7 @@ Creates a new variable inside a project.
                 "type": "manual"
             }
 
-### List Project Variables [GET /projects/{id}/variables/{?limit,offset,fields}]
+### List Project Variables [GET /projects/{id}/variables/{?limit,offset,fields,filter}]
 Lists all project's variables.
 
 **OAuth2 Scope:** project.variables.read
@@ -2388,7 +2472,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
                 ]
             }
 
-### List Project Rules [GET /projects/{id}/rules/{?limit,offset,fields}]
+### List Project Rules [GET /projects/{id}/rules/{?limit,offset,fields,filter}]
 Lists all rules' instances that were created inside the specified project.
 
 **OAuth2 Scope:** project.rules.read
@@ -2548,7 +2632,7 @@ If an empty list is sent, 400 will be returned.
                 }
             }
 
-### Get Rule Data [GET /rules/{id}/data/{?limit,offset,fields}]
+### Get Rule Data [GET /rules/{id}/data/{?limit,offset,fields,filter}]
 Returns only the data of a specific rule instance. This can be helpful
 for one to many (O2M) rules with a lot of records.
 
@@ -2737,7 +2821,7 @@ Performes update of the specified query.
                 "product_count": 12983
             }
 
-### List Project Queries [GET /projects/{id}/queries/{?limit,offset,fields}]
+### List Project Queries [GET /projects/{id}/queries/{?limit,offset,fields,filter}]
 Lists all queries that were created inside the specified project.
 
 **OAuth2 Scope:** project.queries.read
@@ -2784,7 +2868,7 @@ Lists all queries that were created inside the specified project.
                 "offset": 0
             }
 
-### List Rule Queries [GET /rules/{id}/queries/{?limit,offset,fields}]
+### List Rule Queries [GET /rules/{id}/queries/{?limit,offset,fields,filter}]
 Lists all queries that were created for the specified rule.
 
 **OAuth2 Scope:** project.queries.read
@@ -3161,7 +3245,7 @@ Fetches an import log with the given ID.
                 "user_id": "1"
             }
 
-### Get Import Logs [GET /projects/{id}/importlogs/{?limit,offset,fields}]
+### Get Import Logs [GET /projects/{id}/importlogs/{?limit,offset,fields,filter}]
 Fetches all import logs for given project.
 
 **OAuth2 Scope:** project.logs.read
@@ -3255,7 +3339,7 @@ Fetches an apply log with the given ID.
                 "applied_to_all_items": true
             }
 
-### Get Apply Logs [GET /projects/{id}/applylogs/{?limit,offset,fields}]
+### Get Apply Logs [GET /projects/{id}/applylogs/{?limit,offset,fields,filter}]
 Fetches all apply logs for given project.
 
 **OAuth2 Scope:** project.logs.read
@@ -3356,7 +3440,7 @@ Fetches an export log with the given ID.
                 "user_id": "1"
             }
 
-### Get Export Logs [GET /projects/{id}/exportlogs/{?limit,offset,fields}]
+### Get Export Logs [GET /projects/{id}/exportlogs/{?limit,offset,fields,filter}]
 Fetches all export logs for given project.
 
 **OAuth2 Scope:** project.logs.read
@@ -3444,7 +3528,7 @@ Fetches an access log with the given ID. If the related project has been deleted
                 "message": "The associated project for this log has been deleted"
             }
 
-### Get Access Logs [GET /projects/{id}/accesslogs/{?limit,offset,fields}]
+### Get Access Logs [GET /projects/{id}/accesslogs/{?limit,offset,fields,filter}]
 Fetches all access logs for given project.
 
 **OAuth2 Scope:** project.logs.read
@@ -3583,7 +3667,7 @@ Management of enabled apps by users.
     + free_until (string) - Trial expiration date.
     + paid_until (string) - Paid subscription expiration date.
 
-### List User Apps [GET /users/{id}/apps/{?limit,offset,fields}]
+### List User Apps [GET /users/{id}/apps/{?limit,offset,fields,filter}]
 Lists apps enabled by the given user.
 
 **OAuth2 Scope:** user.apps.read
@@ -3618,7 +3702,7 @@ Lists apps enabled by the given user.
                 "offset": 0
             }
 
-### Get User App [GET /users/{id}/apps/{name}/{?limit,offset,fields}]
+### Get User App [GET /users/{id}/apps/{name}/{?limit,offset,fields,filter}]
 Fetches an app enabled by the given user.
 
 **OAuth2 Scope:** user.apps.read
@@ -3678,7 +3762,7 @@ Updates an app enabled by the given user.
                 "paid_until": "2016-02-08"
             }
 
-### List Shop Apps [GET /shops/{id}/apps/{?limit,offset,fields}]
+### List Shop Apps [GET /shops/{id}/apps/{?limit,offset,fields,filter}]
 Lists apps enabled for the given eshop.
 
 **OAuth2 Scope:** shop.apps.read
@@ -3713,7 +3797,7 @@ Lists apps enabled for the given eshop.
                 "offset": 0
             }
 
-### Get Shop App [GET /shops/{id}/apps/{name}/{?limit,offset,fields}]
+### Get Shop App [GET /shops/{id}/apps/{name}/{?limit,offset,fields,filter}]
 Fetches an app enabled for the given shop.
 
 **OAuth2 Scope:** shop.apps.read
@@ -3774,7 +3858,7 @@ Updates an app enabled for the given shop.
                 "paid_until": "2017-02-08"
             }
 
-### List Project Apps [GET /projects/{id}/apps/{?limit,offset,fields}]
+### List Project Apps [GET /projects/{id}/apps/{?limit,offset,fields,filter}]
 Lists apps enabled for the given project.
 
 **OAuth2 Scope:** project.apps.read
@@ -3809,7 +3893,7 @@ Lists apps enabled for the given project.
                 "offset": 0
             }
 
-### Get Project App [GET /projects/{id}/apps/{name}/{?limit,offset,fields}]
+### Get Project App [GET /projects/{id}/apps/{name}/{?limit,offset,fields,filter}]
 Fetches an app enabled by the given project.
 
 **OAuth2 Scope:** project.apps.read
@@ -3875,7 +3959,7 @@ API for statistics collected from eshops, shopping services and other resources.
 **Warning:** Product and category statistics are currently collected only for `heureka.cz` and `heureka.sk`
 export (project) formats. This means that Audits are also performed on stats from these services.
 
-## Eshop Statistics [/shops/{id}/stats/{?limit,offset,fields}]
+## Eshop Statistics [/shops/{id}/stats/{?limit,offset,fields,filter}]
 Collections here represent collected statistics of eshops from various
 comparison shopping services (Zboží.cz, Heureka.cz, etc.).
 
@@ -4041,7 +4125,7 @@ Returns latest summarized statistics and other information of an eshop.
                 "offset": 0
             }
 
-### List All Sources [GET /shops/{id}/stats/sources/{?limit,offset,fields}]
+### List All Sources [GET /shops/{id}/stats/sources/{?limit,offset,fields,filter}]
 Returns a list of all sources of a specific shop.
 
 **OAuth2 Scope:** shop.stats.source.read
@@ -5289,7 +5373,7 @@ Returns a *log* of the import of statistics with the given ID.
                 "shop_id": "2"
             }
 
-### List All Logs of a Shop [GET /shops/{id}/statslogs/{?limit,offset,fields}]
+### List All Logs of a Shop [GET /shops/{id}/statslogs/{?limit,offset,fields,filter}]
 Returns all *logs* of the import of statistics.
 
 **OAuth2 Scope:** shop.stats.read
@@ -5435,7 +5519,7 @@ Creates and starts an audit. Feed type, web hook and shop id are optional.
                 "finished_at": null
             }
 
-### List Audits [GET /projects/{id}/feedaudits/{?limit,offset,fields}]
+### List Audits [GET /projects/{id}/feedaudits/{?limit,offset,fields,filter}]
 Returns list of all audits.
 
 + Parameters
