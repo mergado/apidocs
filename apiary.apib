@@ -21,14 +21,14 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 
 ### Additional GET parameters
 
-| Parameter                    | Example                                            | Description |
-|------------------------------|----------------------------------------------------|-------------|
-| **fields**                   | `?fields=uri,shop.id`                              | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
-| **limit**, **offset**        | `?limit=5&offset=2`                                | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
-| **date**                     | `?date=2015-12-24`                                 | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
-| **filter**                   | `?filter=[{"field": "id", "op": "<", "value": 7}]` | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fails. Only non-nested fields are expected. |
-| **order_by**                 | `?order_by=validator,-verdict`                     | Orders the result in ascending or descending order. |
-| filter_by                    | `?filter_by={"item_id__in":["123456789"]}`         | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
+| Parameter                    | Example                                                                 | Description |
+|------------------------------|-------------------------------------------------------------------------|-------------|
+| **fields**                   | `?fields=uri,shop.id`                                                   | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
+| **limit**, **offset**        | `?limit=5&offset=2`                                                     | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
+| **date**                     | `?date=2015-12-24`                                                      | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
+| **filter**                   | `?filter=[{"field": "to", "op": ">=", "value": "2021-08-08T13:00:00"}]` | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Only numbers and timestamps in ISO 8601 format can be ordinally compared. Missing values in timestamps will be supplemented by the lowest possible values, eg `"2015-12-24"` equals `"2015-12-24T00:00:00+00:00"`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fail. Only non-nested fields are expected. |
+| **order_by**                 | `?order_by=validator,-verdict`                                          | Orders the result in ascending or descending order. |
+| filter_by                    | `?filter_by={"item_id__in":["123456789"]}`                              | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
 
 ### Typical Server Responses
 
@@ -1808,10 +1808,6 @@ A pairing represents one item which has appeared at least once in an XML feed.
     + id (string) - ID of the pairings. Values correspond to products IDs.
     + created_at (string) - The time when the product first appeared in the XML feed.
     + deleted_at (string) - The time when the product last appeared in the XML feed.
-    + hash1 (string) - Hashed value of the product first pairing element.
-    + hash2 (string) - Hashed value of the product second pairing element.
-    + hash3 (string) - Hashed value of the product third pairing element.
-    + hash4 (string) - Hashed value of the product fourth pairing element.
 
 ### List Pairings [GET]
 Returns project's pairings.
@@ -1836,19 +1832,11 @@ Returns project's pairings.
                         "id": "1693",
                         "created_at": "2016-04-28T17:18:50+00:00",
                         "deleted_at": "2019-03-27T17:18:45+00:00",
-                        "hash1": "4358fe8cb49a7c4a83bea73fd9e824be",
-                        "hash2": "58fe8cb49ad64cdc452366e2784d1e5e",
-                        "hash3": "ad6b324d939341ec3f45faff3baf2acb",
-                        "hash4": null,
                     },
                     {
                         "id": "1694",
                         "created_at": "2016-04-28T17:18:50+00:00",
                         "deleted_at": null,
-                        "hash1": "5706e0964b664cdc452366e2784d1e5e",
-                        "hash2": "4a83bea73fd9e824be4358fe8cb49a7c",
-                        "hash3": "f45faff3baf2ac4ad6b324d939341ec3",
-                        "hash4": null,
                     }
                 ],
                 "limit": 10,
@@ -1877,10 +1865,6 @@ Returns a pairing with the given ID.
                 "id": "1693",
                 "created_at": "2016-04-28T17:18:50+00:00",
                 "deleted_at": "2019-03-27T17:18:45+00:00",
-                "hash1": "4358fe8cb49a7c4a83bea73fd9e824be",
-                "hash2": "58fe8cb49ad64cdc452366e2784d1e5e",
-                "hash3": "3d6b324d939341ec3f45faff3baf2acb",
-                "hash4": null,
             }
 
 ## Elements [/projects/{id}/elements/]
