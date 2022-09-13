@@ -4,6 +4,22 @@ HOST: https://api.mergado.com
 # Mergado
 The Mergado API is based on REST principles. The request/response format is JSON.
 
+## Changelog
+
+### 14. 9. 2022
+
+#### Added
+* Endpoint `/formats/{format_id}`
+* Endpoint `/formats/{format_id}/specification`
+
+#### Changed
+* Versioning
+* Endpoint `/projects/{id}/elements`
+* Endpoint `/elements/{id}`
+* Endpoint `/projects/{id}/products`
+* Endpoint `/products/{id}`
+* Endpoint `/queries/{id}/products`
+
 ## Requests
 
 The recommended encoding of all requests is UTF-8. Requests must be made over **HTTPS** and
@@ -63,8 +79,14 @@ Access tokens bound to some specific user ID are called ***online*** tokens. Acc
 ## Versioning
 
 Versioning is implemented using the `Accept` request header. The valid syntax is:
-`application/mergado-vx+json`, eg. `application/mergado-v2+json`.
-If no Accept header is provided or the syntax is invalid, the _default_ version is used (v1).
+`use-mergado-api-version-for: YYYY-MM-DD`, where `YYYY-MM-DD` stands for the specific date, eg. `use-mergado-api-version-for: 2022-01-19`.
+
+For any endpoint,
+* in case of a date X is specified in the `Accept` request header, and
+  * there exist endpoint versions valid until dates A, B, and C, and A < B < X < C holds, then the endpoint version valid until the date C will be used,
+  * there exists only one default endpoint version, then the default endpoint version will be used,
+  * there exist endpoint versions valid until dates A, and B, but the endpoint version valid until the date B was deleted, and A < B < X holds, then the error 404 will be returned,
+* in case of there is no date specified in the `Accept` request header, the newest endpoint version will be used.
 
 Note that all request and response examples match the latest version.
 
@@ -141,6 +163,291 @@ Returns a list of IDs of all supported XML feed's formats.
                 "heureka.sk",
                 "najnakup.sk",
                 "pricemania.sk"
+            ]
+
+### Get Format [GET /formats/{format_id}]
+Returns requested format by its ID.
+
+**Oauth2 Scope:** project.read or shop.read or user.formats.read
+
++ Parameters
+
+    + format_id (string) - format ID.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            [
+                "id": "heureka.cz",
+                "specification":"xml.Heureka",
+                "country":"cz",
+                "name":"Heureka.cz [cz]",
+                "ga_sources":[
+                    "heureka.cz",
+                    "seznamzbozi.cz",
+                    "srovnanicen.cz",
+                    "nejlepsiceny.cz"
+                ],
+                "is_importable":true,
+                "is_exportable":true
+            ]
+
+### Get Format [GET /formats/{format_id}/specification]
+Returns requested format specification by its format ID.
+
+**Warning:** Format specifications could be changed to be up to date with the newest versions provided by the format authors.
+
+**Oauth2 Scope:** project.read or shop.read or user.formats.read
+
++ Parameters
+
+    + format_id (string) - format ID.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            [
+                "id": "xml.Heureka",
+                "file_format":"xml",
+                "global_schema":{
+                    "SHOP":{
+                        "semantic":"root"
+                        "mergado_xml":[
+                            "CHANNEL"
+                        ],
+                        "children":{
+                            "SHOPITEM":{
+                                "mergado_xml":[
+                                    "ITEM"
+                                ]
+                            }
+                        }
+                    }
+                "item_schema":{
+                    "ITEM_ID":{
+                        "is_unique":"true"
+                        "semantic":"item_id"
+                        "mergado_xml":[
+                            "ITEM_ID"
+                        ]
+                    }
+                    "PRODUCTNAME":{
+                        "is_unique":"true"
+                        "semantic":"name_exact"
+                        "mergado_xml":[
+                            "NAME_EXACT"
+                        ]
+                    }
+                    "URL":{
+                        "is_unique":"true"
+                        "semantic":"url"
+                        "mergado_xml":[
+                            "URL"
+                        ]
+                    }
+                    "PRODUCT":{
+                        "is_unique":"true"
+                        "semantic":"name_commercial"
+                        "mergado_xml":[
+                            "NAME_COMMERCIAL"
+                        ]
+                    }
+                    "EAN":{
+                        "is_unique":"true"
+                        "semantic":"ean"
+                        "mergado_xml":[
+                            "EAN"
+                        ]
+                    }
+                    "DESCRIPTION":{
+                        "semantic":"description"
+                        "mergado_xml":[
+                            "DESCRIPTION"
+                        ]
+                    }
+                    "IMGURL":{
+                        "is_unique":"true"
+                        "semantic":"image"
+                        "mergado_xml":[
+                            "IMAGE"
+                        ]
+                    }
+                    "IMGURL_ALTERNATIVE":{
+                        "semantic":"image_alternative"
+                        "mergado_xml":[
+                            "IMAGE_ALTERNATIVE"
+                        ]
+                    }
+                    "VIDEO_URL":{
+                        "semantic":"video"
+                        "mergado_xml":[
+                            "VIDEO"
+                        ]
+                    }
+                    "PRICE_VAT":{
+                        "semantic":"price_vat"
+                        "mergado_xml":[
+                            "PRICE_VAT"
+                        ]
+                    }
+                    "VAT":{
+                        "semantic":"vat"
+                        "mergado_xml":[
+                            "VAT"
+                        ]
+                    }
+                    "ITEM_TYPE":{
+                        "semantic":"item_type
+                    }
+                    "PARAM":{
+                        "semantic":"param"
+                        "mergado_xml":[
+                            "PARAM"
+                        ]
+                        "children":{
+                            "PARAM_NAME":{
+                                "semantic":"param_name"
+                                "mergado_xml":[
+                                    "NAME"
+                                ]
+                            }
+                            "VAL":{
+                                "semantic":"param_value"
+                                "mergado_xml":[
+                                    "VALUE"
+                                ]
+                            }
+                        }
+                    }
+                    "MANUFACTURER":{
+                        "semantic":"brand"
+                        "mergado_xml":[
+                            "BRAND"
+                        ]
+                    }
+                    "CATEGORYTEXT":{
+                        "semantic":"category"
+                        "mergado_xml":[
+                            "CATEGORY"
+                        ]
+                    }
+                    "ISBN":{
+                        "is_unique":"true"
+                        "semantic":"isbn"
+                        "mergado_xml":[
+                            "ISBN"
+                        ]
+                    }
+                    "HEUREKA_CPC":{
+                        "semantic":"cpc"
+                        "mergado_xml":[
+                            "CPC"
+                        ]
+                    }
+                    "DELIVERY_DATE":{
+                        "semantic":"delivery_days"
+                        "mergado_xml":[
+                            "DELIVERY_DAYS"
+                        ]
+                    }
+                    "DELIVERY":{
+                        "semantic":"delivery"
+                        "mergado_xml":[
+                            "DELIVERY"
+                        ]
+                        "children":{
+                            "DELIVERY_ID":{
+                                "semantic":"delivery_id"
+                                "mergado_xml":[
+                                    "ID"
+                                ]
+                            }
+                            "DELIVERY_PRICE":{
+                                "semantic":"delivery_price"
+                                "mergado_xml":[
+                                    "PRICE"
+                                ]
+                            }
+                            "DELIVERY_PRICE_COD":{
+                                "semantic":"delivery_price_cod"
+                                "mergado_xml":[
+                                    "PRICE_COD"
+                                ]
+                            }
+                        }
+                    }
+                    "ITEMGROUP_ID":{
+                        "semantic":"itemgroup_id"
+                        "mergado_xml":[
+                            "ITEMGROUP_ID"
+                        ]
+                    }
+                    "ACCESSORY":{
+                        "semantic":"accessory"
+                        "mergado_xml":[
+                            "ACCESSORY"
+                        ]
+                    }
+                    "DUES":{
+                        "semantic":"dues"
+                        "mergado_xml":[
+                            "DUES"
+                        ]
+                    }
+                    "GIFT":{
+                        "semantic":"benefit"
+                        "mergado_xml":[
+                            "BENEFIT"
+                        ]
+                        "children":{
+                            "ID":{
+                                "is_attribute":"true"
+                                "semantic":"gift_id"
+                            }
+                        }
+                    }
+                    "EXTENDED_WARRANTY":{
+                        "semantic":"extended_warranty_wrapper"
+                        "children":{
+                            "VAL":{
+                                "semantic":"warranty"
+                                "mergado_xml":[
+                                    "WARRANTY"
+                                ]
+                            }
+                            "DESC":{
+                                "semantic":"extended_warranty_description"
+                            }
+                        }
+                    }
+                    "SPECIAL_SERVICE":{
+                        "semantic":"benefit"
+                        "mergado_xml":[
+                            "BENEFIT"
+                        ]
+                    }
+                    "SALES_VOUCHER":{
+                        "semantic":"voucher"
+                        "children":{
+                            "CODE":{
+                                "semantic":"voucher_code"
+                            }
+                            "DESC":{
+                                "semantic":"voucher_description"
+                            }
+                        }
+                    }
+                }
             ]
 
 ## Tariffs [/tariffs/]
@@ -1490,63 +1797,67 @@ Returns project's products.
                         "updated_at": "2016-04-28T17:18:50+00:00",
                         "created_at": "2016-03-27T17:18:45+00:00",
                         "data": {
-                            "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
-                            "DELIVERY_DATE": "0",
-                            "DESCRIPTION": "Toner HP Q7551X",
-                            "DUES": "0",
-                            "IMGURL": "http://www.example.com/img/755.jpg",
-                            "MANUFACTURER": "PIRANHA",
-                            "PRICE": "808.18",
-                            "PRODUCT": "Toner HP Q7551X",
-                            "URL": "http://www.comps.cz/toner-hp-755",
-                            "VAT": "21.0"
-                        },
-                        "input_data": {
-                            "CATEGORYTEXT": "Tonery do tiskáren | Kompatibilní tonery",
-                            "DELIVERY_DATE": "0",
-                            "DESCRIPTION": "Toner HP Q7551X",
-                            "DUES": "3",
-                            "IMGURL": "http://www.example.com/img/755.jpg",
-                            "MANUFACTURER": "PIRANHA",
-                            "PRICE": "808.18",
-                            "PRODUCT": "Toner HP Q7551X",
-                            "URL": "http://www.comps.cz/toner-hp-755",
-                            "VAT": "21.0"
+                            "ITEM_ID": [
+                                {
+                                    "input_value": "ab",
+                                    "value": "ab",
+                                    "attributes": {
+                                        "some-shit": "uff"
+                                    }
+                                }
+                            ],
+                            "PRICE": [
+                                {
+                                    "input_value": 69,
+                                    "value": 69
+                                }
+                            ],
+                            "IMAGE": [
+                                {
+                                    "value": "img 1"
+                                },
+                                {
+                                    "value": "img 2"
+                                },
+                                {
+                                    "value": "img 2"
+                                }
+                            ],
+                            "PARAM": [
+                                {
+                                    "children": {
+                                        "NAME": [
+                                            {
+                                                "value": "Barva"
+                                            }
+                                        ],
+                                        "VAL": [
+                                            {
+                                                "value": "Hnusná"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "value": "some val",
+                                    "children": {
+                                        "NAME": [
+                                            {
+                                                "value": "Barva"
+                                            }
+                                        ],
+                                        "VAL": [
+                                            {
+                                                "value": "Hnusná"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
                         }
                     },
-                    {
-                        "id": "1694",
-                        "output_changed_at": null,
-                        "updated_at": "2016-04-28T17:18:50+00:00",
-                        "created_at": "2016-03-27T17:18:45+00:00",
-                        "data": {
-                            "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
-                            "DELIVERY_DATE": "0",
-                            "DESCRIPTION": "Toner HP Q7532X",
-                            "DUES": "0",
-                            "IMGURL": "http://www.example.com/img/7532.jpg",
-                            "MANUFACTURER": "PIRANHA",
-                            "PRICE": "848.18",
-                            "PRODUCT": "Toner HP Q7532X",
-                            "URL": "http://www.comps.cz/toner-hp-7532",
-                            "VAT": "21.0"
-                        },
-                        "input_data": {
-                            "CATEGORYTEXT": "Tonery do tiskáren | Kompatibilní tonery",
-                            "DELIVERY_DATE": "0",
-                            "DESCRIPTION": "Toner HP Q7532X",
-                            "DUES": "0",
-                            "IMGURL": "http://www.example.com/img/7532.jpg",
-                            "MANUFACTURER": "PIRANHA",
-                            "PRICE": "848.18",
-                            "PRODUCT": "Toner HP Q7532X",
-                            "URL": "http://www.comps.cz/toner-hp-7532",
-                            "VAT": "21.0"
-                        }
-                    }
-                ],
                 "limit": 10,
-                "total_results": 2,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -1573,28 +1884,63 @@ Returns a product with the given ID.
                 "updated_at": "2016-04-28T17:18:50+00:00",
                 "created_at": "2016-03-27T17:18:45+00:00",
                 "data": {
-                    "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
-                    "DELIVERY_DATE": "0",
-                    "DESCRIPTION": "Toner HP Q7551X",
-                    "DUES": "0",
-                    "IMGURL": "http://www.example.com/img/755.jpg",
-                    "MANUFACTURER": "PIRANHA",
-                    "PRICE": "808.18",
-                    "PRODUCT": "Toner HP Q7551X",
-                    "URL": "http://www.comps.cz/toner-hp-755",
-                    "VAT": "21.0"
-                },
-                "input_data": {
-                    "CATEGORYTEXT": "Tonery do tiskáren | Kompatibilní tonery",
-                    "DELIVERY_DATE": "0",
-                    "DESCRIPTION": "Toner HP Q7551X",
-                    "DUES": "0",
-                    "IMGURL": "http://www.example.com/img/755.jpg",
-                    "MANUFACTURER": "PIRANHA",
-                    "PRICE": "808.18",
-                    "PRODUCT": "Toner HP Q7551X",
-                    "URL": "http://www.comps.cz/toner-hp-755",
-                    "VAT": "21.0"
+                    "ITEM_ID": [
+                        {
+                            "input_value": "ab",
+                            "value": "ab",
+                            "attributes": {
+                                "some-shit": "uff"
+                            }
+                        }
+                    ],
+                    "PRICE": [
+                        {
+                            "input_value": 69,
+                            "value": 69
+                        }
+                    ],
+                    "IMAGE": [
+                        {
+                            "value": "img 1"
+                        },
+                        {
+                            "value": "img 2"
+                        },
+                        {
+                            "value": "img 2"
+                        }
+                    ],
+                    "PARAM": [
+                        {
+                            "children": {
+                                "NAME": [
+                                    {
+                                        "value": "Barva"
+                                    }
+                                ],
+                                "VAL": [
+                                    {
+                                        "value": "Hnusná"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "value": "some val",
+                            "children": {
+                                "NAME": [
+                                    {
+                                        "value": "Barva"
+                                    }
+                                ],
+                                "VAL": [
+                                    {
+                                        "value": "Hnusná"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 }
             }
 
@@ -1686,42 +2032,63 @@ Returns products that satisfy a condition defined by the given query.
                         "updated_at": "2016-04-25T16:42:50+00:00",
                         "created_at": "2016-03-27T17:18:45+00:00",
                         "data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
-                        },
-                        "input_data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
+                            "ITEM_ID": [
+                                {
+                                    "input_value": "ab",
+                                    "value": "ab",
+                                    "attributes": {
+                                        "some-shit": "uff"
+                                    }
+                                }
+                            ],
+                            "PRICE": [
+                                {
+                                    "input_value": 69,
+                                    "value": 69
+                                }
+                            ],
+                            "IMAGE": [
+                                {
+                                    "value": "img 1"
+                                },
+                                {
+                                    "value": "img 2"
+                                },
+                                {
+                                    "value": "img 2"
+                                }
+                            ],
+                            "PARAM": [
+                                {
+                                    "children": {
+                                        "NAME": [
+                                            {
+                                                "value": "Barva"
+                                            }
+                                        ],
+                                        "VAL": [
+                                            {
+                                                "value": "Hnusná"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "value": "some val",
+                                    "children": {
+                                        "NAME": [
+                                            {
+                                                "value": "Barva"
+                                            }
+                                        ],
+                                        "VAL": [
+                                            {
+                                                "value": "Hnusná"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
                         }
                     },
                     {
@@ -1730,47 +2097,68 @@ Returns products that satisfy a condition defined by the given query.
                         "updated_at": "2016-04-25T16:42:50+00:00",
                         "created_at": "2016-03-27T17:18:45+00:00",
                         "data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
-                        },
-                        "input_data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
+                            "ITEM_ID": [
+                                {
+                                    "input_value": "ab",
+                                    "value": "ab",
+                                    "attributes": {
+                                        "some-shit": "uff"
+                                    }
+                                }
+                            ],
+                            "PRICE": [
+                                {
+                                    "input_value": 69,
+                                    "value": 69
+                                }
+                            ],
+                            "IMAGE": [
+                                {
+                                    "value": "img 1"
+                                },
+                                {
+                                    "value": "img 2"
+                                },
+                                {
+                                    "value": "img 2"
+                                }
+                            ],
+                            "PARAM": [
+                                {
+                                    "children": {
+                                        "NAME": [
+                                            {
+                                                "value": "Barva"
+                                            }
+                                        ],
+                                        "VAL": [
+                                            {
+                                                "value": "Hnusná"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "value": "some val",
+                                    "children": {
+                                        "NAME": [
+                                            {
+                                                "value": "Barva"
+                                            }
+                                        ],
+                                        "VAL": [
+                                            {
+                                                "value": "Hnusná"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
                         }
                     }
                 ],
                 "limit": 10,
-                "total_results": 2,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -1887,6 +2275,11 @@ Elements are named attributes of products.
 ### Create an Element [POST]
 Creates an element inside a project.
 
+In the request, in case of
+* not specifying `order`, the element will be created as the last one,
+* specifying `order`, the element will be created at the specified spot and the `order` of other elements will be adjusted accordingly,
+* not specifying `is_attribute`, it will be set to `false`.
+
 **OAuth2 Scope:** project.elements.write
 
 + Parameters
@@ -1903,7 +2296,7 @@ Creates an element inside a project.
 
             {
                 "name": "SHIPPING",
-                "hidden": false
+                "hidden": false,
             }
 
 + Response 201
@@ -1916,15 +2309,16 @@ Creates an element inside a project.
     + Body
 
             {
-                "id": "123",
-                "project_id": "1",
                 "name": "SHIPPING",
-                "type": "output",
-                "hidden": false
+                "parent_id": null,
+                "is_attribute": false,
+                "hidden": false,
+                "origin": "manual",
+                "order": "3"
             }
 
-### List Project Elements [GET /projects/{id}/elements/{?limit,offset,fields,filter}]
-Lists all project's elements.
+### List Project Elements [GET /projects/{id}/elements/{?fields,filter}]
+Lists all project's elements in a tree structure.
 
 **OAuth2 Scope:** project.elements.read
 
@@ -1941,46 +2335,54 @@ Lists all project's elements.
     + Body
 
             {
-                "data": [
-                    {
-                        "hidden": false,
-                        "id": "1",
-                        "name": "PRODUCT",
-                        "project_id": "33",
-                        "type": "input"
-                    },
-                    {
-                        "hidden": false,
-                        "id": "2",
-                        "name": "DESCRIPTION",
-                        "project_id": "33",
-                        "type": "input"
-                    },
-                    {
-                        "hidden": false,
-                        "id": "4",
-                        "name": "URL",
-                        "project_id": "33",
-                        "type": "input"
-                    },
-                    {
-                        "hidden": false,
-                        "id": "5",
-                        "name": "CATEGORYTEXT",
-                        "project_id": "33",
-                        "type": "input"
-                    },
-                    {
-                        "hidden": false,
-                        "id": "6",
-                        "name": "PRICE",
-                        "project_id": "33",
-                        "type": "input"
+                "PRODUCT": {
+                    "id": "1",
+                    "is_attribute": false,
+                    "hidden": true,
+                    "origin": "input",
+                    "order": "1",
+                    "children": {
+                        "id": {
+                            "id": "11",
+                            "is_attribute": true,
+                            "hidden": true,
+                            "origin": "input",
+                            "order": "1"
+                        }
                     }
-                ],
-                "limit": 10,
-                "total_results": 5,
-                "offset": 0
+                },
+                "PRICE": {
+                    "id": "2",
+                    "hidden": false,
+                    "origin": "output",
+                    "order": "2"
+                },
+                "IMAGE": {
+                    "id": "3",
+                    "hidden": false,
+                    "origin": "output",
+                    "order": "3"
+                },
+                "PARAM": {
+                    "id": "4",
+                    "hidden": false,
+                    "origin": "output",
+                    "order": "4",
+                    "children": {
+                        "NAME": {
+                            "id": "5",
+                            "hidden": false,
+                            "origin": "output",
+                            "order": "1"
+                        },
+                        "VAL": {
+                            "id": "6",
+                            "hidden": false,
+                            "origin": "output",
+                            "order": "2"
+                        }
+                    }
+                }
             }
 
 ### Get an Element [GET /elements/{id}/{?fields}]
@@ -2001,15 +2403,16 @@ Returns an element.
     + Body
 
             {
+                "name": "SHIPPING",
+                "parent_id": null,
+                "is_attribute": false,
                 "hidden": false,
-                "id": "6",
-                "name": "PRICE",
-                "project_id": "33",
-                "type": "input"
+                "origin": "manual",
+                "order": "3"
             }
 
 ### Delete an Element [DELETE /elements/{id}/{?fields}]
-Delete the specified element.
+Delete the specified element and all of its children.
 
 **OAuth2 Scope:** project.elements.write
 
@@ -2047,7 +2450,8 @@ Performes update of element's attributes.
     + Body
 
             {
-                "hidden": true
+                "hidden": false,
+                "order": "3"
             }
 
 + Response 200
