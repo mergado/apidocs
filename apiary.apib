@@ -78,15 +78,15 @@ Access tokens bound to some specific user ID are called ***online*** tokens. Acc
 
 ## Versioning
 
-Versioning is implemented using the `Accept` request header. The valid syntax is:
-`use-mergado-api-version-for: YYYY-MM-DD`, where `YYYY-MM-DD` stands for the specific date, eg. `use-mergado-api-version-for: 2022-01-19`.
+Versioning is implemented using the `use-mergado-api-version` header. The valid syntax is:
+`use-mergado-api-version-for: YYYY-MM-DD`, eg. `use-mergado-api-version-for: 2022-01-19`.
 
 For any endpoint,
-* in case of a date X is specified in the `Accept` request header, and
-  * there exist endpoint versions valid until dates A, B, and C, and A < B < X < C holds, then the endpoint version valid until the date C will be used,
-  * there exists only one default endpoint version, then the default endpoint version will be used,
-  * there exist endpoint versions valid until dates A, and B, but the endpoint version valid until the date B was deleted, and A < B < X holds, then the error 404 will be returned,
-* in case of there is no date specified in the `Accept` request header, the newest endpoint version will be used.
+* in case of a date X is specified in the `use-mergado-api-version` header, and
+  * there exists only one endpoint version, then the default endpoint version will be used,
+  * there exist endpoint versions valid until dates A and B, and the newest version C, and A < B < X < C holds, then the newest version of the endpoint C will be used,
+  * there exist only endpoint versions valid until the dates A and B, and A < B < X holds (i.e. there is no newest version), then the error 404 will be returned,
+* in case of there is no date specified in the `use-mergado-api-version` header, the endpoint valid on 2020-09-07 will be used.
 
 Note that all request and response examples match the latest version.
 
@@ -184,17 +184,17 @@ Returns requested format by its ID.
 
             [
                 "id": "heureka.cz",
-                "specification":"xml.Heureka",
-                "country":"cz",
-                "name":"Heureka.cz [cz]",
+                "specification": "xml.Heureka",
+                "country": "cz",
+                "name": "Heureka.cz [cz]",
                 "ga_sources":[
                     "heureka.cz",
                     "seznamzbozi.cz",
                     "srovnanicen.cz",
                     "nejlepsiceny.cz"
                 ],
-                "is_importable":true,
-                "is_exportable":true
+                "is_importable": true,
+                "is_exportable": true
             ]
 
 ### Get Format [GET /formats/{format_id}/specification]
@@ -218,10 +218,10 @@ Returns requested format specification by its format ID.
 
             [
                 "id": "xml.Heureka",
-                "file_format":"xml",
+                "file_format": "xml",
                 "global_schema":{
                     "SHOP":{
-                        "semantic":"root"
+                        "semantic": "root"
                         "mergado_xml":[
                             "CHANNEL"
                         ],
@@ -234,95 +234,103 @@ Returns requested format specification by its format ID.
                         }
                     }
                 "item_schema":{
+                    "ITEM_ID_DEPRECATED":{
+                        "is_depracated": true
+                        "is_unique":true
+                        "semantic": "item_id"
+                        "mergado_xml":[
+                            "ITEM_ID"
+                        ]
+                    }
                     "ITEM_ID":{
-                        "is_unique":"true"
-                        "semantic":"item_id"
+                        "is_unique":true
+                        "semantic": "item_id"
                         "mergado_xml":[
                             "ITEM_ID"
                         ]
                     }
                     "PRODUCTNAME":{
-                        "is_unique":"true"
-                        "semantic":"name_exact"
+                        "is_unique":true
+                        "semantic": "name_exact"
                         "mergado_xml":[
                             "NAME_EXACT"
                         ]
                     }
                     "URL":{
-                        "is_unique":"true"
-                        "semantic":"url"
+                        "is_unique":true
+                        "semantic": "url"
                         "mergado_xml":[
                             "URL"
                         ]
                     }
                     "PRODUCT":{
-                        "is_unique":"true"
-                        "semantic":"name_commercial"
+                        "is_unique":true
+                        "semantic": "name_commercial"
                         "mergado_xml":[
                             "NAME_COMMERCIAL"
                         ]
                     }
                     "EAN":{
-                        "is_unique":"true"
-                        "semantic":"ean"
+                        "is_unique":true
+                        "semantic": "ean"
                         "mergado_xml":[
                             "EAN"
                         ]
                     }
                     "DESCRIPTION":{
-                        "semantic":"description"
+                        "semantic": "description"
                         "mergado_xml":[
                             "DESCRIPTION"
                         ]
                     }
                     "IMGURL":{
-                        "is_unique":"true"
-                        "semantic":"image"
+                        "is_unique":true
+                        "semantic": "image"
                         "mergado_xml":[
                             "IMAGE"
                         ]
                     }
                     "IMGURL_ALTERNATIVE":{
-                        "semantic":"image_alternative"
+                        "semantic": "image_alternative"
                         "mergado_xml":[
                             "IMAGE_ALTERNATIVE"
                         ]
                     }
                     "VIDEO_URL":{
-                        "semantic":"video"
+                        "semantic": "video"
                         "mergado_xml":[
                             "VIDEO"
                         ]
                     }
                     "PRICE_VAT":{
-                        "semantic":"price_vat"
+                        "semantic": "price_vat"
                         "mergado_xml":[
                             "PRICE_VAT"
                         ]
                     }
                     "VAT":{
-                        "semantic":"vat"
+                        "semantic": "vat"
                         "mergado_xml":[
                             "VAT"
                         ]
                     }
                     "ITEM_TYPE":{
-                        "semantic":"item_type
+                        "semantic": "item_type"
                     }
                     "PARAM":{
-                        "semantic":"param"
+                        "semantic": "param"
                         "mergado_xml":[
                             "PARAM"
                         ]
                         "children":{
                             "PARAM_NAME":{
-                                "semantic":"param_name"
+                                "semantic": "param_name"
                                 "mergado_xml":[
                                     "NAME"
                                 ]
                             }
                             "VAL":{
-                                "semantic":"param_value"
+                                "semantic": "param_value"
                                 "mergado_xml":[
                                     "VALUE"
                                 ]
@@ -330,56 +338,56 @@ Returns requested format specification by its format ID.
                         }
                     }
                     "MANUFACTURER":{
-                        "semantic":"brand"
+                        "semantic": "brand"
                         "mergado_xml":[
                             "BRAND"
                         ]
                     }
                     "CATEGORYTEXT":{
-                        "semantic":"category"
+                        "semantic": "category"
                         "mergado_xml":[
                             "CATEGORY"
                         ]
                     }
                     "ISBN":{
-                        "is_unique":"true"
-                        "semantic":"isbn"
+                        "is_unique":true
+                        "semantic": "isbn"
                         "mergado_xml":[
                             "ISBN"
                         ]
                     }
                     "HEUREKA_CPC":{
-                        "semantic":"cpc"
+                        "semantic": "cpc"
                         "mergado_xml":[
                             "CPC"
                         ]
                     }
                     "DELIVERY_DATE":{
-                        "semantic":"delivery_days"
+                        "semantic": "delivery_days"
                         "mergado_xml":[
                             "DELIVERY_DAYS"
                         ]
                     }
                     "DELIVERY":{
-                        "semantic":"delivery"
+                        "semantic": "delivery"
                         "mergado_xml":[
                             "DELIVERY"
                         ]
                         "children":{
                             "DELIVERY_ID":{
-                                "semantic":"delivery_id"
+                                "semantic": "delivery_id"
                                 "mergado_xml":[
                                     "ID"
                                 ]
                             }
                             "DELIVERY_PRICE":{
-                                "semantic":"delivery_price"
+                                "semantic": "delivery_price"
                                 "mergado_xml":[
                                     "PRICE"
                                 ]
                             }
                             "DELIVERY_PRICE_COD":{
-                                "semantic":"delivery_price_cod"
+                                "semantic": "delivery_price_cod"
                                 "mergado_xml":[
                                     "PRICE_COD"
                                 ]
@@ -387,63 +395,63 @@ Returns requested format specification by its format ID.
                         }
                     }
                     "ITEMGROUP_ID":{
-                        "semantic":"itemgroup_id"
+                        "semantic": "itemgroup_id"
                         "mergado_xml":[
                             "ITEMGROUP_ID"
                         ]
                     }
                     "ACCESSORY":{
-                        "semantic":"accessory"
+                        "semantic": "accessory"
                         "mergado_xml":[
                             "ACCESSORY"
                         ]
                     }
                     "DUES":{
-                        "semantic":"dues"
+                        "semantic": "dues"
                         "mergado_xml":[
                             "DUES"
                         ]
                     }
                     "GIFT":{
-                        "semantic":"benefit"
+                        "semantic": "benefit"
                         "mergado_xml":[
                             "BENEFIT"
                         ]
                         "children":{
                             "ID":{
-                                "is_attribute":"true"
-                                "semantic":"gift_id"
+                                "is_attribute":true
+                                "semantic": "gift_id"
                             }
                         }
                     }
                     "EXTENDED_WARRANTY":{
-                        "semantic":"extended_warranty_wrapper"
+                        "semantic": "extended_warranty_wrapper"
                         "children":{
                             "VAL":{
-                                "semantic":"warranty"
+                                "semantic": "warranty"
                                 "mergado_xml":[
                                     "WARRANTY"
                                 ]
                             }
                             "DESC":{
-                                "semantic":"extended_warranty_description"
+                                "semantic": "extended_warranty_description"
                             }
                         }
                     }
                     "SPECIAL_SERVICE":{
-                        "semantic":"benefit"
+                        "semantic": "benefit"
                         "mergado_xml":[
                             "BENEFIT"
                         ]
                     }
                     "SALES_VOUCHER":{
-                        "semantic":"voucher"
+                        "semantic": "voucher"
                         "children":{
                             "CODE":{
-                                "semantic":"voucher_code"
+                                "semantic": "voucher_code"
                             }
                             "DESC":{
-                                "semantic":"voucher_description"
+                                "semantic": "voucher_description"
                             }
                         }
                     }
@@ -2314,7 +2322,7 @@ In the request, in case of
                 "is_attribute": false,
                 "hidden": false,
                 "origin": "manual",
-                "order": "3"
+                "order": 3
             }
 
 ### List Project Elements [GET /projects/{id}/elements/{?fields,filter}]
@@ -2340,14 +2348,14 @@ Lists all project's elements in a tree structure.
                     "is_attribute": false,
                     "hidden": true,
                     "origin": "input",
-                    "order": "1",
+                    "order": 1,
                     "children": {
                         "id": {
                             "id": "11",
                             "is_attribute": true,
                             "hidden": true,
                             "origin": "input",
-                            "order": "1"
+                            "order": 1
                         }
                     }
                 },
@@ -2355,31 +2363,31 @@ Lists all project's elements in a tree structure.
                     "id": "2",
                     "hidden": false,
                     "origin": "output",
-                    "order": "2"
+                    "order": 2
                 },
                 "IMAGE": {
                     "id": "3",
                     "hidden": false,
                     "origin": "output",
-                    "order": "3"
+                    "order": 3
                 },
                 "PARAM": {
                     "id": "4",
                     "hidden": false,
                     "origin": "output",
-                    "order": "4",
+                    "order": 4,
                     "children": {
                         "NAME": {
                             "id": "5",
                             "hidden": false,
                             "origin": "output",
-                            "order": "1"
+                            "order": 1
                         },
                         "VAL": {
                             "id": "6",
                             "hidden": false,
                             "origin": "output",
-                            "order": "2"
+                            "order": 2
                         }
                     }
                 }
@@ -2408,7 +2416,7 @@ Returns an element.
                 "is_attribute": false,
                 "hidden": false,
                 "origin": "manual",
-                "order": "3"
+                "order": 3
             }
 
 ### Delete an Element [DELETE /elements/{id}/{?fields}]
@@ -2435,6 +2443,11 @@ Delete the specified element and all of its children.
 ### Update an Element [PATCH /elements/{id}/]
 Performes update of element's attributes.
 
+Attributes `hidden` and `order` can be updated in all elements.
+Moreover, attributes `name` and `is_attribute` can be updated in elements which were created manually.
+With MERGADO 1 elements, attributes `order` and `is_attribute` are ignored.
+With MERGADO 2 elements, having `"hidden": true` makes all the element's children hidden as well. Analogically, having `"hidden": false` makes all the element's children unhidden.
+
 **OAuth2 Scope:** project.elements.write
 
 + Parameters
@@ -2451,7 +2464,7 @@ Performes update of element's attributes.
 
             {
                 "hidden": false,
-                "order": "3"
+                "order": 3
             }
 
 + Response 200
