@@ -5935,7 +5935,7 @@ Returns list of all Heureka categories.
 # Group Google
 API for various Google tools, helpers and resources.
 
-## Google Analytics [/projects/{id}/google/analytics/]
+## Google Universal Analytics [/projects/{id}/google/analytics/]
 
 + Attributes
 
@@ -5943,13 +5943,13 @@ API for various Google tools, helpers and resources.
         + date (string) - Groups each product by the date the product has been collected.
         + day_of_week (number) - Groups the products by the day of the week.
         + landing_page_path (string) - Groups the products by the first page in users' sessions,
-          or the landing page. See Google Analytics for mor details.
+          or the landing page. See Google Universal Analytics for more details.
     + clicks_sum (number) - Number of clicks of all products in the group.
     + orders_sum (number) - Number of orders of all products in the group.
     + sales_sum (number) - Total sales of all products in the group.
 
 ### Eshop Data [GET /shops/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,source,metrics,dimensions,medium}]
-Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
+Returns evaluated metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
 Uses only UTM parameters that were sent in the request.
 
@@ -5964,18 +5964,18 @@ Uses only UTM parameters that were sent in the request.
       `source=~*.example.com`) or ID of a format (see section with formats).
     + medium (string, optional) - The general category of the source, for example,
       organic search (organic), cost-per-click paid search (cpc), web referral (referral).
-    + metrics (enum[string], optional) - Comma sepparated list of metrics to use.
+    + metrics (enum[string], optional) - Comma separated list of metrics to use.
         + Members
             + `sales_sum` - total sales of all products in the group.
             + `orders_sum` - number of orders of all products in the group.
             + `clicks_sum` - number of clicks of all products in the group.
-    + dimensions (enum[string], optional) - Comma sepparated list of dimensions to use.
+    + dimensions (enum[string], optional) - Comma separated list of dimensions to use.
         + Default: `date`
         + Members
             + `date` - groups each product by the date the product has been collected.
             + `day_of_week` - groups the products by the day of the week.
-            + `landing_page_path` - gropus the products by the first page in users' sessions,
-              or the landing page. See Google Analytics for mor details.
+            + `landing_page_path` - groups the products by the first page in users' sessions,
+              or the landing page. See Google Universal Analytics for more details.
     + start_date (string, optional)
     + end_date (string, optional)
     + fields (string, optional)
@@ -6023,7 +6023,7 @@ Uses only UTM parameters that were sent in the request.
             }
 
 ### Project Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions,medium}]
-Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
+Returns evaluated metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
 If user didn't set the UTM parameters (or the params are empty),
 medium is empty and source is set to a regex based on [this](https://gist.github.com/MichalJanik/721d23bd6036b9f67526b1e5305f3a5c)
@@ -6036,18 +6036,18 @@ mapping (where the key corresponds to Project output format). Note the tilde at 
     + id (string) - ID of the project.
     + medium (string, optional) - The general category of the source, for example,
       organic search (organic), cost-per-click paid search (cpc), web referral (referral).
-    + metrics (enum[string], optional) - Comma sepparated list of metrics to use.
+    + metrics (enum[string], optional) - Comma separated list of metrics to use.
         + Members
             + `sales_sum` - total sales of all products in the group.
             + `orders_sum` - number of orders of all products in the group.
             + `clicks_sum` - number of clicks of all products in the group.
-    + dimensions (enum[string], optional) - Comma sepparated list of dimensions to use.
+    + dimensions (enum[string], optional) - Comma separated list of dimensions to use.
         + Default: `date`
         + Members
             + `date` - groups each product by the date the product has been collected.
             + `day_of_week` - groups the products by the day of the week.
-            + `landing_page_path` - gropus the products by the first page in users' sessions,
-              or the landing page. See Google Analytics for mor details.
+            + `landing_page_path` - groups the products by the first page in users' sessions,
+              or the landing page. See Google Universal Analytics for more details.
     + start_date (string, optional)
     + end_date (string, optional)
     + fields (string, optional)
@@ -6252,5 +6252,237 @@ Mergado API and GA API.
                         }
                     ]
                 },
+                "status": 200
+            }
+
+
+## Google Analytics 4 [/projects/{id}/google/analytics_4/]
+
++ Attributes
+
+    + group (object) - Values of the requested dimensions for the group.
+        + date (string) - Groups each product by the date the product has been collected.
+        + day_of_week (number) - Groups the products by the day of the week.
+    + clicks_sum (number) - Number of clicks of all products in the group taken from official metric `sessions`.
+    + orders_sum (number) - Number of orders of all products in the group taken from official metric `ecommercePurchases`.
+    + sales_sum (number) - Total sales of all products in the group taken from official metric `itemRevenue`.
+
+### Eshop Data [GET /shops/{id}/google/analytics_4/{?fields,limit,offset,start_date,end_date,source,metrics,dimensions,medium}]
+Returns evaluated metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
+value in ascending order. Groups of results can be created using `dimensions` query string.
+Uses only UTM parameters that were sent in the request.
+
+**OAuth2 Scope:** shop.ga.read
+
++ Parameters
+
+    + id (string) - ID of the shop.
+    + source (string, optional) - The source of referrals. For manual campaign tracking,
+      it is the value of the utm_source campaign tracking parameter. This parameter is regular expression or ID of a format (see section with formats).
+    + medium (string, optional) - The general category of the source, for example,
+      organic search (organic), cost-per-click paid search (cpc), web referral (referral).
+    + metrics (enum[string], optional) - Comma separated list of metrics to use.
+        + Members
+            + `sales_sum` - total sales of all products in the group.
+            + `orders_sum` - number of orders of all products in the group.
+            + `clicks_sum` - number of clicks of all products in the group.
+    + dimensions (enum[string], optional) - Comma separated list of dimensions to use.
+        + Default: `date`
+        + Members
+            + `date` - groups each product by the date the product has been collected.
+            + `day_of_week` - groups the products by the day of the week.
+    + start_date (string, optional)
+    + end_date (string, optional)
+    + fields (string, optional)
+    + limit (number, optional)
+    + offset (number, optional)
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "data": [
+                    {
+                        "group": {"date": "2016-05-04"},
+                        "clicks_sum": 861,
+                        "orders_sum": 50,
+                        "sales_sum": 129852
+                    },
+                    {
+                        "group": {"date": "2016-05-03"},
+                        "clicks_sum": 1661,
+                        "orders_sum": 69,
+                        "sales_sum": 225298
+                    },
+                    {
+                        "group": {"date": "2016-05-02"},
+                        "clicks_sum": 1523,
+                        "orders_sum": 70,
+                        "sales_sum": 141676
+                    },
+                    {
+                        "group": {"date": "2016-05-01"},
+                        "clicks_sum": 1095,
+                        "orders_sum": 54,
+                        "sales_sum": 113470
+                    }
+                ],
+                "limit": 4,
+                "total_results": 6,
+                "offset": 0
+            }
+
+### Project Data [GET /projects/{id}/google/analytics_4/{?fields,limit,offset,start_date,end_date,metrics,dimensions,medium}]
+Returns evaluated metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
+value in ascending order. Groups of results can be created using `dimensions` query string.
+If user didn't set the UTM parameters (or the params are empty),
+medium is empty and source is set to a regex based on [this](https://gist.github.com/MichalJanik/721d23bd6036b9f67526b1e5305f3a5c)
+mapping (where the key corresponds to Project output format).
+
+**OAuth2 Scope:** project.ga.read
+
++ Parameters
+
+    + id (string) - ID of the project.
+    + medium (string, optional) - The general category of the source, for example,
+      organic search (organic), cost-per-click paid search (cpc), web referral (referral).
+    + metrics (enum[string], optional) - Comma separated list of metrics to use.
+        + Members
+            + `sales_sum` - total sales of all products in the group.
+            + `orders_sum` - number of orders of all products in the group.
+            + `clicks_sum` - number of clicks of all products in the group.
+    + dimensions (enum[string], optional) - Comma separated list of dimensions to use.
+        + Default: `date`
+        + Members
+            + `date` - groups each product by the date the product has been collected.
+            + `day_of_week` - groups the products by the day of the week.
+    + start_date (string, optional)
+    + end_date (string, optional)
+    + fields (string, optional)
+    + limit (number, optional)
+    + offset (number, optional)
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "data": [
+                    {
+                        "group": {"date": "2016-05-04"},
+                        "clicks_sum": 861,
+                        "orders_sum": 50,
+                        "sales_sum": 129852
+                    },
+                    {
+                        "group": {"date": "2016-05-03"},
+                        "clicks_sum": 1661,
+                        "orders_sum": 69,
+                        "sales_sum": 225298
+                    },
+                    {
+                        "group": {"date": "2016-05-02"},
+                        "clicks_sum": 1523,
+                        "orders_sum": 70,
+                        "sales_sum": 141676
+                    },
+                    {
+                        "group": {"date": "2016-05-01"},
+                        "clicks_sum": 1095,
+                        "orders_sum": 54,
+                        "sales_sum": 113470
+                    }
+                ],
+                "limit": 10,
+                "total_results": 4,
+                "offset": 0
+            }
+
+### Google Analytics 4 Data API Proxy [POST /shops/{id}/google/analytics_4/proxy]
+Serves as a proxy to Google Analytics Data API.
+Parameters sent to Mergado API in request body under `args` are forwarded to Google Analytics Data API as a request to https://analyticsdata.googleapis.com/{version}/{property_name}:{report_method}?alt=json.
+If `version` parameter is not specified version `v1beta` is used as default. If `report_method` parameter is not specified method `runReport` is used as default.
+The request is authorized by Mergado using Keychain Credentials (`property_name` in the URL will be replaced with name of the property associated with this credentials).
+Response content from GA is returned as raw string under `content`.
+Response code from GA is returned under `status` to allow different codes from Mergado API and GA API.
+
+**OAuth2 Scope:** shop.ga.read
+
++ Parameters
+
+    + id (string) - ID of the eshop.
+
++ Request 200
+
+    + Body
+
+            {
+                "args": {
+                    "dimensions": [
+                        {
+                            "name": 'date'
+                        },
+                    ],
+                    "metrics": [
+                        {
+                            "name": "sessions"
+                        }
+                    ],
+                    "dateRanges": [
+                        {
+                            "startDate": 'today',
+                            "endDate": 'yesterday',
+                        }
+                    ]
+                }
+            }
+
++ Response 200
+
+    + Body
+
+            {
+                "content": "{
+                    \"dimensionHeaders\":[
+                        {
+                            \"name\":\"date\"
+                        }
+                    ],
+                    \"metricHeaders\":[
+                        {
+                            \"name\":\"sessions\",
+                            \"type\":\"TYPE_INTEGER\"
+                        }
+                    ],
+                    \"rows\":[
+                        {
+                            \"dimensionValues\":[
+                                {
+                                    \"value\":\"20221025\"
+                                }
+                            ],
+                            \"metricValues\":[
+                                {
+                                    \"value\":\"16\"
+                                }
+                            ]
+                        }
+                    ],
+                    \"rowCount\":1,
+                    \"metadata\":{
+                        \"currencyCode\":\"CZK\",
+                        \"timeZone\":\"Europe/Prague\"
+                    },
+                    \"kind\":\"analyticsData#runReport\"
+                }",
                 "status": 200
             }
