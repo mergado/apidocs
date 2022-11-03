@@ -6426,11 +6426,13 @@ Response code from GA is returned under `status` to allow different codes from M
     + Body
 
             {
+                "version": "v1beta",
+                "report_method": "runReport",
                 "args": {
                     "dimensions": [
                         {
-                            "name": 'date'
-                        },
+                            "name": "date"
+                        }
                     ],
                     "metrics": [
                         {
@@ -6439,8 +6441,8 @@ Response code from GA is returned under `status` to allow different codes from M
                     ],
                     "dateRanges": [
                         {
-                            "startDate": 'today',
-                            "endDate": 'yesterday',
+                            "startDate": "yesterday",
+                            "endDate": "today",
                         }
                     ]
                 }
