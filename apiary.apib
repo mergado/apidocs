@@ -654,13 +654,19 @@ Returns currently authenticated user.
 **OAuth2 Scope:** user.read
 
 + Request
+
     + Headers
+
             Content-Type: application/json
 
 + Response 200
+
     + Headers
+
             Content-Type: application/json
+
     + Body
+
             {
                 "id": "6",
                 "first_name": "Lorem",
@@ -695,38 +701,44 @@ Information about currently authenticated Mergado platform app.
 Returns list of entities _(user, shop, project, based on your app type)_ where your Mergado platform app was enabled at least once. The list is sorted from the newest entries to the oldest ones.
 
 + Request
+
     + Headers
+
             Content-Type: application/json
 
 + Response 200
+
     + Headers
-        Content-Type: application/json
+
+            Content-Type: application/json
+
     + Body
-        {
-            "data": [
-                {
-                    "entity_id": 100,
-                    "is_enabled": true,
-                    "free_until": "2021-11-05",
-                    "paid_until": "2021-12-07"
-                },
-                {
-                    "entity_id": 101,
-                    "is_enabled": true,
-                    "free_until": "2021-06-05",
-                    "paid_until": "2021-08-06"
-                },
-                {
-                    "entity_id": 200,
-                    "is_enabled": false,
-                    "free_until": "2021-02-05",
-                    "paid_until": "2021-04-03"
-                }
-            ],
-            "offset": 0,
-            "limit": 10,
-            "total_results": 3
-        }
+
+            {
+                "data": [
+                    {
+                        "entity_id": 100,
+                        "is_enabled": true,
+                        "free_until": "2021-11-05",
+                        "paid_until": "2021-12-07"
+                    },
+                    {
+                        "entity_id": 101,
+                        "is_enabled": true,
+                        "free_until": "2021-06-05",
+                        "paid_until": "2021-08-06"
+                    },
+                    {
+                        "entity_id": 200,
+                        "is_enabled": false,
+                        "free_until": "2021-02-05",
+                        "paid_until": "2021-04-03"
+                    }
+                ],
+                "offset": 0,
+                "limit": 10,
+                "total_results": 3
+            }
 
 #### Get app history for entity [GET /me/app/enabled/{entity_id}]
 **Access with OFFLINE token only.**
@@ -738,32 +750,37 @@ Returns history of enabled/disabled state of your app for a specific entity ID.
     + entity_id (int) - Entity ID *(user, shop, project, based on your app type)*.
 
 + Request
+
     + Headers
-        Content-Type: application/json
+
+            Content-Type: application/json
 
 + Response 200
+
     + Headers
-        Content-Type: application/json
+
+            Content-Type: application/json
     + Body
-        {
-            "data": [
-                {
-                    "enabled_at": "2020-11-05T09:08:19+00:00",
-                    "enabled_by_user_id": 1003,
-                    "disabled_at": null,
-                    "disabled_by_user_id": null
-                },
-                {
-                    "enabled_at": "2020-11-05T09:08:19+00:00",
-                    "enabled_by_user_id": 1001,
-                    "disabled_at": "2021-02-16T12:43:26+00:00",
-                    "disabled_by_user_id": 1003
-                }
-            ],
-            "offset": 0,
-            "limit": 10,
-            "total_results": 1
-        }
+
+            {
+                "data": [
+                    {
+                        "enabled_at": "2020-11-05T09:08:19+00:00",
+                        "enabled_by_user_id": 1003,
+                        "disabled_at": null,
+                        "disabled_by_user_id": null
+                    },
+                    {
+                        "enabled_at": "2020-11-05T09:08:19+00:00",
+                        "enabled_by_user_id": 1001,
+                        "disabled_at": "2021-02-16T12:43:26+00:00",
+                        "disabled_by_user_id": 1003
+                    }
+                ],
+                "offset": 0,
+                "limit": 10,
+                "total_results": 1
+            }
 
 # Group Core
 
@@ -1805,63 +1822,68 @@ Returns project's products.
                         "updated_at": "2016-04-28T17:18:50+00:00",
                         "created_at": "2016-03-27T17:18:45+00:00",
                         "data": {
-                            "ITEM_ID": [
-                                {
-                                    "input_value": "ab",
-                                    "value": "ab",
-                                    "attributes": {
-                                        "some-shit": "uff"
+                            "elements": {
+                                "ITEM_ID": [
+                                    {
+                                        "input_value": "123",
+                                        "value": "123",
+                                        "attributes": {
+                                            "id": "456"
+                                        }
+                                    }   
+                                ],
+                                "PRICE": [
+                                    {
+                                        "input_value": 69,
+                                        "value": 69
                                     }
-                                }
-                            ],
-                            "PRICE": [
-                                {
-                                    "input_value": 69,
-                                    "value": 69
-                                }
-                            ],
-                            "IMAGE": [
-                                {
-                                    "value": "img 1"
-                                },
-                                {
-                                    "value": "img 2"
-                                },
-                                {
-                                    "value": "img 2"
-                                }
-                            ],
-                            "PARAM": [
-                                {
-                                    "children": {
-                                        "NAME": [
-                                            {
+                                ],
+                                "IMAGE": [
+                                    {
+                                        "value": "img 1"
+                                    },
+                                    {
+                                        "value": "img 2"
+                                    },
+                                    {
+                                        "value": "img 3"
+                                    }
+                                ],
+                                "PARAM": [
+                                    {
+                                        "elements": {
+                                            "NAME": [
+                                                {
                                                 "value": "Barva"
-                                            }
-                                        ],
-                                        "VAL": [
-                                            {
-                                                "value": "Hnusná"
-                                            }
-                                        ]
+                                                }
+                                            ],
+                                            "VAL": [
+                                                {
+                                                "value": "Černá"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "value": "value of PARAM",
+                                        "elements": {
+                                            "NAME": [
+                                                {
+                                                    "value": "Barva"
+                                                }
+                                            ],
+                                            "VAL": [
+                                                {
+                                                    "value": "Modrá"
+                                                }
+                                            ]
+                                        }
                                     }
-                                },
-                                {
-                                    "value": "some val",
-                                    "children": {
-                                        "NAME": [
-                                            {
-                                                "value": "Barva"
-                                            }
-                                        ],
-                                        "VAL": [
-                                            {
-                                                "value": "Hnusná"
-                                            }
-                                        ]
-                                    }
-                                }
-                            ]
+                                ] 
+                            },
+                            "attributes": {
+                                "TOP_LEVEL_ATTRIBUTE": {"value": "123"}
+                            }
                         }
                     },
                 "limit": 10,
@@ -1892,63 +1914,68 @@ Returns a product with the given ID.
                 "updated_at": "2016-04-28T17:18:50+00:00",
                 "created_at": "2016-03-27T17:18:45+00:00",
                 "data": {
-                    "ITEM_ID": [
-                        {
-                            "input_value": "ab",
-                            "value": "ab",
-                            "attributes": {
-                                "some-shit": "uff"
+                    "elements": {
+                        "ITEM_ID": [
+                            {
+                                "input_value": "123",
+                                "value": "123",
+                                "attributes": {
+                                    "id": "456"
+                                }
+                            }   
+                        ],
+                        "PRICE": [
+                            {
+                                "input_value": 69,
+                                "value": 69
                             }
-                        }
-                    ],
-                    "PRICE": [
-                        {
-                            "input_value": 69,
-                            "value": 69
-                        }
-                    ],
-                    "IMAGE": [
-                        {
-                            "value": "img 1"
-                        },
-                        {
-                            "value": "img 2"
-                        },
-                        {
-                            "value": "img 2"
-                        }
-                    ],
-                    "PARAM": [
-                        {
-                            "children": {
-                                "NAME": [
-                                    {
+                        ],
+                        "IMAGE": [
+                            {
+                                "value": "img 1"
+                            },
+                            {
+                                "value": "img 2"
+                            },
+                            {
+                                "value": "img 3"
+                            }
+                        ],
+                        "PARAM": [
+                            {
+                                "elements": {
+                                    "NAME": [
+                                        {
                                         "value": "Barva"
-                                    }
-                                ],
-                                "VAL": [
-                                    {
-                                        "value": "Hnusná"
-                                    }
-                                ]
+                                        }
+                                    ],
+                                    "VAL": [
+                                        {
+                                        "value": "Černá"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "value": "value of PARAM",
+                                "elements": {
+                                    "NAME": [
+                                        {
+                                            "value": "Barva"
+                                        }
+                                    ],
+                                    "VAL": [
+                                        {
+                                            "value": "Modrá"
+                                        }
+                                    ]
+                                }
                             }
-                        },
-                        {
-                            "value": "some val",
-                            "children": {
-                                "NAME": [
-                                    {
-                                        "value": "Barva"
-                                    }
-                                ],
-                                "VAL": [
-                                    {
-                                        "value": "Hnusná"
-                                    }
-                                ]
-                            }
-                        }
-                    ]
+                        ] 
+                    },
+                    "attributes": {
+                        "TOP_LEVEL_ATTRIBUTE": {"value": "123"}
+                    }
                 }
             }
 
@@ -2286,7 +2313,9 @@ Creates an element inside a project.
 In the request, in case of
 * not specifying `order`, the element will be created as the last one,
 * specifying `order`, the element will be created at the specified spot and the `order` of other elements will be adjusted accordingly,
-* not specifying `is_attribute`, it will be set to `false`.
+* not specifying `is_attribute`, it will be set to `false`,
+* the element is being created in MERGADO 1, `order` is ignored,
+* the element is being created in MERGADO 1 and `is_attribute = true`, 409 will be returned.
 
 **OAuth2 Scope:** project.elements.write
 
@@ -2327,6 +2356,8 @@ In the request, in case of
 
 ### List Project Elements [GET /projects/{id}/elements/{?fields,filter}]
 Lists all project's elements in a tree structure.
+
+**Note:** For MERGADO 1 the response doesn't contain the field `order`.
 
 **OAuth2 Scope:** project.elements.read
 
@@ -2439,50 +2470,6 @@ Delete the specified element and all of its children.
     + Headers
 
             Content-Type: application/json
-
-### Update an Element [PATCH /elements/{id}/]
-Performes update of element's attributes.
-
-Attributes `hidden` and `order` can be updated in all elements.
-Moreover, attributes `name` and `is_attribute` can be updated in elements which were created manually.
-With MERGADO 1 elements, attributes `order` and `is_attribute` are ignored.
-With MERGADO 2 elements, having `"hidden": true` makes all the element's children hidden as well. Analogically, having `"hidden": false` makes all the element's children unhidden.
-
-**OAuth2 Scope:** project.elements.write
-
-+ Parameters
-
-    + id (string) - ID of a project.
-
-+ Request
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-            {
-                "hidden": false,
-                "order": 3
-            }
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-            Location: "https://app.mergado.com/api/elements/123"
-
-    + Body
-
-            {
-                "id": "123",
-                "project_id": "1",
-                "name": "SHIPPING",
-                "type": "output",
-                "hidden": true
-            }
 
 ## Variables [/project/{id}/variables/]
 Variables can be seen as pointers to products' values or parts of values and
