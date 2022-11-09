@@ -95,7 +95,7 @@ Various API resources that don't require any authentication.
 
 ## Info [/]
 ### Show API Version [GET]
-
+Returns date for a current default API implementation that is used when `use-mergado-api-version` header is not provided (see Versioning for more).
 + Response 200
 
     + Headers
@@ -105,7 +105,7 @@ Various API resources that don't require any authentication.
     + Body
 
             {
-                "version": "0.2"
+                "version_for": "2022-01-19"
             }
 
 ## Maintenance [/maintenance]
