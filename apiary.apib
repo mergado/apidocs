@@ -2674,7 +2674,7 @@ format (e.g. from Heureka.cz to Google Merchant).
 + Attributes
 
     + id (string) - ID of the rule.
-    + name (string) - Name of the rule (is shown in Mergado UI).
+    + name (string) - Name of the rule (is shown in Mergado UI). The maximum length is 100 characters and it cannot contain any special characters.
     + type (string) - Type of the rule.
     + project_id (string) - ID of the project the rule was created in.
     + project_element_id (string, optional) - ID of the element the rule
@@ -2707,6 +2707,8 @@ placed before / after later on.
 
 To determine the priority on server side, we first check the value of *placement[after]*,
 then the value of *placement [before]* and lastly the value of *priority* itself.
+
+**Note:** The maximum length of the attribute `name` is 100 characters and cannot contain any special characters.
 
 **OAuth2 Scope:** project.rules.write
 
@@ -2969,6 +2971,8 @@ Delete the specified rule.
 Performs update of rule's attributes. Refer to the doc for rule creation to find out more about
 how priority is calculated. If no queries are present in the request, the queries will not be changed.
 If an empty list is sent, 400 will be returned.
+
+**Note:** The maximum length of the attribute `name` is 100 characters and cannot contain any special characters.
 
 **OAuth2 Scope:** project.rules.write
 
