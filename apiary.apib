@@ -1493,7 +1493,6 @@ and it is very common that one eshop has several projects each maaged for a diff
     + creator_id (string) - ID of the user who created this project.
     + name (string) - Name of the project.
     + url (string) - URL of the XML feed with products.
-    + activated (boolean) - Whether the project is active or not.
     + created (string) - When the project was created.
     + exported_items (number) - Number of exported items in the last export of the project.
     + input_fomat (string) - Input format (e.g. heureka.cz, zbozi.cz).
@@ -1544,7 +1543,6 @@ Returns projects of an eshop.
                         "creator_id": "1",
                         "name": "Billiger.de",
                         "url": "https://app.mergado.com/example-com.xml",
-                        "activated": true,
                         "created": "2015-11-11T15:42:33+00:00",
                         "exported_items": 0,
                         "input_format": "zbozi.cz",
@@ -1601,7 +1599,6 @@ Returns a project with the given ID. If the requested project is not active, the
                 "creator_id": "1",
                 "name": "Billiger.de",
                 "url": "https://dummy.mergado.com/example-com.xml",
-                "activated": true,
                 "created": "2015-11-11T15:42:33+00:00",
                 "exported_items": 0,
                 "input_format": "zbozi.cz",
@@ -1671,7 +1668,6 @@ to force Mergado to apply all rules to products during the next (lazy) rebuild.
                 "creator_id": "1",
                 "name": "Billiger.de",
                 "url": "https://dummy.mergado.com/example-com.xml",
-                "activated": true,
                 "created": "2015-11-11T15:42:33+00:00",
                 "exported_items": 0,
                 "input_format": "zbozi.cz",
