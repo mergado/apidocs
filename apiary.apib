@@ -3304,8 +3304,7 @@ Lists all queries that were created for the specified rule.
 
 ### Assign a Query to a Rule [PATCH /rules/{id}/queries/]
 Assigns a Query to a Rule. The query must exist, otherwise 400 (bad request) status is returned.
-The body parameters also must uniquely identify a query. If the query is already assigned to the rule,
-409 (conflict) status is returned.
+The body parameters also must uniquely identify a query. 
 
 **OAuth2 Scope:** project.rules.write
 
