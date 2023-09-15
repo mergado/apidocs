@@ -2477,7 +2477,7 @@ expression to match only a part of a product's value.
 
     + id (string) - ID of the variable.
     + name (string) - Name of the variable.
-    + project_element_id (string) - ID of the element the variable is created from.
+    + element_path (string) - Element path of the element the variable is created from.
     + project_id (string) - ID of the project the variable is created in.
     + regular_expression (string, optional) - Regular expression used for
       parsing some part of an element's value (for example domain from URL).
@@ -2511,7 +2511,7 @@ Creates a new variable inside a project.
 
             {
                 "name": "DESCRIPTION_A",
-                "project_element_id": "1",
+                "element_path": "DESCRIPTION",
                 "regular_expression": "(\\-|\\* )?(.*)",
                 "sample_text": null,
                 "fragment_number": 2
@@ -2529,7 +2529,8 @@ Creates a new variable inside a project.
             {
                 "id": "1521",
                 "name": "DESCRIPTION_A",
-                "project_element_id": "1",
+                "project_element_id": null,
+                "element_path": "DESCRIPTION",
                 "project_id": "33",
                 "regular_expression": "(\\-|\\* )?(.*)",
                 "fragment_number": 2,
@@ -2559,7 +2560,8 @@ Lists all project's variables.
                     {
                         "id": "1521",
                         "name": "DESCRIPTION_A",
-                        "project_element_id": "1",
+                        "project_element_id": null,
+                        "element_path": "DESCRIPTION",
                         "project_id": "33",
                         "regular_expression": "(\\-|\\* )?(.*)",
                         "fragment_number": 2,
@@ -2592,7 +2594,8 @@ Returns a variable.
             {
                 "id": "1521",
                 "name": "DESCRIPTION_A",
-                "project_element_id": "1",
+                "project_element_id": null,
+                "element_path": "DESCRIPTION",
                 "project_id": "33",
                 "regular_expression": "(\\-|\\* )?(.*)",
                 "fragment_number": 2,
@@ -2654,7 +2657,8 @@ Performes update of variable's attributes.
             {
                 "id": "1521",
                 "name": "DESCRIPTION_OMG",
-                "project_element_id": "1",
+                "project_element_id": null,
+                "element_path": "DESCRIPTION",
                 "project_id": "33",
                 "regular_expression": "(\\-|\\* )?(.*)",
                 "fragment_number": 2,
@@ -2673,7 +2677,7 @@ format (e.g. from Heureka.cz to Google Merchant).
     + name (string) - Name of the rule (is shown in Mergado UI). The maximum length is 100 characters and it cannot contain any special characters.
     + type (string) - Type of the rule.
     + project_id (string) - ID of the project the rule was created in.
-    + project_element_id (string, optional) - ID of the element the rule
+    + element_path (string, optional) - Element path of the element the rule
       should apply to. The element is optional, not all rules require an element.
     + priority (number) - Priority of the rule, or the position when it is applied.
       The position matters as each rule makes some changes to the products' data.
@@ -2723,7 +2727,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
             {
                 "name": "Cena",
                 "type": "rewriting",
-                "project_element_id": "5",
+                "element_path": "DESCRIPTION",
                 "applies": true,
                 "priority": "3",
                 "placement": {
@@ -2757,7 +2761,8 @@ then the value of *placement [before]* and lastly the value of *priority* itself
                 "name": "Cena",
                 "type": "rewriting",
                 "project_id": "1",
-                "project_element_id": "5",
+                "project_element_id": null,
+                "element_path": "DESCRIPTION",
                 "applies": true,
                 "is_deletable": true,
                 "is_movable": true,
@@ -2791,7 +2796,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
 
             {
                 "name": "Cena 2 BATCH",
-                "project_element_id": "5",
+                "element_path": "PRICE"
                 "applies": true,
                 "deletable": true,
                 "priority": "3",
@@ -2828,7 +2833,8 @@ then the value of *placement [before]* and lastly the value of *priority* itself
                 "id": "39",
                 "name": "Cena 2 BATCH",
                 "priority": "3",
-                "project_element_id": "5",
+                "project_element_id":null,
+                "element_path": "PRICE",
                 "project_id": "33",
                 "type": "batch_rewriting",
                 "data": [
@@ -2880,6 +2886,7 @@ Lists all rules' instances that were created inside the specified project.
                         "id": "1",
                         "project_id": "1",
                         "project_element_id": null,
+                        "element_path": "DESCRIPTION",
                         "applies": true,
                         "is_deletable": true,
                         "is_movable": true,
@@ -2892,7 +2899,8 @@ Lists all rules' instances that were created inside the specified project.
                     {
                         "id": "15",
                         "project_id": "1",
-                        "project_element_id": "5",
+                        "project_element_id": null,
+                        "element_path": "PRICE"
                         "applies": true,
                         "is_deletable": true,
                         "is_movable": true,
@@ -2928,7 +2936,8 @@ Returns a specific rule instance.
             {
                 "id": "15",
                 "project_id": "1",
-                "project_element_id": "5",
+                "project_element_id": null,
+                "element_path": "DESCRIPTION",
                 "applies": true,
                 "is_deletable": true,
                 "is_movable": true,
@@ -3003,7 +3012,8 @@ If an empty list is sent, 400 will be returned.
             {
                 "id": "112",
                 "project_id": "2",
-                "project_element_id": "50",
+                "project_element_id": null,
+                "element_path": "DESCRIPTION",
                 "applies": true,
                 "is_deletable": true,
                 "is_movable": true,
