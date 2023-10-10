@@ -6,6 +6,11 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ## Changelog
 
+### 10. 10. 2023
+
+#### Added
+* `element_paths_to_extract` parameter for `projects/{id}/products/` endpoint
+
 ### 14. 9. 2022
 
 #### Added
@@ -37,14 +42,15 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 
 ### Additional GET parameters
 
-| Parameter                    | Example                                                                 | Description |
-|------------------------------|-------------------------------------------------------------------------|-------------|
-| **fields**                   | `?fields=uri,shop.id`                                                   | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
-| **limit**, **offset**        | `?limit=5&offset=2`                                                     | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
-| **date**                     | `?date=2015-12-24`                                                      | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
-| **filter**                   | `?filter=[{"field": "to", "op": ">=", "value": "2021-08-08T13:00:00"}]` | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Only numbers and timestamps in ISO 8601 format can be ordinally compared. Missing values in timestamps will be supplemented by the lowest possible values, eg `"2015-12-24"` equals `"2015-12-24T00:00:00+00:00"`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fail. Only non-nested fields are expected. |
-| **order_by**                 | `?order_by=validator,-verdict`                                          | Orders the result in ascending or descending order. |
-| filter_by                    | `?filter_by={"item_id__in":["123456789"]}`                              | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
+| Parameter                    | Example                                                                  | Description |
+|------------------------------|--------------------------------------------------------------------------|-------------|
+| **fields**                   | `?fields=uri,shop.id`                                                    | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
+| **limit**, **offset**        | `?limit=5&offset=2`                                                      | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
+| **date**                     | `?date=2015-12-24`                                                       | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
+| **filter**                   | `?filter=[{"field": "to", "op": ">=", "value": "2021-08-08T13:00:00"}]`  | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Only numbers and timestamps in ISO 8601 format can be ordinally compared. Missing values in timestamps will be supplemented by the lowest possible values, eg `"2015-12-24"` equals `"2015-12-24T00:00:00+00:00"`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fail. Only non-nested fields are expected. |
+| **order_by**                 | `?order_by=validator,-verdict`                                           | Orders the result in ascending or descending order. |
+| filter_by                    | `?filter_by={"item_id__in":["123456789"]}`                               | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
+| **element_paths_to_extract** | `?element_paths_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", %Variable%]`| The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names (must be enclosed in `%%`) for which the endpoint will return a list of values in a new field called `extracted_element_path_data`. |
 
 ### Typical Server Responses
 
@@ -1791,9 +1797,13 @@ A products represents one item currently present in an XML feed.
       before the date January 11, 2017.
     + data - Output data of this product.
     + input_data - Input data of this product.
+    + extracted_element_path_data (string) - Data extracted from element paths provided in `element_paths_to_extract` parameter.
 
-### List Products [GET]
-Returns project's products.
+### List Products [GET /products/{id}/{?element_paths_to_extract}]
+Returns project's products. If the `element_paths_to_extract` parameter is provided,
+the response will automatically include a field called `extracted_element_path_data`,
+containing data extracted from the specified element paths or variable. If parameter
+is missing, `extracted_element_path_data` field will not be included in endpoint reponse.
 
 **OAuth2 Scope:** project.products.read
 
@@ -1825,7 +1835,7 @@ Returns project's products.
                                         "attributes": {
                                             "id": "456"
                                         }
-                                    }   
+                                    }
                                 ],
                                 "PRICE": [
                                     {
@@ -1874,11 +1884,16 @@ Returns project's products.
                                             ]
                                         }
                                     }
-                                ] 
+                                ]
                             },
                             "attributes": {
                                 "TOP_LEVEL_ATTRIBUTE": {"value": "123"}
                             }
+                        },
+                        "extracted_element_path_data": {
+                            "ITEM_ID": ["123"],
+                            "PARAM | VAL": ["Černá", "Modrá"],
+                            "%IMAGE%": ["img 1"]
                         }
                     },
                 "limit": 10,
@@ -1917,7 +1932,7 @@ Returns a product with the given ID.
                                 "attributes": {
                                     "id": "456"
                                 }
-                            }   
+                            }
                         ],
                         "PRICE": [
                             {
@@ -1966,7 +1981,7 @@ Returns a product with the given ID.
                                     ]
                                 }
                             }
-                        ] 
+                        ]
                     },
                     "attributes": {
                         "TOP_LEVEL_ATTRIBUTE": {"value": "123"}
@@ -3304,7 +3319,7 @@ Lists all queries that were created for the specified rule.
 
 ### Assign a Query to a Rule [PATCH /rules/{id}/queries/]
 Assigns a Query to a Rule. The query must exist, otherwise 400 (bad request) status is returned.
-The body parameters also must uniquely identify a query. 
+The body parameters also must uniquely identify a query.
 
 **OAuth2 Scope:** project.rules.write
 
