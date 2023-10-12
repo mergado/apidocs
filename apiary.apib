@@ -50,7 +50,7 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 | **filter**                   | `?filter=[{"field": "to", "op": ">=", "value": "2021-08-08T13:00:00"}]`  | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Only numbers and timestamps in ISO 8601 format can be ordinally compared. Missing values in timestamps will be supplemented by the lowest possible values, eg `"2015-12-24"` equals `"2015-12-24T00:00:00+00:00"`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fail. Only non-nested fields are expected. |
 | **order_by**                 | `?order_by=validator,-verdict`                                           | Orders the result in ascending or descending order. |
 | filter_by                    | `?filter_by={"item_id__in":["123456789"]}`                               | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
-| **element_paths_to_extract** | `?element_paths_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", %Variable%]`| The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names (must be enclosed in `%%`) for which the endpoint will return a list of values in a new field called `extracted_element_path_data`. |
+| **element_paths_to_extract** | `?element_paths_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", "Variable"]`| The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names for which the endpoint will return a list of values in a new field called `extracted_element_path_data`. |
 
 ### Typical Server Responses
 
@@ -1797,7 +1797,7 @@ A products represents one item currently present in an XML feed.
       before the date January 11, 2017.
     + data - Output data of this product.
     + input_data - Input data of this product.
-    + extracted_element_path_data (string) - Data extracted from element paths provided in `element_paths_to_extract` parameter.
+    + extracted_element_path_data (string) - Data extracted from element paths or variables provided in `element_paths_to_extract` parameter.
 
 ### List Products [GET /products/{id}/{?element_paths_to_extract}]
 Returns project's products. If the `element_paths_to_extract` parameter is provided,
@@ -1893,7 +1893,7 @@ is missing, `extracted_element_path_data` field will not be included in endpoint
                         "extracted_element_path_data": {
                             "ITEM_ID": ["123"],
                             "PARAM | VAL": ["Černá", "Modrá"],
-                            "%IMAGE%": ["img 1"]
+                            "Variable": ["value_from_variable"]
                         }
                     },
                 "limit": 10,
