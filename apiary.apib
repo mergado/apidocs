@@ -1633,8 +1633,8 @@ Returns a project with the given ID. If the requested project is not active, the
 ### Update a Project [PATCH /projects/{id}/{?fields}]
 Updates a project with the given ID.
 
-**Note:** Currently, it is possible tu update only the field `is_dirty` which can be used
-to force Mergado to apply all rules to products during the next (lazy) rebuild.
+**Note:** Currently, it is possible to update only the `is_dirty` field from `False` to `True`. 
+This will trigger Mergado to apply all rules to products during the next (lazy) rebuild.
 
 **OAuth2 Scope:** project.write
 
