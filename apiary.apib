@@ -9,7 +9,7 @@ The Mergado API is based on REST principles. The request/response format is JSON
 ### 10. 10. 2023
 
 #### Added
-* `element_paths_to_extract` parameter for `projects/{id}/products/` endpoint
+* `values_to_extract` parameter for `projects/{id}/products/` endpoint
 
 ### 14. 9. 2022
 
@@ -50,7 +50,7 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 | **filter**                   | `?filter=[{"field": "to", "op": ">=", "value": "2021-08-08T13:00:00"}]`  | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Only numbers and timestamps in ISO 8601 format can be ordinally compared. Missing values in timestamps will be supplemented by the lowest possible values, eg `"2015-12-24"` equals `"2015-12-24T00:00:00+00:00"`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fail. Only non-nested fields are expected. |
 | **order_by**                 | `?order_by=validator,-verdict`                                           | Orders the result in ascending or descending order. |
 | filter_by                    | `?filter_by={"item_id__in":["123456789"]}`                               | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
-| **element_paths_to_extract** | `?element_paths_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", "Variable"]`| The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names for which the endpoint will return a list of values in a new field called `extracted_element_path_data`. |
+| **values_to_extract** | `?values_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", "Variable"]`| The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names for which the endpoint will return a list of values in a new field called `extracted_values`. |
 
 ### Typical Server Responses
 
@@ -1797,13 +1797,13 @@ A products represents one item currently present in an XML feed.
       before the date January 11, 2017.
     + data - Output data of this product.
     + input_data - Input data of this product.
-    + extracted_element_path_data (string) - Data extracted from element paths or variables provided in `element_paths_to_extract` parameter.
+    + extracted_values (string) - Data extracted from element paths or variables provided in `element_paths_to_extract` parameter.
 
 ### List Products [GET /products/{id}/{?element_paths_to_extract}]
-Returns project's products. If the `element_paths_to_extract` parameter is provided,
-the response will automatically include a field called `extracted_element_path_data`,
+Returns project's products. If the `values_to_extract` parameter is provided,
+the response will automatically include a field called `extracted_values`,
 containing data extracted from the specified element paths or variable. If parameter
-is missing, `extracted_element_path_data` field will not be included in endpoint reponse.
+is missing, `extracted_values` field will not be included in endpoint reponse.
 
 **OAuth2 Scope:** project.products.read
 
@@ -1890,7 +1890,7 @@ is missing, `extracted_element_path_data` field will not be included in endpoint
                                 "TOP_LEVEL_ATTRIBUTE": {"value": "123"}
                             }
                         },
-                        "extracted_element_path_data": {
+                        "extracted_values": {
                             "ITEM_ID": ["123"],
                             "PARAM | VAL": ["Černá", "Modrá"],
                             "Variable": ["value_from_variable"]
