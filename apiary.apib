@@ -1800,7 +1800,7 @@ A products represents one item currently present in an XML feed.
     + extracted_values (string) - Data extracted from element paths or
       variables provided in element_paths_to_extract parameter.
 
-### List Products [GET /products/{id}/{?element_paths_to_extract}]
+### List Products [GET /projects/{id}/products{?element_paths_to_extract}]
 Returns project's products. If the `values_to_extract` parameter is provided,
 the response will automatically include a field called `extracted_values`,
 containing data extracted from the specified element paths or variable. If parameter
@@ -1810,7 +1810,7 @@ is missing, `extracted_values` field will not be included in endpoint reponse.
 
 + Parameters
 
-    + id (string) - ID of a shop.
+    + id (string) - ID of a project.
 
 + Response 200
 
