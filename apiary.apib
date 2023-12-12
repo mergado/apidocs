@@ -6,6 +6,10 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ## Changelog
 
+### 25. 1. 2024
+#### Added
+* `values_to_extract` parameter for `/queries/{id}/products/` endpoint
+
 ### 10. 10. 2023
 
 #### Added
@@ -2053,8 +2057,13 @@ to force Mergado to refresh the product (apply rules) during the next (lazy) reb
                 }
             }
 
-### Query Products [GET /queries/{id}/products/{?limit,offset,fields,filter}]
+### Query Products [GET /queries/{id}/products/{?limit,offset,fields,filter, values_to_extract}]
 Returns products that satisfy a condition defined by the given query.
+
+If the `values_to_extract` parameter is provided,
+the response will automatically include a field called `extracted_values`,
+containing data extracted from the specified element paths or variable. If parameter
+is missing, `extracted_values` field will not be included in endpoint reponse.
 
 **OAuth2 Scope:** projects.products.read
 
