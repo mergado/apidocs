@@ -4,6 +4,31 @@ HOST: https://api.mergado.com
 # Mergado
 The Mergado API is based on REST principles. The request/response format is JSON.
 
+## Changelog
+
+### 25. 1. 2024
+#### Added
+* `values_to_extract` parameter for `/queries/{id}/products/` endpoint
+
+### 10. 10. 2023
+
+#### Added
+* `values_to_extract` parameter for `projects/{id}/products/` endpoint
+
+### 14. 9. 2022
+
+#### Added
+* Endpoint `/formats/{format_id}`
+* Endpoint `/formats/{format_id}/specification`
+
+#### Changed
+* Versioning
+* Endpoint `/projects/{id}/elements`
+* Endpoint `/elements/{id}`
+* Endpoint `/projects/{id}/products`
+* Endpoint `/products/{id}`
+* Endpoint `/queries/{id}/products`
+
 ## Requests
 
 The recommended encoding of all requests is UTF-8. Requests must be made over **HTTPS** and
@@ -21,14 +46,15 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 
 ### Additional GET parameters
 
-| Parameter                    | Example                                                                 | Description |
-|------------------------------|-------------------------------------------------------------------------|-------------|
-| **fields**                   | `?fields=uri,shop.id`                                                   | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
-| **limit**, **offset**        | `?limit=5&offset=2`                                                     | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
-| **date**                     | `?date=2015-12-24`                                                      | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
-| **filter**                   | `?filter=[{"field": "to", "op": ">=", "value": "2021-08-08T13:00:00"}]` | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Only numbers and timestamps in ISO 8601 format can be ordinally compared. Missing values in timestamps will be supplemented by the lowest possible values, eg `"2015-12-24"` equals `"2015-12-24T00:00:00+00:00"`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fail. Only non-nested fields are expected. |
-| **order_by**                 | `?order_by=validator,-verdict`                                          | Orders the result in ascending or descending order. |
-| filter_by                    | `?filter_by={"item_id__in":["123456789"]}`                              | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
+| Parameter                    | Example                                                                  | Description |
+|------------------------------|--------------------------------------------------------------------------|-------------|
+| **fields**                   | `?fields=uri,shop.id`                                                    | Only fields `uri` and `id` nested in `shop` will be returned in the given example. It works also for arrays of results - filter is applied to all their items, one by one. |
+| **limit**, **offset**        | `?limit=5&offset=2`                                                      | Works for arrays only. It is for paging the results. In the example, 2 results from the beginning are skipped and only 5 following items are returned. The default limit for every array result is 10 items. |
+| **date**                     | `?date=2015-12-24`                                                       | Works only for some special endpoints. In the example, it will return results corresponding only to Christmas Eve in 2015.
+| **filter**                   | `?filter=[{"field": "to", "op": ">=", "value": "2021-08-08T13:00:00"}]`  | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Only numbers and timestamps in ISO 8601 format can be ordinally compared. Missing values in timestamps will be supplemented by the lowest possible values, eg `"2015-12-24"` equals `"2015-12-24T00:00:00+00:00"`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fail. Only non-nested fields are expected. |
+| **order_by**                 | `?order_by=validator,-verdict`                                           | Orders the result in ascending or descending order. |
+| filter_by                    | `?filter_by={"item_id__in":["123456789"]}`                               | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
+| **values_to_extract** | `?values_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", "Variable"]`| The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names for which the endpoint will return a list of values in a new field called `extracted_values`. |
 
 ### Typical Server Responses
 
@@ -62,9 +88,15 @@ Access tokens bound to some specific user ID are called ***online*** tokens. Acc
 
 ## Versioning
 
-Versioning is implemented using the `Accept` request header. The valid syntax is:
-`application/mergado-vx+json`, eg. `application/mergado-v2+json`.
-If no Accept header is provided or the syntax is invalid, the _default_ version is used (v1).
+Versioning is implemented using the `use-mergado-api-version` header. The valid syntax is:
+`use-mergado-api-version`: "YYYY-MM-DD", eg. `use-mergado-api-version`: "2022-01-19".
+
+For any endpoint,
+* in case of a date X is specified in the `use-mergado-api-version` header, and
+  * there exists only one endpoint version, then the default endpoint version will be used,
+  * there exist endpoint versions valid until dates A and B, and the newest version C, and A < B < X < C holds, then the newest version of the endpoint C will be used,
+  * there exist only endpoint versions valid until the dates A and B, and A < B < X holds (i.e. there is no newest version), then the error 404 will be returned,
+* in case of there is no date specified in the `use-mergado-api-version` header, the endpoint valid on 2020-09-07 will be used.
 
 Note that all request and response examples match the latest version.
 
@@ -73,7 +105,7 @@ Various API resources that don't require any authentication.
 
 ## Info [/]
 ### Show API Version [GET]
-
+Returns date for a current default API implementation that is used when `use-mergado-api-version` header is not provided (see Versioning for more).
 + Response 200
 
     + Headers
@@ -83,7 +115,7 @@ Various API resources that don't require any authentication.
     + Body
 
             {
-                "version": "0.2"
+                "version_for": "2022-01-19"
             }
 
 ## Maintenance [/maintenance]
@@ -141,6 +173,298 @@ Returns a list of IDs of all supported XML feed's formats.
                 "heureka.sk",
                 "najnakup.sk",
                 "pricemania.sk"
+            ]
+
+### Get Format [GET /formats/{format_id}]
+Returns requested format by its ID.
+
+**Oauth2 Scope:** project.read or shop.read or user.formats.read
+
++ Parameters
+
+    + format_id (string) - format ID.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            [
+                "id": "heureka.cz",
+                "country": "cz",
+                "name": "Heureka.cz [cz]",
+                "ga_sources":[
+                    "heureka.cz",
+                    "seznamzbozi.cz",
+                    "srovnanicen.cz",
+                    "nejlepsiceny.cz"
+                ],
+                "is_importable": true,
+                "is_exportable": true
+            ]
+
+### Get Format Specification [GET /formats/{format_id}/specification]
+Returns requested format specification by its format ID.
+
+**Warning:** Format specifications could be changed to be up to date with the newest versions provided by the format authors.
+
+**Oauth2 Scope:** project.read or shop.read or user.formats.read
+
++ Parameters
+
+    + format_id (string) - format ID.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            [
+                "id": "xml.Heureka",
+                "file_format": "xml",
+                "global_schema":{
+                    "SHOP":{
+                        "semantic": "root"
+                        "mergado_xml":[
+                            "CHANNEL"
+                        ],
+                        "children":{
+                            "SHOPITEM":{
+                                "mergado_xml":[
+                                    "ITEM"
+                                ]
+                            }
+                        }
+                    }
+                "item_schema":{
+                    "ITEM_ID_DEPRECATED":{
+                        "is_depracated": true
+                        "is_unique":true
+                        "semantic": "item_id"
+                        "mergado_xml":[
+                            "ITEM_ID"
+                        ]
+                    }
+                    "ITEM_ID":{
+                        "is_unique":true
+                        "semantic": "item_id"
+                        "mergado_xml":[
+                            "ITEM_ID"
+                        ]
+                    }
+                    "PRODUCTNAME":{
+                        "is_unique":true
+                        "semantic": "name_exact"
+                        "mergado_xml":[
+                            "NAME_EXACT"
+                        ]
+                    }
+                    "URL":{
+                        "is_unique":true
+                        "semantic": "url"
+                        "mergado_xml":[
+                            "URL"
+                        ]
+                    }
+                    "PRODUCT":{
+                        "is_unique":true
+                        "semantic": "name_commercial"
+                        "mergado_xml":[
+                            "NAME_COMMERCIAL"
+                        ]
+                    }
+                    "EAN":{
+                        "is_unique":true
+                        "semantic": "ean"
+                        "mergado_xml":[
+                            "EAN"
+                        ]
+                    }
+                    "DESCRIPTION":{
+                        "semantic": "description"
+                        "mergado_xml":[
+                            "DESCRIPTION"
+                        ]
+                    }
+                    "IMGURL":{
+                        "is_unique":true
+                        "semantic": "image"
+                        "mergado_xml":[
+                            "IMAGE"
+                        ]
+                    }
+                    "IMGURL_ALTERNATIVE":{
+                        "semantic": "image_alternative"
+                        "mergado_xml":[
+                            "IMAGE_ALTERNATIVE"
+                        ]
+                    }
+                    "VIDEO_URL":{
+                        "semantic": "video"
+                        "mergado_xml":[
+                            "VIDEO"
+                        ]
+                    }
+                    "PRICE_VAT":{
+                        "semantic": "price_vat"
+                        "mergado_xml":[
+                            "PRICE_VAT"
+                        ]
+                    }
+                    "VAT":{
+                        "semantic": "vat"
+                        "mergado_xml":[
+                            "VAT"
+                        ]
+                    }
+                    "ITEM_TYPE":{
+                        "semantic": "item_type"
+                    }
+                    "PARAM":{
+                        "semantic": "param"
+                        "mergado_xml":[
+                            "PARAM"
+                        ]
+                        "children":{
+                            "PARAM_NAME":{
+                                "semantic": "param_name"
+                                "mergado_xml":[
+                                    "NAME"
+                                ]
+                            }
+                            "VAL":{
+                                "semantic": "param_value"
+                                "mergado_xml":[
+                                    "VALUE"
+                                ]
+                            }
+                        }
+                    }
+                    "MANUFACTURER":{
+                        "semantic": "brand"
+                        "mergado_xml":[
+                            "BRAND"
+                        ]
+                    }
+                    "CATEGORYTEXT":{
+                        "semantic": "category"
+                        "mergado_xml":[
+                            "CATEGORY"
+                        ]
+                    }
+                    "ISBN":{
+                        "is_unique":true
+                        "semantic": "isbn"
+                        "mergado_xml":[
+                            "ISBN"
+                        ]
+                    }
+                    "HEUREKA_CPC":{
+                        "semantic": "cpc"
+                        "mergado_xml":[
+                            "CPC"
+                        ]
+                    }
+                    "DELIVERY_DATE":{
+                        "semantic": "delivery_days"
+                        "mergado_xml":[
+                            "DELIVERY_DAYS"
+                        ]
+                    }
+                    "DELIVERY":{
+                        "semantic": "delivery"
+                        "mergado_xml":[
+                            "DELIVERY"
+                        ]
+                        "children":{
+                            "DELIVERY_ID":{
+                                "semantic": "delivery_id"
+                                "mergado_xml":[
+                                    "ID"
+                                ]
+                            }
+                            "DELIVERY_PRICE":{
+                                "semantic": "delivery_price"
+                                "mergado_xml":[
+                                    "PRICE"
+                                ]
+                            }
+                            "DELIVERY_PRICE_COD":{
+                                "semantic": "delivery_price_cod"
+                                "mergado_xml":[
+                                    "PRICE_COD"
+                                ]
+                            }
+                        }
+                    }
+                    "ITEMGROUP_ID":{
+                        "semantic": "itemgroup_id"
+                        "mergado_xml":[
+                            "ITEMGROUP_ID"
+                        ]
+                    }
+                    "ACCESSORY":{
+                        "semantic": "accessory"
+                        "mergado_xml":[
+                            "ACCESSORY"
+                        ]
+                    }
+                    "DUES":{
+                        "semantic": "dues"
+                        "mergado_xml":[
+                            "DUES"
+                        ]
+                    }
+                    "GIFT":{
+                        "semantic": "benefit"
+                        "mergado_xml":[
+                            "BENEFIT"
+                        ]
+                        "children":{
+                            "ID":{
+                                "is_attribute":true
+                                "semantic": "gift_id"
+                            }
+                        }
+                    }
+                    "EXTENDED_WARRANTY":{
+                        "semantic": "extended_warranty_wrapper"
+                        "children":{
+                            "VAL":{
+                                "semantic": "warranty"
+                                "mergado_xml":[
+                                    "WARRANTY"
+                                ]
+                            }
+                            "DESC":{
+                                "semantic": "extended_warranty_description"
+                            }
+                        }
+                    }
+                    "SPECIAL_SERVICE":{
+                        "semantic": "benefit"
+                        "mergado_xml":[
+                            "BENEFIT"
+                        ]
+                    }
+                    "SALES_VOUCHER":{
+                        "semantic": "voucher"
+                        "children":{
+                            "CODE":{
+                                "semantic": "voucher_code"
+                            }
+                            "DESC":{
+                                "semantic": "voucher_description"
+                            }
+                        }
+                    }
+                }
             ]
 
 ## Tariffs [/tariffs/]
@@ -339,13 +663,19 @@ Returns currently authenticated user.
 **OAuth2 Scope:** user.read
 
 + Request
+
     + Headers
+
             Content-Type: application/json
 
 + Response 200
+
     + Headers
+
             Content-Type: application/json
+
     + Body
+
             {
                 "id": "6",
                 "first_name": "Lorem",
@@ -380,38 +710,44 @@ Information about currently authenticated Mergado platform app.
 Returns list of entities _(user, shop, project, based on your app type)_ where your Mergado platform app was enabled at least once. The list is sorted from the newest entries to the oldest ones.
 
 + Request
+
     + Headers
+
             Content-Type: application/json
 
 + Response 200
+
     + Headers
-        Content-Type: application/json
+
+            Content-Type: application/json
+
     + Body
-        {
-            "data": [
-                {
-                    "entity_id": 100,
-                    "is_enabled": true,
-                    "free_until": "2021-11-05",
-                    "paid_until": "2021-12-07"
-                },
-                {
-                    "entity_id": 101,
-                    "is_enabled": true,
-                    "free_until": "2021-06-05",
-                    "paid_until": "2021-08-06"
-                },
-                {
-                    "entity_id": 200,
-                    "is_enabled": false,
-                    "free_until": "2021-02-05",
-                    "paid_until": "2021-04-03"
-                }
-            ],
-            "offset": 0,
-            "limit": 10,
-            "total_results": 3
-        }
+
+            {
+                "data": [
+                    {
+                        "entity_id": 100,
+                        "is_enabled": true,
+                        "free_until": "2021-11-05",
+                        "paid_until": "2021-12-07"
+                    },
+                    {
+                        "entity_id": 101,
+                        "is_enabled": true,
+                        "free_until": "2021-06-05",
+                        "paid_until": "2021-08-06"
+                    },
+                    {
+                        "entity_id": 200,
+                        "is_enabled": false,
+                        "free_until": "2021-02-05",
+                        "paid_until": "2021-04-03"
+                    }
+                ],
+                "offset": 0,
+                "limit": 10,
+                "total_results": 3
+            }
 
 #### Get app history for entity [GET /me/app/enabled/{entity_id}]
 **Access with OFFLINE token only.**
@@ -423,32 +759,37 @@ Returns history of enabled/disabled state of your app for a specific entity ID.
     + entity_id (int) - Entity ID *(user, shop, project, based on your app type)*.
 
 + Request
+
     + Headers
-        Content-Type: application/json
+
+            Content-Type: application/json
 
 + Response 200
+
     + Headers
-        Content-Type: application/json
+
+            Content-Type: application/json
     + Body
-        {
-            "data": [
-                {
-                    "enabled_at": "2020-11-05T09:08:19+00:00",
-                    "enabled_by_user_id": 1003,
-                    "disabled_at": null,
-                    "disabled_by_user_id": null
-                },
-                {
-                    "enabled_at": "2020-11-05T09:08:19+00:00",
-                    "enabled_by_user_id": 1001,
-                    "disabled_at": "2021-02-16T12:43:26+00:00",
-                    "disabled_by_user_id": 1003
-                }
-            ],
-            "offset": 0,
-            "limit": 10,
-            "total_results": 1
-        }
+
+            {
+                "data": [
+                    {
+                        "enabled_at": "2020-11-05T09:08:19+00:00",
+                        "enabled_by_user_id": 1003,
+                        "disabled_at": null,
+                        "disabled_by_user_id": null
+                    },
+                    {
+                        "enabled_at": "2020-11-05T09:08:19+00:00",
+                        "enabled_by_user_id": 1001,
+                        "disabled_at": "2021-02-16T12:43:26+00:00",
+                        "disabled_by_user_id": 1003
+                    }
+                ],
+                "offset": 0,
+                "limit": 10,
+                "total_results": 1
+            }
 
 # Group Core
 
@@ -1162,7 +1503,6 @@ and it is very common that one eshop has several projects each maaged for a diff
     + creator_id (string) - ID of the user who created this project.
     + name (string) - Name of the project.
     + url (string) - URL of the XML feed with products.
-    + activated (boolean) - Whether the project is active or not.
     + created (string) - When the project was created.
     + exported_items (number) - Number of exported items in the last export of the project.
     + input_fomat (string) - Input format (e.g. heureka.cz, zbozi.cz).
@@ -1171,6 +1511,7 @@ and it is very common that one eshop has several projects each maaged for a diff
     + readonly (boolean) - If the project is set to readonly it means that the project is currently 
       being regenerated and therefore it is not possible to trigger another regeneration.
       Product data available in the API may not be consistent with the data in the output feed  
+
     + is_paused (boolean) - If the project is paused, automatic scheduled rebuilds are skipped.
     + rules_changed_at (string) - The last time someone created, deleted or updated a rule in the project.
     + slug (string) - Unique identifier used in output URL of the exported XML feed.
@@ -1214,7 +1555,6 @@ Returns projects of an eshop.
                         "creator_id": "1",
                         "name": "Billiger.de",
                         "url": "https://app.mergado.com/example-com.xml",
-                        "activated": true,
                         "created": "2015-11-11T15:42:33+00:00",
                         "exported_items": 0,
                         "input_format": "zbozi.cz",
@@ -1249,7 +1589,7 @@ Returns projects of an eshop.
             }
 
 ### Get a Project [GET /projects/{id}/{?fields}]
-Returns a project with the given ID.
+Returns a project with the given ID. If the requested project is not active, the endpoint returns 404
 
 **OAuth2 Scope:** project.read
 
@@ -1271,7 +1611,6 @@ Returns a project with the given ID.
                 "creator_id": "1",
                 "name": "Billiger.de",
                 "url": "https://dummy.mergado.com/example-com.xml",
-                "activated": true,
                 "created": "2015-11-11T15:42:33+00:00",
                 "exported_items": 0,
                 "input_format": "zbozi.cz",
@@ -1306,8 +1645,8 @@ Returns a project with the given ID.
 ### Update a Project [PATCH /projects/{id}/{?fields}]
 Updates a project with the given ID.
 
-**Note:** Currently, it is possible tu update only the field `is_dirty` which can be used
-to force Mergado to apply all rules to products during the next (lazy) rebuild.
+**Note:** Currently, it is possible to update only the `is_dirty` field from `False` to `True`.
+This will trigger Mergado to apply all rules to products during the next (lazy) rebuild.
 
 **OAuth2 Scope:** project.write
 
@@ -1341,7 +1680,6 @@ to force Mergado to apply all rules to products during the next (lazy) rebuild.
                 "creator_id": "1",
                 "name": "Billiger.de",
                 "url": "https://dummy.mergado.com/example-com.xml",
-                "activated": true,
                 "created": "2015-11-11T15:42:33+00:00",
                 "exported_items": 0,
                 "input_format": "zbozi.cz",
@@ -1465,9 +1803,14 @@ A products represents one item currently present in an XML feed.
       before the date January 11, 2017.
     + data - Output data of this product.
     + input_data - Input data of this product.
+    + extracted_values (string) - Data extracted from element paths or
+      variables provided in element_paths_to_extract parameter.
 
-### List Products [GET]
-Returns project's products.
+### List Products [GET /projects/{id}/products{?element_paths_to_extract}]
+Returns project's products. If the `values_to_extract` parameter is provided,
+the response will automatically include a field called `extracted_values`,
+containing data extracted from the specified element paths or variable. If parameter
+is missing, `extracted_values` field will not be included in endpoint reponse.
 
 **OAuth2 Scope:** project.products.read
 
@@ -1491,63 +1834,77 @@ Returns project's products.
                         "updated_at": "2016-04-28T17:18:50+00:00",
                         "created_at": "2016-03-27T17:18:45+00:00",
                         "data": {
-                            "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
-                            "DELIVERY_DATE": "0",
-                            "DESCRIPTION": "Toner HP Q7551X",
-                            "DUES": "0",
-                            "IMGURL": "http://www.example.com/img/755.jpg",
-                            "MANUFACTURER": "PIRANHA",
-                            "PRICE": "808.18",
-                            "PRODUCT": "Toner HP Q7551X",
-                            "URL": "http://www.comps.cz/toner-hp-755",
-                            "VAT": "21.0"
+                            "elements": {
+                                "ITEM_ID": [
+                                    {
+                                        "input_value": "123",
+                                        "value": "123",
+                                        "attributes": {
+                                            "id": "456"
+                                        }
+                                    }
+                                ],
+                                "PRICE": [
+                                    {
+                                        "input_value": 69,
+                                        "value": 69
+                                    }
+                                ],
+                                "IMAGE": [
+                                    {
+                                        "value": "img 1"
+                                    },
+                                    {
+                                        "value": "img 2"
+                                    },
+                                    {
+                                        "value": "img 3"
+                                    }
+                                ],
+                                "PARAM": [
+                                    {
+                                        "elements": {
+                                            "NAME": [
+                                                {
+                                                "value": "Barva"
+                                                }
+                                            ],
+                                            "VAL": [
+                                                {
+                                                "value": "Černá"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "value": "value of PARAM",
+                                        "elements": {
+                                            "NAME": [
+                                                {
+                                                    "value": "Barva"
+                                                }
+                                            ],
+                                            "VAL": [
+                                                {
+                                                    "value": "Modrá"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "attributes": {
+                                "TOP_LEVEL_ATTRIBUTE": {"value": "123"}
+                            }
                         },
-                        "input_data": {
-                            "CATEGORYTEXT": "Tonery do tiskáren | Kompatibilní tonery",
-                            "DELIVERY_DATE": "0",
-                            "DESCRIPTION": "Toner HP Q7551X",
-                            "DUES": "3",
-                            "IMGURL": "http://www.example.com/img/755.jpg",
-                            "MANUFACTURER": "PIRANHA",
-                            "PRICE": "808.18",
-                            "PRODUCT": "Toner HP Q7551X",
-                            "URL": "http://www.comps.cz/toner-hp-755",
-                            "VAT": "21.0"
+                        "extracted_values": {
+                            "ITEM_ID": ["123"],
+                            "PARAM | VAL": ["Černá", "Modrá"],
+                            "Variable": ["value_from_variable"]
                         }
                     },
-                    {
-                        "id": "1694",
-                        "output_changed_at": null,
-                        "updated_at": "2016-04-28T17:18:50+00:00",
-                        "created_at": "2016-03-27T17:18:45+00:00",
-                        "data": {
-                            "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
-                            "DELIVERY_DATE": "0",
-                            "DESCRIPTION": "Toner HP Q7532X",
-                            "DUES": "0",
-                            "IMGURL": "http://www.example.com/img/7532.jpg",
-                            "MANUFACTURER": "PIRANHA",
-                            "PRICE": "848.18",
-                            "PRODUCT": "Toner HP Q7532X",
-                            "URL": "http://www.comps.cz/toner-hp-7532",
-                            "VAT": "21.0"
-                        },
-                        "input_data": {
-                            "CATEGORYTEXT": "Tonery do tiskáren | Kompatibilní tonery",
-                            "DELIVERY_DATE": "0",
-                            "DESCRIPTION": "Toner HP Q7532X",
-                            "DUES": "0",
-                            "IMGURL": "http://www.example.com/img/7532.jpg",
-                            "MANUFACTURER": "PIRANHA",
-                            "PRICE": "848.18",
-                            "PRODUCT": "Toner HP Q7532X",
-                            "URL": "http://www.comps.cz/toner-hp-7532",
-                            "VAT": "21.0"
-                        }
-                    }
-                ],
                 "limit": 10,
-                "total_results": 2,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -1574,28 +1931,68 @@ Returns a product with the given ID.
                 "updated_at": "2016-04-28T17:18:50+00:00",
                 "created_at": "2016-03-27T17:18:45+00:00",
                 "data": {
-                    "CATEGORYTEXT": "Tonery do tiskáren > Kompatibilní tonery",
-                    "DELIVERY_DATE": "0",
-                    "DESCRIPTION": "Toner HP Q7551X",
-                    "DUES": "0",
-                    "IMGURL": "http://www.example.com/img/755.jpg",
-                    "MANUFACTURER": "PIRANHA",
-                    "PRICE": "808.18",
-                    "PRODUCT": "Toner HP Q7551X",
-                    "URL": "http://www.comps.cz/toner-hp-755",
-                    "VAT": "21.0"
-                },
-                "input_data": {
-                    "CATEGORYTEXT": "Tonery do tiskáren | Kompatibilní tonery",
-                    "DELIVERY_DATE": "0",
-                    "DESCRIPTION": "Toner HP Q7551X",
-                    "DUES": "0",
-                    "IMGURL": "http://www.example.com/img/755.jpg",
-                    "MANUFACTURER": "PIRANHA",
-                    "PRICE": "808.18",
-                    "PRODUCT": "Toner HP Q7551X",
-                    "URL": "http://www.comps.cz/toner-hp-755",
-                    "VAT": "21.0"
+                    "elements": {
+                        "ITEM_ID": [
+                            {
+                                "input_value": "123",
+                                "value": "123",
+                                "attributes": {
+                                    "id": "456"
+                                }
+                            }
+                        ],
+                        "PRICE": [
+                            {
+                                "input_value": 69,
+                                "value": 69
+                            }
+                        ],
+                        "IMAGE": [
+                            {
+                                "value": "img 1"
+                            },
+                            {
+                                "value": "img 2"
+                            },
+                            {
+                                "value": "img 3"
+                            }
+                        ],
+                        "PARAM": [
+                            {
+                                "elements": {
+                                    "NAME": [
+                                        {
+                                        "value": "Barva"
+                                        }
+                                    ],
+                                    "VAL": [
+                                        {
+                                        "value": "Černá"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "value": "value of PARAM",
+                                "elements": {
+                                    "NAME": [
+                                        {
+                                            "value": "Barva"
+                                        }
+                                    ],
+                                    "VAL": [
+                                        {
+                                            "value": "Modrá"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "TOP_LEVEL_ATTRIBUTE": {"value": "123"}
+                    }
                 }
             }
 
@@ -1662,8 +2059,13 @@ to force Mergado to refresh the product (apply rules) during the next (lazy) reb
                 }
             }
 
-### Query Products [GET /queries/{id}/products/{?limit,offset,fields,filter}]
+### Query Products [GET /queries/{id}/products/{?limit,offset,fields,filter, values_to_extract}]
 Returns products that satisfy a condition defined by the given query.
+
+If the `values_to_extract` parameter is provided,
+the response will automatically include a field called `extracted_values`,
+containing data extracted from the specified element paths or variable. If parameter
+is missing, `extracted_values` field will not be included in endpoint reponse.
 
 **OAuth2 Scope:** projects.products.read
 
@@ -1687,42 +2089,63 @@ Returns products that satisfy a condition defined by the given query.
                         "updated_at": "2016-04-25T16:42:50+00:00",
                         "created_at": "2016-03-27T17:18:45+00:00",
                         "data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
-                        },
-                        "input_data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
+                            "ITEM_ID": [
+                                {
+                                    "input_value": "ab",
+                                    "value": "ab",
+                                    "attributes": {
+                                        "some-shit": "uff"
+                                    }
+                                }
+                            ],
+                            "PRICE": [
+                                {
+                                    "input_value": 69,
+                                    "value": 69
+                                }
+                            ],
+                            "IMAGE": [
+                                {
+                                    "value": "img 1"
+                                },
+                                {
+                                    "value": "img 2"
+                                },
+                                {
+                                    "value": "img 2"
+                                }
+                            ],
+                            "PARAM": [
+                                {
+                                    "children": {
+                                        "NAME": [
+                                            {
+                                                "value": "Barva"
+                                            }
+                                        ],
+                                        "VAL": [
+                                            {
+                                                "value": "Hnusná"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "value": "some val",
+                                    "children": {
+                                        "NAME": [
+                                            {
+                                                "value": "Barva"
+                                            }
+                                        ],
+                                        "VAL": [
+                                            {
+                                                "value": "Hnusná"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
                         }
                     },
                     {
@@ -1731,47 +2154,68 @@ Returns products that satisfy a condition defined by the given query.
                         "updated_at": "2016-04-25T16:42:50+00:00",
                         "created_at": "2016-03-27T17:18:45+00:00",
                         "data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
-                        },
-                        "input_data": {
-                            "CATEGORYTEXT": "Text kategorie",
-                            "DELIVERY_DATE": "0",
-                            "DELIVERY_PRICE_COD|DHL": "5.90",
-                            "DELIVERY_PRICE_COD|SLOVENSKA_POSTA": "3.90",
-                            "DELIVERY_PRICE|DHL": "4.90",
-                            "DELIVERY_PRICE|SLOVENSKA_POSTA": "2.90",
-                            "DESCRIPTION": "Popis produktu",
-                            "GIFT": "Zľavový kupón na ďalší nákup",
-                            "HEUREKA_CPC": null,
-                            "IMGURL": "http://www.obrazok.sk/obrazok.jpg",
-                            "ITEM_ID": "766",
-                            "MANUFACTURER": "Vyrobca",
-                            "PRICE_VAT": "25.39",
-                            "PRODUCT": "Vyrobok",
-                            "PRODUCTNAME": "Nayov vzrobku",
-                            "URL": "http://www.url.cz/prevyrobok/",
-                            "VAT": "0.21"
+                            "ITEM_ID": [
+                                {
+                                    "input_value": "ab",
+                                    "value": "ab",
+                                    "attributes": {
+                                        "some-shit": "uff"
+                                    }
+                                }
+                            ],
+                            "PRICE": [
+                                {
+                                    "input_value": 69,
+                                    "value": 69
+                                }
+                            ],
+                            "IMAGE": [
+                                {
+                                    "value": "img 1"
+                                },
+                                {
+                                    "value": "img 2"
+                                },
+                                {
+                                    "value": "img 2"
+                                }
+                            ],
+                            "PARAM": [
+                                {
+                                    "children": {
+                                        "NAME": [
+                                            {
+                                                "value": "Barva"
+                                            }
+                                        ],
+                                        "VAL": [
+                                            {
+                                                "value": "Hnusná"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "value": "some val",
+                                    "children": {
+                                        "NAME": [
+                                            {
+                                                "value": "Barva"
+                                            }
+                                        ],
+                                        "VAL": [
+                                            {
+                                                "value": "Hnusná"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
                         }
                     }
                 ],
                 "limit": 10,
-                "total_results": 2,
+                "total_results": 1,
                 "offset": 0
             }
 
@@ -1888,6 +2332,13 @@ Elements are named attributes of products.
 ### Create an Element [POST]
 Creates an element inside a project.
 
+In the request, in case of
+* not specifying `order`, the element will be created as the last one,
+* specifying `order`, the element will be created at the specified spot and the `order` of other elements will be adjusted accordingly,
+* not specifying `is_attribute`, it will be set to `false`,
+* the element is being created in MERGADO 1, `order` is ignored,
+* the element is being created in MERGADO 1 and `is_attribute = true`, 409 will be returned.
+
 **OAuth2 Scope:** project.elements.write
 
 + Parameters
@@ -1917,15 +2368,18 @@ Creates an element inside a project.
     + Body
 
             {
-                "id": "123",
-                "project_id": "1",
                 "name": "SHIPPING",
-                "type": "output",
-                "hidden": false
+                "parent_id": null,
+                "is_attribute": false,
+                "hidden": false,
+                "origin": "manual",
+                "order": 3
             }
 
-### List Project Elements [GET /projects/{id}/elements/{?limit,offset,fields,filter}]
-Lists all project's elements.
+### List Project Elements [GET /projects/{id}/elements/{?fields,filter}]
+Lists all project's elements in a tree structure.
+
+**Note:** For MERGADO 1 the response doesn't contain the field `order`.
 
 **OAuth2 Scope:** project.elements.read
 
@@ -1942,46 +2396,54 @@ Lists all project's elements.
     + Body
 
             {
-                "data": [
-                    {
-                        "hidden": false,
-                        "id": "1",
-                        "name": "PRODUCT",
-                        "project_id": "33",
-                        "type": "input"
-                    },
-                    {
-                        "hidden": false,
-                        "id": "2",
-                        "name": "DESCRIPTION",
-                        "project_id": "33",
-                        "type": "input"
-                    },
-                    {
-                        "hidden": false,
-                        "id": "4",
-                        "name": "URL",
-                        "project_id": "33",
-                        "type": "input"
-                    },
-                    {
-                        "hidden": false,
-                        "id": "5",
-                        "name": "CATEGORYTEXT",
-                        "project_id": "33",
-                        "type": "input"
-                    },
-                    {
-                        "hidden": false,
-                        "id": "6",
-                        "name": "PRICE",
-                        "project_id": "33",
-                        "type": "input"
+                "PRODUCT": {
+                    "id": "1",
+                    "is_attribute": false,
+                    "hidden": true,
+                    "origin": "input",
+                    "order": 1,
+                    "children": {
+                        "id": {
+                            "id": "11",
+                            "is_attribute": true,
+                            "hidden": true,
+                            "origin": "input",
+                            "order": 1
+                        }
                     }
-                ],
-                "limit": 10,
-                "total_results": 5,
-                "offset": 0
+                },
+                "PRICE": {
+                    "id": "2",
+                    "hidden": false,
+                    "origin": "output",
+                    "order": 2
+                },
+                "IMAGE": {
+                    "id": "3",
+                    "hidden": false,
+                    "origin": "output",
+                    "order": 3
+                },
+                "PARAM": {
+                    "id": "4",
+                    "hidden": false,
+                    "origin": "output",
+                    "order": 4,
+                    "children": {
+                        "NAME": {
+                            "id": "5",
+                            "hidden": false,
+                            "origin": "output",
+                            "order": 1
+                        },
+                        "VAL": {
+                            "id": "6",
+                            "hidden": false,
+                            "origin": "output",
+                            "order": 2
+                        }
+                    }
+                }
             }
 
 ### Get an Element [GET /elements/{id}/{?fields}]
@@ -2002,15 +2464,16 @@ Returns an element.
     + Body
 
             {
+                "name": "SHIPPING",
+                "parent_id": null,
+                "is_attribute": false,
                 "hidden": false,
-                "id": "6",
-                "name": "PRICE",
-                "project_id": "33",
-                "type": "input"
+                "origin": "manual",
+                "order": 3
             }
 
 ### Delete an Element [DELETE /elements/{id}/{?fields}]
-Delete the specified element.
+Delete the specified element and all of its children.
 
 **OAuth2 Scope:** project.elements.write
 
@@ -2030,44 +2493,6 @@ Delete the specified element.
 
             Content-Type: application/json
 
-### Update an Element [PATCH /elements/{id}/]
-Performes update of element's attributes.
-
-**OAuth2 Scope:** project.elements.write
-
-+ Parameters
-
-    + id (string) - ID of a project.
-
-+ Request
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-            {
-                "hidden": true
-            }
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-            Location: "https://app.mergado.com/api/elements/123"
-
-    + Body
-
-            {
-                "id": "123",
-                "project_id": "1",
-                "name": "SHIPPING",
-                "type": "output",
-                "hidden": true
-            }
-
 ## Variables [/project/{id}/variables/]
 Variables can be seen as pointers to products' values or parts of values and
 can be used in most _rules_ (see the section about rules). Variables are created
@@ -2079,7 +2504,7 @@ expression to match only a part of a product's value.
 
     + id (string) - ID of the variable.
     + name (string) - Name of the variable.
-    + project_element_id (string) - ID of the element the variable is created from.
+    + element_path (string) - Element path of the element the variable is created from.
     + project_id (string) - ID of the project the variable is created in.
     + regular_expression (string, optional) - Regular expression used for
       parsing some part of an element's value (for example domain from URL).
@@ -2113,7 +2538,7 @@ Creates a new variable inside a project.
 
             {
                 "name": "DESCRIPTION_A",
-                "project_element_id": "1",
+                "element_path": "DESCRIPTION",
                 "regular_expression": "(\\-|\\* )?(.*)",
                 "sample_text": null,
                 "fragment_number": 2
@@ -2131,7 +2556,7 @@ Creates a new variable inside a project.
             {
                 "id": "1521",
                 "name": "DESCRIPTION_A",
-                "project_element_id": "1",
+                "element_path": "DESCRIPTION",
                 "project_id": "33",
                 "regular_expression": "(\\-|\\* )?(.*)",
                 "fragment_number": 2,
@@ -2161,7 +2586,7 @@ Lists all project's variables.
                     {
                         "id": "1521",
                         "name": "DESCRIPTION_A",
-                        "project_element_id": "1",
+                        "element_path": "DESCRIPTION",
                         "project_id": "33",
                         "regular_expression": "(\\-|\\* )?(.*)",
                         "fragment_number": 2,
@@ -2194,7 +2619,7 @@ Returns a variable.
             {
                 "id": "1521",
                 "name": "DESCRIPTION_A",
-                "project_element_id": "1",
+                "element_path": "DESCRIPTION",
                 "project_id": "33",
                 "regular_expression": "(\\-|\\* )?(.*)",
                 "fragment_number": 2,
@@ -2256,7 +2681,7 @@ Performes update of variable's attributes.
             {
                 "id": "1521",
                 "name": "DESCRIPTION_OMG",
-                "project_element_id": "1",
+                "element_path": "DESCRIPTION",
                 "project_id": "33",
                 "regular_expression": "(\\-|\\* )?(.*)",
                 "fragment_number": 2,
@@ -2272,10 +2697,10 @@ format (e.g. from Heureka.cz to Google Merchant).
 + Attributes
 
     + id (string) - ID of the rule.
-    + name (string) - Name of the rule (is shown in Mergado UI).
+    + name (string) - Name of the rule (is shown in Mergado UI). The maximum length is 100 characters and it cannot contain any special characters.
     + type (string) - Type of the rule.
     + project_id (string) - ID of the project the rule was created in.
-    + project_element_id (string, optional) - ID of the element the rule
+    + element_path (string, optional) - Element path of the element the rule
       should apply to. The element is optional, not all rules require an element.
     + priority (number) - Priority of the rule, or the position when it is applied.
       The position matters as each rule makes some changes to the products' data.
@@ -2306,6 +2731,8 @@ placed before / after later on.
 To determine the priority on server side, we first check the value of *placement[after]*,
 then the value of *placement [before]* and lastly the value of *priority* itself.
 
+**Note:** The maximum length of the attribute `name` is 100 characters and cannot contain any special characters.
+
 **OAuth2 Scope:** project.rules.write
 
 + Parameters
@@ -2323,7 +2750,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
             {
                 "name": "Cena",
                 "type": "rewriting",
-                "project_element_id": "5",
+                "element_path": "DESCRIPTION",
                 "applies": true,
                 "priority": "3",
                 "placement": {
@@ -2357,7 +2784,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
                 "name": "Cena",
                 "type": "rewriting",
                 "project_id": "1",
-                "project_element_id": "5",
+                "element_path": "DESCRIPTION",
                 "applies": true,
                 "is_deletable": true,
                 "is_movable": true,
@@ -2391,7 +2818,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
 
             {
                 "name": "Cena 2 BATCH",
-                "project_element_id": "5",
+                "element_path": "PRICE",
                 "applies": true,
                 "deletable": true,
                 "priority": "3",
@@ -2428,7 +2855,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
                 "id": "39",
                 "name": "Cena 2 BATCH",
                 "priority": "3",
-                "project_element_id": "5",
+                "element_path": "PRICE",
                 "project_id": "33",
                 "type": "batch_rewriting",
                 "data": [
@@ -2479,7 +2906,7 @@ Lists all rules' instances that were created inside the specified project.
                     {
                         "id": "1",
                         "project_id": "1",
-                        "project_element_id": null,
+                        "element_path": "DESCRIPTION",
                         "applies": true,
                         "is_deletable": true,
                         "is_movable": true,
@@ -2492,7 +2919,7 @@ Lists all rules' instances that were created inside the specified project.
                     {
                         "id": "15",
                         "project_id": "1",
-                        "project_element_id": "5",
+                        "element_path": "PRICE",
                         "applies": true,
                         "is_deletable": true,
                         "is_movable": true,
@@ -2528,7 +2955,7 @@ Returns a specific rule instance.
             {
                 "id": "15",
                 "project_id": "1",
-                "project_element_id": "5",
+                "element_path": "DESCRIPTION",
                 "applies": true,
                 "is_deletable": true,
                 "is_movable": true,
@@ -2568,11 +2995,13 @@ Performs update of rule's attributes. Refer to the doc for rule creation to find
 how priority is calculated. If no queries are present in the request, the queries will not be changed.
 If an empty list is sent, 400 will be returned.
 
+**Note:** The maximum length of the attribute `name` is 100 characters and cannot contain any special characters.
+
 **OAuth2 Scope:** project.rules.write
 
 + Parameters
 
-    + id (string) - ID of a project.
+    + id (string) - ID of a rule.
 
 + Request
 
@@ -2601,7 +3030,7 @@ If an empty list is sent, 400 will be returned.
             {
                 "id": "112",
                 "project_id": "2",
-                "project_element_id": "50",
+                "element_path": "DESCRIPTION",
                 "applies": true,
                 "is_deletable": true,
                 "is_movable": true,
@@ -2902,8 +3331,7 @@ Lists all queries that were created for the specified rule.
 
 ### Assign a Query to a Rule [PATCH /rules/{id}/queries/]
 Assigns a Query to a Rule. The query must exist, otherwise 400 (bad request) status is returned.
-The body parameters also must uniquely identify a query. If the query is already assigned to the rule,
-409 (conflict) status is returned.
+The body parameters also must uniquely identify a query.
 
 **OAuth2 Scope:** project.rules.write
 
@@ -5936,7 +6364,7 @@ Returns list of all Heureka categories.
 # Group Google
 API for various Google tools, helpers and resources.
 
-## Google Analytics [/projects/{id}/google/analytics/]
+## Google Universal Analytics [/projects/{id}/google/analytics/]
 
 + Attributes
 
@@ -5944,13 +6372,13 @@ API for various Google tools, helpers and resources.
         + date (string) - Groups each product by the date the product has been collected.
         + day_of_week (number) - Groups the products by the day of the week.
         + landing_page_path (string) - Groups the products by the first page in users' sessions,
-          or the landing page. See Google Analytics for mor details.
+          or the landing page. See Google Universal Analytics for more details.
     + clicks_sum (number) - Number of clicks of all products in the group.
     + orders_sum (number) - Number of orders of all products in the group.
     + sales_sum (number) - Total sales of all products in the group.
 
 ### Eshop Data [GET /shops/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,source,metrics,dimensions,medium}]
-Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
+Returns evaluated metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
 Uses only UTM parameters that were sent in the request.
 
@@ -5965,18 +6393,18 @@ Uses only UTM parameters that were sent in the request.
       `source=~*.example.com`) or ID of a format (see section with formats).
     + medium (string, optional) - The general category of the source, for example,
       organic search (organic), cost-per-click paid search (cpc), web referral (referral).
-    + metrics (enum[string], optional) - Comma sepparated list of metrics to use.
+    + metrics (enum[string], optional) - Comma separated list of metrics to use.
         + Members
             + `sales_sum` - total sales of all products in the group.
             + `orders_sum` - number of orders of all products in the group.
             + `clicks_sum` - number of clicks of all products in the group.
-    + dimensions (enum[string], optional) - Comma sepparated list of dimensions to use.
+    + dimensions (enum[string], optional) - Comma separated list of dimensions to use.
         + Default: `date`
         + Members
             + `date` - groups each product by the date the product has been collected.
             + `day_of_week` - groups the products by the day of the week.
-            + `landing_page_path` - gropus the products by the first page in users' sessions,
-              or the landing page. See Google Analytics for mor details.
+            + `landing_page_path` - groups the products by the first page in users' sessions,
+              or the landing page. See Google Universal Analytics for more details.
     + start_date (string, optional)
     + end_date (string, optional)
     + fields (string, optional)
@@ -6024,7 +6452,7 @@ Uses only UTM parameters that were sent in the request.
             }
 
 ### Project Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions,medium}]
-Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
+Returns evaluated metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
 If user didn't set the UTM parameters (or the params are empty),
 medium is empty and source is set to a regex based on [this](https://gist.github.com/MichalJanik/721d23bd6036b9f67526b1e5305f3a5c)
@@ -6037,18 +6465,18 @@ mapping (where the key corresponds to Project output format). Note the tilde at 
     + id (string) - ID of the project.
     + medium (string, optional) - The general category of the source, for example,
       organic search (organic), cost-per-click paid search (cpc), web referral (referral).
-    + metrics (enum[string], optional) - Comma sepparated list of metrics to use.
+    + metrics (enum[string], optional) - Comma separated list of metrics to use.
         + Members
             + `sales_sum` - total sales of all products in the group.
             + `orders_sum` - number of orders of all products in the group.
             + `clicks_sum` - number of clicks of all products in the group.
-    + dimensions (enum[string], optional) - Comma sepparated list of dimensions to use.
+    + dimensions (enum[string], optional) - Comma separated list of dimensions to use.
         + Default: `date`
         + Members
             + `date` - groups each product by the date the product has been collected.
             + `day_of_week` - groups the products by the day of the week.
-            + `landing_page_path` - gropus the products by the first page in users' sessions,
-              or the landing page. See Google Analytics for mor details.
+            + `landing_page_path` - groups the products by the first page in users' sessions,
+              or the landing page. See Google Universal Analytics for more details.
     + start_date (string, optional)
     + end_date (string, optional)
     + fields (string, optional)
@@ -6253,5 +6681,239 @@ Mergado API and GA API.
                         }
                     ]
                 },
+                "status": 200
+            }
+
+
+## Google Analytics 4 [/projects/{id}/google/analytics_4/]
+
++ Attributes
+
+    + group (object) - Values of the requested dimensions for the group.
+        + date (string) - Groups each product by the date the product has been collected.
+        + day_of_week (number) - Groups the products by the day of the week.
+    + clicks_sum (number) - Number of clicks of all products in the group taken from official metric `sessions`.
+    + orders_sum (number) - Number of orders of all products in the group taken from official metric `ecommercePurchases`.
+    + sales_sum (number) - Total sales of all products in the group taken from official metric `itemRevenue`.
+
+### Eshop Data [GET /shops/{id}/google/analytics_4/{?fields,limit,offset,start_date,end_date,source,metrics,dimensions,medium}]
+Returns evaluated metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
+value in ascending order. Groups of results can be created using `dimensions` query string.
+Uses only UTM parameters that were sent in the request.
+
+**OAuth2 Scope:** shop.ga.read
+
++ Parameters
+
+    + id (string) - ID of the shop.
+    + source (string, optional) - The source of referrals. For manual campaign tracking,
+      it is the value of the utm_source campaign tracking parameter. This parameter is regular expression or ID of a format (see section with formats).
+    + medium (string, optional) - The general category of the source, for example,
+      organic search (organic), cost-per-click paid search (cpc), web referral (referral).
+    + metrics (enum[string], optional) - Comma separated list of metrics to use.
+        + Members
+            + `sales_sum` - total sales of all products in the group.
+            + `orders_sum` - number of orders of all products in the group.
+            + `clicks_sum` - number of clicks of all products in the group.
+    + dimensions (enum[string], optional) - Comma separated list of dimensions to use.
+        + Default: `date`
+        + Members
+            + `date` - groups each product by the date the product has been collected.
+            + `day_of_week` - groups the products by the day of the week.
+    + start_date (string, optional)
+    + end_date (string, optional)
+    + fields (string, optional)
+    + limit (number, optional)
+    + offset (number, optional)
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "data": [
+                    {
+                        "group": {"date": "2016-05-04"},
+                        "clicks_sum": 861,
+                        "orders_sum": 50,
+                        "sales_sum": 129852
+                    },
+                    {
+                        "group": {"date": "2016-05-03"},
+                        "clicks_sum": 1661,
+                        "orders_sum": 69,
+                        "sales_sum": 225298
+                    },
+                    {
+                        "group": {"date": "2016-05-02"},
+                        "clicks_sum": 1523,
+                        "orders_sum": 70,
+                        "sales_sum": 141676
+                    },
+                    {
+                        "group": {"date": "2016-05-01"},
+                        "clicks_sum": 1095,
+                        "orders_sum": 54,
+                        "sales_sum": 113470
+                    }
+                ],
+                "limit": 4,
+                "total_results": 6,
+                "offset": 0
+            }
+
+### Project Data [GET /projects/{id}/google/analytics_4/{?fields,limit,offset,start_date,end_date,metrics,dimensions,medium}]
+Returns evaluated metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
+value in ascending order. Groups of results can be created using `dimensions` query string.
+If user didn't set the UTM parameters (or the params are empty),
+medium is empty and source is set to a regex based on [this](https://gist.github.com/MichalJanik/721d23bd6036b9f67526b1e5305f3a5c)
+mapping (where the key corresponds to Project output format).
+
+**OAuth2 Scope:** project.ga.read
+
++ Parameters
+
+    + id (string) - ID of the project.
+    + medium (string, optional) - The general category of the source, for example,
+      organic search (organic), cost-per-click paid search (cpc), web referral (referral).
+    + metrics (enum[string], optional) - Comma separated list of metrics to use.
+        + Members
+            + `sales_sum` - total sales of all products in the group.
+            + `orders_sum` - number of orders of all products in the group.
+            + `clicks_sum` - number of clicks of all products in the group.
+    + dimensions (enum[string], optional) - Comma separated list of dimensions to use.
+        + Default: `date`
+        + Members
+            + `date` - groups each product by the date the product has been collected.
+            + `day_of_week` - groups the products by the day of the week.
+    + start_date (string, optional)
+    + end_date (string, optional)
+    + fields (string, optional)
+    + limit (number, optional)
+    + offset (number, optional)
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "data": [
+                    {
+                        "group": {"date": "2016-05-04"},
+                        "clicks_sum": 861,
+                        "orders_sum": 50,
+                        "sales_sum": 129852
+                    },
+                    {
+                        "group": {"date": "2016-05-03"},
+                        "clicks_sum": 1661,
+                        "orders_sum": 69,
+                        "sales_sum": 225298
+                    },
+                    {
+                        "group": {"date": "2016-05-02"},
+                        "clicks_sum": 1523,
+                        "orders_sum": 70,
+                        "sales_sum": 141676
+                    },
+                    {
+                        "group": {"date": "2016-05-01"},
+                        "clicks_sum": 1095,
+                        "orders_sum": 54,
+                        "sales_sum": 113470
+                    }
+                ],
+                "limit": 10,
+                "total_results": 4,
+                "offset": 0
+            }
+
+### Google Analytics 4 Data API Proxy [POST /shops/{id}/google/analytics_4/proxy]
+Serves as a proxy to Google Analytics Data API.
+Parameters sent to Mergado API in request body under `args` are forwarded to Google Analytics Data API as a request to https://analyticsdata.googleapis.com/{version}/{property_name}:{report_method}?alt=json.
+If `version` parameter is not specified version `v1beta` is used as default. If `report_method` parameter is not specified method `runReport` is used as default.
+The request is authorized by Mergado using Keychain Credentials (`property_name` in the URL will be replaced with name of the property associated with this credentials).
+Response content from GA is returned as raw string under `content`.
+Response code from GA is returned under `status` to allow different codes from Mergado API and GA API.
+
+**OAuth2 Scope:** shop.ga.read
+
++ Parameters
+
+    + id (string) - ID of the eshop.
+
++ Request 200
+
+    + Body
+
+            {
+                "version": "v1beta",
+                "report_method": "runReport",
+                "args": {
+                    "dimensions": [
+                        {
+                            "name": "date"
+                        }
+                    ],
+                    "metrics": [
+                        {
+                            "name": "sessions"
+                        }
+                    ],
+                    "dateRanges": [
+                        {
+                            "startDate": "yesterday",
+                            "endDate": "today"
+                        }
+                    ]
+                }
+            }
+
++ Response 200
+
+    + Body
+
+            {
+                "content": "{
+                    \"dimensionHeaders\":[
+                        {
+                            \"name\":\"date\"
+                        }
+                    ],
+                    \"metricHeaders\":[
+                        {
+                            \"name\":\"sessions\",
+                            \"type\":\"TYPE_INTEGER\"
+                        }
+                    ],
+                    \"rows\":[
+                        {
+                            \"dimensionValues\":[
+                                {
+                                    \"value\":\"20221025\"
+                                }
+                            ],
+                            \"metricValues\":[
+                                {
+                                    \"value\":\"16\"
+                                }
+                            ]
+                        }
+                    ],
+                    \"rowCount\":1,
+                    \"metadata\":{
+                        \"currencyCode\":\"CZK\",
+                        \"timeZone\":\"Europe/Prague\"
+                    },
+                    \"kind\":\"analyticsData#runReport\"
+                }",
                 "status": 200
             }
