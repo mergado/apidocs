@@ -872,7 +872,7 @@ Lists all applications in Mergado.
                 "offset": 0
             }
 
-## Billing [/users/{id}/billing/]
+## Billing [/users/{user_identifier}/billing/]
 Billing is need for automatically billing via Fakturoid.
 
 + Attributes
@@ -913,14 +913,14 @@ Billing is need for automatically billing via Fakturoid.
                 + is_old (boolean) - If application is new od old.
 
 
-### Get User Billing [GET /users/{id}/billing/]
+### Get User Billing [GET /users/{user_identifier}/billing/]
 Returns whole billing details for given user.
 
 **OAuth2 Scope:** user.billing.read
 
 + Parameters
 
-    + id (string) - User ID.
+    + user_identifier (string) - User ID or username.
 
 + Response 200
 
@@ -1040,14 +1040,14 @@ Lists all users the authenticated client has access to.
                 ]
             }
 
-### Get User [GET /users/{id}/{?fields}]
+### Get User [GET /users/{user_identifier}/{?fields}]
 Returns a user.
 
 **OAuth2 Scope:** user.read
 
 + Parameters
 
-    + id (string) - ID of a user.
+    + user_identifier (string) - ID or username of a user.
 
 + Response 200
 
@@ -1081,14 +1081,14 @@ Returns a user.
                 "send_summary": false
             }
 
-### Get User Permissions [GET /users/{id}/permissions/{?limit,offset,fields,filter}]
+### Get User Permissions [GET /users/{user_identifier}/permissions/{?limit,offset,fields,filter}]
 Lists all permissions (accesses to eshops) of a specific user.
 
 **OAuth2 Scope:** user.shops.read
 
 + Parameters
 
-    + id (string) - ID of a user.
+    + user_identifier (string) - ID or username of a user.
 
 + Response 200
 
@@ -1121,14 +1121,14 @@ Lists all permissions (accesses to eshops) of a specific user.
                 "offset": 0
             }
 
-### Get User Eshop Permissions [GET /users/{id}/permissions/eshop/{eshopId}]
+### Get User Eshop Permissions [GET /users/{user_identifier}/permissions/eshop/{eshopId}]
 Returns user permission to given eshop.
 
 **OAuth2 Scope:** user.read
 
 + Parameters
 
-    + id (string) - ID of a user.
+    + user_identifier (string) - ID or username of a user.
     + eshopId (string) - ID of a eshop.
 
 + Response 200
@@ -1154,14 +1154,14 @@ Returns user permission to given eshop.
                 "role": "writer"
             }
 
-### Get User Project Permissions [GET /users/{id}/permissions/project/{projectId}]
+### Get User Project Permissions [GET /users/{user_identifier}/permissions/project/{projectId}]
 Returns user permission to given project.
 
 **OAuth2 Scope:** user.read
 
 + Parameters
 
-    + id (string) - ID of a user.
+    + user_identifier (string) - ID or username of a user.
     + projectId (string) - ID of a project.
 
 + Response 200
@@ -1188,7 +1188,7 @@ Returns user permission to given project.
             }
 
 
-## Eshops [/users/{id}/shops/{?limit,offset,fields,filter}]
+## Eshops [/users/{user_identifier}/shops/{?limit,offset,fields,filter}]
 Eshops in Mergado.
 
 + Attributes
@@ -1212,7 +1212,7 @@ Returns eshops the user can access.
 
 + Parameters
 
-    + id (string) - ID of a user.
+    + user_identifier (string) - ID or username of a user.
 
 + Response 200
 
@@ -1508,9 +1508,9 @@ and it is very common that one eshop has several projects each maaged for a diff
     + input_fomat (string) - Input format (e.g. heureka.cz, zbozi.cz).
     + output_format (string) - Output format.
     + pairing_elements (string) - List of pairing elements (used for sychronization of XML feed).
-    + readonly (boolean) - If the project is set to readonly it means that the project is currently 
+    + readonly (boolean) - If the project is set to readonly it means that the project is currently
       being regenerated and therefore it is not possible to trigger another regeneration.
-      Product data available in the API may not be consistent with the data in the output feed  
+      Product data available in the API may not be consistent with the data in the output feed
 
     + is_paused (boolean) - If the project is paused, automatic scheduled rebuilds are skipped.
     + rules_changed_at (string) - The last time someone created, deleted or updated a rule in the project.
@@ -3514,12 +3514,12 @@ given priority.
                 "scope": "owner"
             }
 
-### Notify a User [POST /users/{id}/notifications/]
+### Notify a User [POST /users/{user_identifier}/notifications/]
 **OAuth2 Scope:** user.notify.write
 
 + Parameters
 
-    + id (string) - ID of a user.
+    + user_identifier (string) - ID or username of a user.
 
 + Request
 
@@ -3581,12 +3581,12 @@ given priority.
                 "scope": "owner"
             }
 
-### Get Users Notifications [GET /users/{id}/notifications/{?fields}]
+### Get Users Notifications [GET /users/{user_identifier}/notifications/{?fields}]
 **OAuth2 Scope:** user.notify.read
 
 + Parameters
 
-    + id (string) - ID of a user.
+    + user_identifier (string) - ID or username of a user.
 
 + Response 201
 
@@ -4071,7 +4071,7 @@ Possible sources:
                 "total_results": 4
             }
 
-## Enabled Apps [/users/{id}/apps/]
+## Enabled Apps [/users/{user_identifier}/apps/]
 Management of enabled apps by users.
 
 + Attributes
@@ -4080,14 +4080,14 @@ Management of enabled apps by users.
     + free_until (string) - Trial expiration date.
     + paid_until (string) - Paid subscription expiration date.
 
-### List User Apps [GET /users/{id}/apps/{?limit,offset,fields,filter}]
+### List User Apps [GET /users/{user_identifier}/apps/{?limit,offset,fields,filter}]
 Lists apps enabled by the given user.
 
 **OAuth2 Scope:** user.apps.read
 
 + Parameters
 
-    + id (string) - ID of a user.
+    + user_identifier (string) - ID or username of a user.
 
 + Response 200
 
@@ -4115,14 +4115,14 @@ Lists apps enabled by the given user.
                 "offset": 0
             }
 
-### Get User App [GET /users/{id}/apps/{name}/{?limit,offset,fields,filter}]
+### Get User App [GET /users/{user_identifier}/apps/{name}/{?limit,offset,fields,filter}]
 Fetches an app enabled by the given user.
 
 **OAuth2 Scope:** user.apps.read
 
 + Parameters
 
-    + id (string) - ID of a user.
+    + user_identifier (string) - ID or username of a user.
     + name (string) - Name of an app.
 
 + Response 200
@@ -4139,14 +4139,14 @@ Fetches an app enabled by the given user.
                 "paid_until": "2016-01-08"
             }
 
-### Update User App [PATCH /users/{id}/apps/{name}/]
+### Update User App [PATCH /users/{user_identifier}/apps/{name}/]
 Updates an app enabled by the given user.
 
 **OAuth2 Scope:** user.apps.write
 
 + Parameters
 
-    + id (string) - ID of a user.
+    + user_identifier (string) - ID or username of a user.
     + name (string) - Name of an app.
 
 + Request
