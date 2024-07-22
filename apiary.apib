@@ -1522,6 +1522,7 @@ and it is very common that one eshop has several projects each maaged for a diff
     + xml_updated_at (string) - The last time the project was updated by a change in the input XML feed.
     + is_dirty (boolean) - Dirty project means that during the next rebuild of the project, all rules to
       all products will be applied.
+    + in_testing_mode - If the project is in testing mode, export is never performed.
     + metadata (object) - Additional data such as UTM params set by the user.
     + number_of_elements (number) - Total number of defined elements.
     + all_products_query_id (string) - Id of the ♥ALLPRODUCTS♥ query.
@@ -1570,6 +1571,7 @@ Returns projects of an eshop.
                         "xml_synced_at": "2015-11-18T13:19:59+00:00",
                         "xml_updated_at": "2015-11-11T15:42:50+00:00",
                         "is_dirty": false,
+                        "in_testing_mode": false,
                         "metadata": {
                             "stats_ga_medium": "agregator",
                             "stats_ga_source": "heureka.*.",
@@ -1626,6 +1628,7 @@ Returns a project with the given ID. If the requested project is not active, the
                 "xml_synced_at": "2015-11-18T13:19:59+00:00",
                 "xml_updated_at": "2015-11-11T15:42:50+00:00"
                 "is_dirty": false,
+                "in_testing_mode": false,
                 "metadata": {
                     "stats_ga_medium": "agregator",
                     "stats_ga_source": "heureka.*.",
@@ -1695,6 +1698,7 @@ This will trigger Mergado to apply all rules to products during the next (lazy) 
                 "xml_synced_at": "2015-11-18T13:19:59+00:00",
                 "xml_updated_at": "2015-11-11T15:42:50+00:00",
                 "is_dirty": true,
+                "in_testing_mode": false,
                 "metadata": {
                     "stats_ga_medium": "agregator",
                     "stats_ga_source": "heureka.*.",
