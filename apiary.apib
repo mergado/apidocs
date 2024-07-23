@@ -8,10 +8,10 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ### 24. 7. 2024
 #### Added
-* `in_testing_mode` field in `/shops/<id>/projects/` and `/projects/<id>/` endpoints
+* `in_testing_mode` field in `/shops/{id}/projects/` and `/projects/{id}/` endpoints
 
 #### Removed
-* `created_at` field in `/projects/<id>/products/`, `/products/<id>/` and `/queries/<id>/products/` endpoints
+* `created_at` field in `/projects/{id}/products/`, `/products/{id}/` and `/queries/{id}/products/` endpoints
 
 ### 25. 1. 2024
 #### Added
@@ -2159,7 +2159,6 @@ is missing, `extracted_values` field will not be included in endpoint reponse.
                         "id": "3839",
                         "output_changed_at": "2016-04-25T17:20:44+00:00",
                         "updated_at": "2016-04-25T16:42:50+00:00",
-                        "created_at": "2016-03-27T17:18:45+00:00",
                         "data": {
                             "ITEM_ID": [
                                 {
