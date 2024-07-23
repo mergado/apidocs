@@ -63,6 +63,9 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 | filter_by                    | `?filter_by={"item_id__in":["123456789"]}`                               | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
 | **values_to_extract** | `?values_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", "Variable"]`| The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names for which the endpoint will return a list of values in a new field called `extracted_values`. |
 
+#### Encoding
+All special characters in additional GET parameter values must be URL-encoded (also known as percent-encoding).
+
 ### Typical Server Responses
 
 | Code | Status             | Description |
