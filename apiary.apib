@@ -1658,8 +1658,12 @@ Returns a project with the given ID. If the requested project is not active, the
 ### Update a Project [PATCH /projects/{id}/{?fields}]
 Updates a project with the given ID.
 
-**Note:** Currently, it is possible to update only the `is_dirty` field from `False` to `True`.
-This will trigger Mergado to apply all rules to products during the next (lazy) rebuild.
+**Note:** Currently, it is possible tu update only the field `updated_at` which can be used
+to force Mergado to refresh the products (apply rules) during the next (lazy) rebuild.
+
+For optimization reasons, this field is not returned in the response, and whether the product
+has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
+Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
 
 **OAuth2 Scope:** project.write
 
@@ -2008,7 +2012,7 @@ Returns a product with the given ID.
 ### Update a Product [PATCH /products/{id}/{?fields}]
 Updates a product with the given ID.
 
-**Note:** Currently, it is possible to update only the field `flag_as_dirty` which can be used
+**Note:** Currently, it is possible to update only the field `is_dirty` which can be used
 to force Mergado to refresh the product (apply rules) during the next (lazy) rebuild.
 
 **OAuth2 Scope:** project.products.write
@@ -2026,7 +2030,7 @@ to force Mergado to refresh the product (apply rules) during the next (lazy) reb
     + Body
 
             {
-                "flag_as_dirty": true
+                "is_dirty": true
             }
 
 + Response 200
@@ -2228,8 +2232,12 @@ is missing, `extracted_values` field will not be included in endpoint reponse.
 ### Update products [PATCH /queries/{id}/products/{?fields}]
 Updates products matching a query.
 
-**Note:** Currently, it is possible to update only the field `flag_as_dirty` which can be used
+**Note:** Currently, it is possible tu update only the field `updated_at` which can be used
 to force Mergado to refresh the products (apply rules) during the next (lazy) rebuild.
+
+For optimization reasons, this field is not returned in the response, and whether the product
+has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
+Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
 
 **OAuth2 Scope:** project.products.write
 
@@ -2246,7 +2254,7 @@ to force Mergado to refresh the products (apply rules) during the next (lazy) re
     + Body
 
             {
-                "flag_as_dirty": true
+                "is_dirty": true
             }
 
 + Response 204
