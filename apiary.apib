@@ -2251,7 +2251,7 @@ is missing, `extracted_values` field will not be included in endpoint reponse.
 ### Update products [PATCH /queries/{id}/products/{?fields}]
 Updates products matching a query.
 
-**Note:** Currently, it is possible tu update only the field `updated_at` which can be used
+**Note:** Currently, it is possible tu update only the field `is_dirty` which can be used
 to force Mergado to refresh the products (apply rules) during the next (lazy) rebuild.
 
 For optimization reasons, this field is not returned in the response, and whether the product
