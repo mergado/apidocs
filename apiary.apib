@@ -1533,9 +1533,9 @@ and it is very common that one eshop has several projects each maaged for a diff
     + input_fomat (string) - Input format (e.g. heureka.cz, zbozi.cz).
     + output_format (string) - Output format.
     + pairing_elements (string) - List of pairing elements (used for sychronization of XML feed).
-    + readonly (boolean) - If the project is set to readonly it means that the project is currently 
+    + readonly (boolean) - If the project is set to readonly it means that the project is currently
       being regenerated and therefore it is not possible to trigger another regeneration.
-      Product data available in the API may not be consistent with the data in the output feed  
+      Product data available in the API may not be consistent with the data in the output feed
 
     + is_paused (boolean) - If the project is paused, automatic scheduled rebuilds are skipped.
     + rules_changed_at (string) - The last time someone created, deleted or updated a rule in the project.
@@ -1673,8 +1673,12 @@ Returns a project with the given ID. If the requested project is not active, the
 ### Update a Project [PATCH /projects/{id}/{?fields}]
 Updates a project with the given ID.
 
-**Note:** Currently, it is possible to update only the `is_dirty` field from `False` to `True`.
-This will trigger Mergado to apply all rules to products during the next (lazy) rebuild.
+**Note:** Currently, it is possible to update only the field `is_dirty` which can be used
+to force Mergado to refresh the products (apply rules) during the next (lazy) rebuild.
+
+For optimization reasons, this field is not returned in the response, and whether the product
+has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
+Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
 
 **OAuth2 Scope:** project.write
 
@@ -2023,8 +2027,12 @@ Returns a product with the given ID.
 ### Update a Product [PATCH /products/{id}/{?fields}]
 Updates a product with the given ID.
 
-**Note:** Currently, it is possible tu update only the field `updated_at` which can be used
+**Note:** Currently, it is possible to update only the field `is_dirty` which can be used
 to force Mergado to refresh the product (apply rules) during the next (lazy) rebuild.
+
+For optimization reasons, this field is not returned in the response, and whether the product
+has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
+Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
 
 **OAuth2 Scope:** project.products.write
 
@@ -2041,7 +2049,7 @@ to force Mergado to refresh the product (apply rules) during the next (lazy) reb
     + Body
 
             {
-                "updated_at": "2017-05-21T00:00:00+00:00"
+                "is_dirty": true
             }
 
 + Response 200
@@ -2246,6 +2254,10 @@ Updates products matching a query.
 **Note:** Currently, it is possible tu update only the field `updated_at` which can be used
 to force Mergado to refresh the products (apply rules) during the next (lazy) rebuild.
 
+For optimization reasons, this field is not returned in the response, and whether the product
+has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
+Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
+
 **OAuth2 Scope:** project.products.write
 
 + Parameters
@@ -2261,7 +2273,7 @@ to force Mergado to refresh the products (apply rules) during the next (lazy) re
     + Body
 
             {
-                "updated_at": "2017-05-21T00:00:00+00:00"
+                "is_dirty": true
             }
 
 + Response 204
