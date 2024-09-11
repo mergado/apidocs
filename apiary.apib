@@ -990,6 +990,7 @@ Users with an account in Mergado.
     + name (string) - User's full name.
     + username (string) - User's login.
     + email (string) - User's email address.
+    + phone (string, optional) - User's phone number.
     + city (string, optional) - User's city.
     + company (string, optional) - User's company.
     + country (string, optional) - Country code in ISO 3166-1.
@@ -1001,10 +1002,12 @@ Users with an account in Mergado.
     + ico (string, optional) - Taxpayer identification number.
     + fakturoid_id (string, optional) - ID for connection with [fakturoid.cz](https://fakturoid.cz).
     + invoice_months (number, optional) - Number of months to be invoiced for Mergado.
+    + invoicing_validity_date (string, optional) - The date until which a user's services are prepaid.
     + last_access (string) - Datetime of user's last access to Mergado.
     + locale (string) - User's locale in ISO 15897.
     + registered_at (string) - Datetime of registration.
     + send_summary (boolean) - Whether the user wants to receive a summary about their eshops/exports.
+    + avatars - A dictionary containing dimensions (as keys) with URLs of avatars.
 
 ### List Users [GET]
 Lists all users the authenticated client has access to.
@@ -1031,6 +1034,7 @@ Lists all users the authenticated client has access to.
                         "name": "Lorem Ipsum",
                         "username": "loremipsum",
                         "email": "lorem.ipsum@example.com",
+                        "phone": "+420776276550",
                         "city": "Brno",
                         "company": "Mergado",
                         "country": "cz",
@@ -1038,6 +1042,7 @@ Lists all users the authenticated client has access to.
                         "ico": "00000000",
                         "fakturoid_id": null,
                         "invoice_months": 1,
+                        "invoicing_validity_date": "2024-11-23",
                         "last_access": "2016-03-21T16:32:32+00:00",
                         "locale": "cs_CZ",
                         "postcode": "61200",
@@ -1045,7 +1050,11 @@ Lists all users the authenticated client has access to.
                         "street": "Palackého 123/456",
                         "timezone": "Europe/Prague",
                         "timezone_offset": null,
-                        "send_summary": false
+                        "send_summary": false,
+                        "avatars": {
+                            "30": "https://www.url.com/img1.png",
+                            "80": "https://www.url.com/img2.png"
+                        }
                     }
                 ]
             }
@@ -1074,6 +1083,7 @@ Returns a user.
                 "name": "Lorem Ipsum",
                 "username": "loremipsum",
                 "email": "lorem.ipsum@example.com",
+                "phone": "+420776276550",
                 "city": "Brno",
                 "company": "Mergado",
                 "country": "cz",
@@ -1081,6 +1091,7 @@ Returns a user.
                 "ico": "00000000",
                 "fakturoid_id": null,
                 "invoice_months": 1,
+                "invoicing_validity_date": "2024-11-23",
                 "last_access": "2016-03-21T16:32:32+00:00",
                 "locale": "cs_CZ",
                 "postcode": "61200",
@@ -1088,7 +1099,11 @@ Returns a user.
                 "street": "Palackého 123/456",
                 "timezone": "Europe/Prague",
                 "timezone_offset": null,
-                "send_summary": false
+                "send_summary": false,
+                "avatars": {
+                    "30": "https://www.url.com/img1.png",
+                    "80": "https://www.url.com/img2.png"
+                }
             }
 
 ### Get User Permissions [GET /users/{id}/permissions/{?limit,offset,fields,filter}]
