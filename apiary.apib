@@ -2,7 +2,7 @@ FORMAT: 1A9
 HOST: https://api.mergado.com
 
 # Mergado
-The Mergado API is based on REST principles. The request/response format is JSON.
+The Mergado API is based on REST principles. The request/response format is JSON. This documentation is a part of [Mergado Docs](https://mergado.github.io/docs/intro/the-basics.html). 
 
 ## Changelog
 
@@ -1841,17 +1841,123 @@ A products represents one item currently present in an XML feed.
     + extracted_values (string) - Data extracted from element paths or
       variables provided in element_paths_to_extract parameter.
 
-### List Products [GET /projects/{id}/products{?element_paths_to_extract}]
-Returns project's products. If the `values_to_extract` parameter is provided,
-the response will automatically include a field called `extracted_values`,
-containing data extracted from the specified element paths or variable. If parameter
-is missing, `extracted_values` field will not be included in endpoint reponse.
+## List Products [/projects/{id}/products{?element_paths_to_extract}]
+Returns project's products. 
+
+If the `values_to_extract` parameter is provided, the response will automatically include a field called
+`extracted_values`, containing data extracted from the specified element paths or variables. If the
+parameter is missing, the `extracted_values` field will not be included in the endpoint response.
+
+If the `mql` parameter in the **GET** request is provided, filtering will be applied based on the provided
+MQL statement. However, since URLs have limits, we offer the option to use a **POST** request in a similar
+way, with the `mql` value in the body. If no parameter is provided, no filtering will be applied, and all
+products will be returned.
 
 **OAuth2 Scope:** project.products.read
 
 + Parameters
 
     + id (string) - ID of a project.
+    
+### GET
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "data": [
+                    {
+                        "id": "1693",
+                        "output_changed_at": null,
+                        "updated_at": "2016-04-28T17:18:50+00:00",
+                        "data": {
+                            "elements": {
+                                "ITEM_ID": [
+                                    {
+                                        "input_value": "123",
+                                        "value": "123",
+                                        "attributes": {
+                                            "id": "456"
+                                        }
+                                    }
+                                ],
+                                "PRICE": [
+                                    {
+                                        "input_value": 69,
+                                        "value": 69
+                                    }
+                                ],
+                                "IMAGE": [
+                                    {
+                                        "value": "img 1"
+                                    },
+                                    {
+                                        "value": "img 2"
+                                    },
+                                    {
+                                        "value": "img 3"
+                                    }
+                                ],
+                                "PARAM": [
+                                    {
+                                        "elements": {
+                                            "NAME": [
+                                                {
+                                                "value": "Barva"
+                                                }
+                                            ],
+                                            "VAL": [
+                                                {
+                                                "value": "Černá"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "value": "value of PARAM",
+                                        "elements": {
+                                            "NAME": [
+                                                {
+                                                    "value": "Barva"
+                                                }
+                                            ],
+                                            "VAL": [
+                                                {
+                                                    "value": "Modrá"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "attributes": {
+                                "TOP_LEVEL_ATTRIBUTE": {"value": "123"}
+                            }
+                        },
+                        "extracted_values": {
+                            "ITEM_ID": ["123"],
+                            "PARAM | VAL": ["Černá", "Modrá"],
+                            "Variable": ["value_from_variable"]
+                        }
+                    }
+                ],
+                "limit": 10,
+                "total_results": 1,
+                "offset": 0
+            }
+
+### POST
++ Request (application/json)
+
+    + Body
+
+            {
+              "mql": "ITEM_ID = 123"
+            }
 
 + Response 200
 
@@ -1936,13 +2042,14 @@ is missing, `extracted_values` field will not be included in endpoint reponse.
                             "PARAM | VAL": ["Černá", "Modrá"],
                             "Variable": ["value_from_variable"]
                         }
-                    },
+                    }
+                ],
                 "limit": 10,
                 "total_results": 1,
                 "offset": 0
             }
-
-### Get a Product [GET /products/{id}/{?fields}]
+            
+## Get a Product [GET /products/{id}/{?fields}]
 Returns a product with the given ID.
 
 **OAuth2 Scope:** project.products.read
