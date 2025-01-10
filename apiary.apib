@@ -1827,22 +1827,8 @@ Returns the mapping of input, output and universal element name.
                 },
             ]
 
-## Products [/projects/{id}/products/{?limit,offset,fields,filter}]
+## Products [/projects/{id}/products/{?limit,offset,fields,filter,values_to_extract}]
 A products represents one item currently present in an XML feed.
-
-+ Attributes
-
-    + id (string) - ID of the product. Values correspond to pairings IDs.
-    + output_changed_at (string) - The last time output data (values of elements)
-      of this product changed.
-    + updated_at (string) - The last time input data of this product changed.
-    + data - Output data of this product.
-    + input_data - Input data of this product.
-    + extracted_values (string) - Data extracted from element paths or
-      variables provided in element_paths_to_extract parameter.
-
-## List Products [/projects/{id}/products{?element_paths_to_extract}]
-Returns project's products. 
 
 If the `values_to_extract` parameter is provided, the response will automatically include a field called
 `extracted_values`, containing data extracted from the specified element paths or variables. If the
@@ -1853,13 +1839,26 @@ MQL statement. However, since URLs have limits, we offer the option to use a **P
 way, with the `mql` value in the body. If no parameter is provided, no filtering will be applied, and all
 products will be returned.
 
++ Attributes
+
+    + id (string) - ID of the product. Values correspond to pairings IDs.
+    + output_changed_at (string) - The last time output data (values of elements)
+      of this product changed.
+    + updated_at (string) - The last time input data of this product changed.
+    + data - Output data of this product.
+    + input_data - Input data of this product.
+    + extracted_values (string) - Data extracted from element paths or
+      variables provided in values_to_extract parameter.
+
+
+### List Project Products - GET  [GET /projects/{id}/products{?values_to_extract}]
+
 **OAuth2 Scope:** project.products.read
 
 + Parameters
 
     + id (string) - ID of a project.
     
-### GET
 + Response 200
 
     + Headers
@@ -1950,7 +1949,14 @@ products will be returned.
                 "offset": 0
             }
 
-### POST
+### List Project Products - POST  [POST /projects/{id}/products]
+
+**OAuth2 Scope:** project.products.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
 + Request (application/json)
 
     + Body
@@ -2360,13 +2366,44 @@ is missing, `extracted_values` field will not be included in endpoint reponse.
                 "offset": 0
             }
 
-### Update products [PATCH /queries/{id}/products/{?fields}]
+### Update queried products [PATCH /queries/{id}/products/{?fields}]
 Updates products matching a query.
 
 **Note:** Currently, it is possible tu update only the field `is_dirty` which can be used
 to force Mergado to refresh the products (apply rules) during the next (lazy) rebuild.
 
-For optimization reasons, this field is not returned in the response, and whether the product
+For optimization reasons, nothing is returned in the response, and whether the products have
+has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
+Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
+
+**OAuth2 Scope:** project.products.write
+
++ Parameters
+
+    + id (string) - ID of a product.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "is_dirty": true
+            }
+
++ Response 204
+
+### Update products [PATCH /project/{id}/products/{?filter}]
+Updates all products or products matching the filter. It is possible to use filters which are for the **GET** request,
+e.g. `?filter=[{"field": "id","op": "in", "value": "[123, 124]"}]`.
+
+**Note:** Currently, it is possible tu update only the field `is_dirty` which can be used
+to force Mergado to refresh the products (apply rules) during the next (lazy) rebuild.
+
+For optimization reasons, nothing is returned in the response, and whether the products have
 has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
 Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
 
