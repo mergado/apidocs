@@ -6,6 +6,10 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ## Changelog
 
+### 29. 1. 2025
+#### Changed
+    * Renamed the fields `xml_changed_at` and `xml_synced_at` to `data_changed_at` and `data_synced_at` in the `projects/id/` endpoint
+
 ### 11. 9. 2024
 #### Added
 * `invoicing_validity_date`, `avatars`, and `phone` fields to the `/users/` and `/users/{id}/` endpoints, these endpoints are now also accessible with offline tokens
@@ -1548,8 +1552,8 @@ and it is very common that one eshop has several projects each maaged for a diff
     + turned_off (boolean) - Whether the project was turned off or not.
     + update_period (number) - Update period of the project (how often to run import of the input XML feed).
     + last_access (string) - Last access to the project by a user.
-    + xml_synced_at (string) - The last time an input feed was imported.
-    + xml_updated_at (string) - The last time the project was updated by a change in the input XML feed.
+    + data_synced_at (string) - The last time an input feed was imported.
+    + data_updated_at (string) - The last time the project was updated by a change in the input data feed.
     + is_dirty (boolean) - Dirty project means that during the next rebuild of the project, all rules to
       all products will be applied.
     + in_testing_mode (boolean) - If the project is in testing mode, export is never performed.
@@ -1598,8 +1602,8 @@ Returns projects of an eshop.
                         "turned_off": true,
                         "update_period": 14400,
                         "last_access": "2015-12-10T12:51:59+00:00",
-                        "xml_synced_at": "2015-11-18T13:19:59+00:00",
-                        "xml_updated_at": "2015-11-11T15:42:50+00:00",
+                        "data_synced_at": "2015-11-18T13:19:59+00:00",
+                        "data_updated_at": "2015-11-11T15:42:50+00:00",
                         "is_dirty": false,
                         "in_testing_mode": false,
                         "metadata": {
@@ -1655,8 +1659,8 @@ Returns a project with the given ID. If the requested project is not active, the
                 "turned_off": true,
                 "update_period": 14400,
                 "last_access": "2015-12-10T12:51:59+00:00",
-                "xml_synced_at": "2015-11-18T13:19:59+00:00",
-                "xml_updated_at": "2015-11-11T15:42:50+00:00"
+                "data_synced_at": "2015-11-18T13:19:59+00:00",
+                "data_updated_at": "2015-11-11T15:42:50+00:00"
                 "is_dirty": false,
                 "in_testing_mode": false,
                 "metadata": {
@@ -1729,8 +1733,8 @@ Nevertheless, it is acceptable to mark the product as dirty without prior checki
                 "turned_off": true,
                 "update_period": 14400,
                 "last_access": "2015-12-10T12:51:59+00:00",
-                "xml_synced_at": "2015-11-18T13:19:59+00:00",
-                "xml_updated_at": "2015-11-11T15:42:50+00:00",
+                "data_synced_at": "2015-11-18T13:19:59+00:00",
+                "data_updated_at": "2015-11-11T15:42:50+00:00",
                 "is_dirty": true,
                 "in_testing_mode": false,
                 "metadata": {
