@@ -6,6 +6,10 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ## Changelog
 
+### 13. 2. 2025
+#### Added
+    * `is_hidden` parameter for `projects/{id}/products/` and `/queries/{id}/products/` endpoints
+
 ### 29. 1. 2025
 #### Changed
     * Renamed the fields `xml_changed_at` and `xml_synced_at` to `data_changed_at` and `data_synced_at` in the `projects/id/` endpoint
@@ -70,7 +74,9 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 | **filter**                   | `?filter=[{"field": "to", "op": ">=", "value": "2021-08-08T13:00:00"}]`  | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Only numbers and timestamps in ISO 8601 format can be ordinally compared. Missing values in timestamps will be supplemented by the lowest possible values, eg `"2015-12-24"` equals `"2015-12-24T00:00:00+00:00"`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fail. Only non-nested fields are expected. |
 | **order_by**                 | `?order_by=validator,-verdict`                                           | Orders the result in ascending or descending order. |
 | filter_by                    | `?filter_by={"item_id__in":["123456789"]}`                               | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
-| **values_to_extract** | `?values_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", "Variable"]`| The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names for which the endpoint will return a list of values in a new field called `extracted_values`. |
+| **values_to_extract**        | `?values_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", "Variable"]`| The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names for which the endpoint will return a list of values in a new field called `extracted_values`. |
+| **mql**                      | `?mql=PRICE_VAT < 100`                                                   | The functionality is limited to the `List Products` endpoints. Parameter allows filtering products based on [MQL](https://mergado.github.io/docs/apps/rules-and-queries.html) query. |
+| **is_hidden**                | `?is_hidden=false`                                                       | The functionality is limited to the `List Products` endpoints. Parameter allows filtering products based on their visibility status. |
 
 #### Encoding
 All special characters in additional GET parameter values must be URL-encoded (also known as percent-encoding).
@@ -1831,7 +1837,7 @@ Returns the mapping of input, output and universal element name.
                 },
             ]
 
-## Products [/projects/{id}/products/{?limit,offset,fields,filter,values_to_extract}]
+## Products [/projects/{id}/products/{?limit,offset,fields,filter,values_to_extract,is_hidden,mql}]
 A products represents one item currently present in an XML feed.
 
 If the `values_to_extract` parameter is provided, the response will automatically include a field called
@@ -1839,9 +1845,14 @@ If the `values_to_extract` parameter is provided, the response will automaticall
 parameter is missing, the `extracted_values` field will not be included in the endpoint response.
 
 If the `mql` parameter in the **GET** request is provided, filtering will be applied based on the provided
-MQL statement. However, since URLs have limits, we offer the option to use a **POST** request in a similar
+[MQL](https://mergado.github.io/docs/apps/rules-and-queries.html) query. However, since URLs have limits, we offer the option to use a **POST** request in a similar
 way, with the `mql` value in the body. If no parameter is provided, no filtering will be applied, and all
 products will be returned.
+
+The `is_hidden` parameter allows filtering products based on their visibility status. It supports the following values:
++ `true` – Returns only hidden products.
++ `false` – Returns only non-hidden products.
++ `null` (or omitted) – Returns all products, regardless of their visibility.
 
 + Attributes
 
@@ -2212,13 +2223,18 @@ Nevertheless, it is acceptable to mark the product as dirty without prior checki
                 }
             }
 
-### Query Products [GET /queries/{id}/products/{?limit,offset,fields,filter, values_to_extract}]
+### Query Products [GET /queries/{id}/products/{?limit,offset,fields,filter, values_to_extract, is_hidden}]
 Returns products that satisfy a condition defined by the given query.
 
 If the `values_to_extract` parameter is provided,
 the response will automatically include a field called `extracted_values`,
 containing data extracted from the specified element paths or variable. If parameter
 is missing, `extracted_values` field will not be included in endpoint reponse.
+
+The `is_hidden` parameter allows filtering products based on their visibility status. It supports the following values:
++ `true` – Returns only hidden products.
++ `false` – Returns only non-hidden products.
++ `null` (or omitted) – Returns all products, regardless of their visibility.
 
 **OAuth2 Scope:** projects.products.read
 
@@ -3270,7 +3286,7 @@ for one to many (O2M) rules with a lot of records.
             }
 
 ## Queries [/projects/{id}/queries/]
-MQL query management.
+[MQL](https://mergado.github.io/docs/apps/rules-and-queries.html) query management.
 
 + Attributes
 
@@ -3278,9 +3294,9 @@ MQL query management.
     + name (string) - Name of the query.
     + project_id (string) - ID of the project the query is created in.
     + advanced_interface (string) - Whether the query was created using
-      the advanced interface. Advanced interface represents the raw MQL query.
+      the advanced interface. Advanced interface represents the raw [MQL](https://mergado.github.io/docs/apps/rules-and-queries.html) query.
     + created_at (string) - When was the query created.
-    + query (string) - Raw MQL.
+    + query (string) - Raw [MQL](https://mergado.github.io/docs/apps/rules-and-queries.html) query.
     + read_only (boolean) - Whether the query can be modified.
     + search_output (boolean) - Whether the query should select products' data
       according to the values of input data or output data.
