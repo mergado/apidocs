@@ -6,6 +6,10 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ## Changelog
 
+### 26. 3. 2025
+#### Added
+    * `element_path` and `is_output` parameter for `/projects/{id}/elements/values` and `/projects/{id}/elements/values` endpoints
+
 ### 13. 2. 2025
 #### Added
     * `is_hidden` parameter for `projects/{id}/products/` and `/queries/{id}/products/` endpoints
@@ -74,9 +78,11 @@ require [OAuth 2.0 authentication](https://tools.ietf.org/html/rfc6749).
 | **filter**                   | `?filter=[{"field": "to", "op": ">=", "value": "2021-08-08T13:00:00"}]`  | Filters the result. Parameter accepts a valid JSON list with at least one filter. Returned objects meet conditions for all filters. Supported operators are: `=`, `!=`, `<=`, `>=`, `<`, `>`, `~` (regexp), `in`. Only numbers and timestamps in ISO 8601 format can be ordinally compared. Missing values in timestamps will be supplemented by the lowest possible values, eg `"2015-12-24"` equals `"2015-12-24T00:00:00+00:00"`. Checks for `null` values is possible with `=` and `!=`. For other operators the comparison with `null` will always fail. Only non-nested fields are expected. |
 | **order_by**                 | `?order_by=validator,-verdict`                                           | Orders the result in ascending or descending order. |
 | filter_by                    | `?filter_by={"item_id__in":["123456789"]}`                               | **!! DEPRECATED !!** Used only for Feed Audit and Statistics. Filters the result. You can also append field name with `__in`, i.e. filter results by enumerating all values of a field, for example `item_id__in` expects list of possible ITEM_IDs. |
-| **values_to_extract**        | `?values_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", "Variable"]`| The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names for which the endpoint will return a list of values in a new field called `extracted_values`. |
+| **values_to_extract**        | `?values_to_extract=["ITEM_ID", "PARAM | PARAM_NAME", "Variable"]`       | The functionality is limited to the `List Products` endpoint. You can specify a list of element paths or variable names for which the endpoint will return a list of values in a new field called `extracted_values`. |
 | **mql**                      | `?mql=PRICE_VAT < 100`                                                   | The functionality is limited to the `List Products` endpoints. Parameter allows filtering products based on [MQL](https://mergado.github.io/docs/apps/rules-and-queries.html) query. |
 | **is_hidden**                | `?is_hidden=false`                                                       | The functionality is limited to the `List Products` endpoints. Parameter allows filtering products based on their visibility status. |
+| **element_path**             | `?element_path=GIFT { NO_ATTR = "sleva 20%" } | @ID`                     | The functionality is limited to the `Element values` endpoints. Parameter allows filtering element values based on their `element path.`|
+| **is_output**                | `?is_output=true`                                                        | The function is limited to `Element Values` endpoints. The parameter allows you to specify whether to return the input or output values ​​of the element.`|
 
 #### Encoding
 All special characters in additional GET parameter values must be URL-encoded (also known as percent-encoding).
@@ -2696,6 +2702,128 @@ Delete the specified element and all of its children.
     + Headers
 
             Content-Type: application/json
+
+### Element Values - GET [GET /projects/{id}/elements/values{?element_path, is_output}]
+Returns all values from the project for the element whose element path is specified in the `element_path` URL parameter. The `element_path` parameter is required. 
+
+The `is_output` parameter allows you to filter values ​​based on their occurrence. It supports the following values:
++ `true` – Returns output values.
++ `false` – Returns input values.
++ `null` (or omitted) – Returns output values.
+
+**OAuth2 Scope:** project.read
+
++ Parameters
+
+    + id (string) - ID of a project.
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "data": [
+                    {
+                        "value": "modrá",
+                        "count": 5,
+                    },
+                    {
+                        "value": "červená",
+                        "count": 4,
+                    },
+                    {
+                        "value": "zelená",
+                        "count": 4,
+                    },
+                    {
+                        "value": "bílá",
+                        "count": 2,
+                    },
+                    {
+                        "value": "černá",
+                        "count": 1,
+                    },
+                    {
+                        "value": "žlutá",
+                        "count": 1,
+                    },
+                ],
+                "limit": 10,
+                "total_results": 2,
+                "offset": 0
+            }
+
+### Element Values - POST [POST /projects/{id}/elements/values{?element_path, is_output}]
+Returns all values from the project for the element whose element path is specified in the `element_path` field within the request body. The `element_path` parameter is required. 
+
+The `is_output` field within the request body allows you to filter values based on their occurrence. It supports the following values:
++ `true` – Returns output values.
++ `false` – Returns input values.
++ `null` (or omitted) – Returns output values.
+
+**OAuth2 Scope:** project.read
+
++ Parameters
+
+    + id (string) - ID of a project.
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "element_path": "PARAM { NAME = \"Barva\" } | VALUE",
+                "is_output": true,
+            }
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+
+
+            {
+                "data": [
+                    {
+                        "value": "modrá",
+                        "count": 5,
+                    },
+                    {
+                        "value": "červená",
+                        "count": 4,
+                    },
+                    {
+                        "value": "zelená",
+                        "count": 4,
+                    },
+                    {
+                        "value": "bílá",
+                        "count": 2,
+                    },
+                    {
+                        "value": "černá",
+                        "count": 1,
+                    },
+                    {
+                        "value": "žlutá",
+                        "count": 1,
+                    },
+                ],
+                "limit": 10,
+                "total_results": 2,
+                "offset": 0
+            }
 
 ## Variables [/project/{id}/variables/]
 Variables can be seen as pointers to products' values or parts of values and
