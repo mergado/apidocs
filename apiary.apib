@@ -6,6 +6,11 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ## Changelog
 
+### 22.08.2025
+#### Added
+    * Endpoint `/shops/{id}/heureka/proxy/{path}`
+    * Field `api_enabled` to `/shops/<id>/info`
+
 ### 26. 3. 2025
 #### Added
     * `element_path` and `is_output` parameter for `/projects/{id}/elements/values` and `/projects/{id}/elements/values` endpoints
@@ -6542,6 +6547,64 @@ Returns a single product resource.
 
 # Group Heureka
 API for various Heureka.cz helpers and resources.
+
+## Heureka API Proxy [/shops/{id}/heureka/proxy/{path}]
+Heureka provides an API for reports and statistics. At the moment it doesn’t offer a lot of features, but we expect more to be added over time. 
+You can find more information about currently avalible endpoints at [official documentation](https://api.heureka.group/v1/reports/docs).
+
+This endpoint works as a proxy. Some Heureka eshops can generate their own API key, which is then used for authentication. Mergado takes care of this step for you, the key is automatically added to the request header, so you don’t need to handle it manually. Apart from that, please follow the official documentation mentioned above regarding URL parameters, request bodies, and headers.
+
+Note that this endpoint for Heureka will only work if the `/shops/<id>/info` endpoint returns a valid Heureka connection with `api_enabled: true`.
+
++ Attributes
+
+    + id (string) - Eshop id.
+    + path (string) - Relativ path according to Heureka documentation.
+    
+### Get Request [GET /shops/{id}/heureka/proxy/{path}]
+Returns response from Heureka API.
+
+**OAuth2 Scope:** shop.read
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            
+### Post Request [POST /shops/{id}/heureka/proxy/{path}]
+Returns response from Heureka API.
+
+**OAuth2 Scope:** shop.read
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Put Request [PUT /shops/{id}/heureka/proxy/{path}]
+Returns response from Heureka API.
+
+**OAuth2 Scope:** shop.read
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Delete Request [DELETE /shops/{id}/heureka/proxy/{path}]
+Returns response from Heureka API.
+
+**OAuth2 Scope:** shop.read
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
 
 ## Heureka Categories [/categories/]
 API for Heureka categories. Categories have a _min cpc_ value attached to it.
