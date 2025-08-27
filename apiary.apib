@@ -8,8 +8,8 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ### 22.08.2025
 #### Added
-    * Endpoint `/shops/{id}/heureka/proxy/{path}`
-    * Field `api_enabled` to `/shops/<id>/info`
+* Endpoint `/shops/{id}/heureka/proxy/{path}`
+* Field `api_enabled` to `/shops/<id>/info`
 
 ### 26. 3. 2025
 #### Added
@@ -6559,7 +6559,7 @@ Note that this endpoint for Heureka will only work if the `/shops/<id>/info` end
 + Attributes
 
     + id (string) - Eshop id.
-    + path (string) - Relativ path according to Heureka documentation.
+    + path (string) - Relativ path according to Heureka documentation. For example you can use as path `"v1/reports/conversions"` which will allow you to access Heureka's conversion reports
     
 ### Get Request [GET /shops/{id}/heureka/proxy/{path}]
 Returns response from Heureka API.
