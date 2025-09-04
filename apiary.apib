@@ -6755,6 +6755,69 @@ Returns list of all Heureka categories.
                     "min_cpcs": []
                 }
             ]
+            
+
+
+# Group Eshop-rychle
+API for Eshop-rychle.cz.
+
+## Eshop-rychle API Proxy [/shops/{id}/eshop-rychle/proxy/{path}]
+Eshop-rychle provides an orders API to retrieve information about shop's orders. 
+You can find more information about the API in the [official documentation](https://191992163.s1.eshop-rychle.cz/asset/doc/eshoprychle_objednavkove_api_2.pdf).
+
+This endpoint works as a proxy. 
+
+
++ Attributes
+
+    + id (string) - Eshop id.
+    + path (string) - Fixed, required value: "request.php"
+    + password (string) - Required query parameter
+    
+### Get Request [GET /shops/{id}/eshop-rychle/proxy/{path}]
+Returns response from Eshop-rychle API.
+
+**OAuth2 Scope:** shop.read
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            
+### Post Request [POST /shops/{id}/eshop-rychle/proxy/{path}]
+Returns response from Eshop-rychle API.
+
+**OAuth2 Scope:** shop.write
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Put Request [PUT /shops/{id}/eshop-rychle/proxy/{path}]
+Returns response from Eshop-rychle API.
+
+**OAuth2 Scope:** shop.write
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Delete Request [DELETE /shops/{id}/eshop-rychle/proxy/{path}]
+Returns response from Eshop-rychle API.
+
+**OAuth2 Scope:** shop.write
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
 
 # Group Google
 API for various Google tools, helpers and resources.
