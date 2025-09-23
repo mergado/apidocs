@@ -6817,6 +6817,67 @@ Returns response from Eshop-rychle API.
     + Headers
 
             Content-Type: application/json
+            
+
+# Group Zbozi
+API for Zbozi.cz.cz.
+
+## Zbozi API Proxy [/shops/{id}/zbozi/proxy/{path}]
+The API is available to e-shops which use Zbozí.cz and fulfill API access conditions. The API is a RESTful JSON API and uses HTTPS protocol only. 
+Methods GET /v1/shop/bidding-info and GET /v1/shop/campaign/current are no longer available for shops that have been transferred to the Sklik advertising system. Please refer to the Sklik API documentation.
+You can find more information about the API in the [official documentation](api.zbozi.cz).
+
+This endpoint works as a proxy. 
+
+
++ Attributes
+
+    + id (string) - Eshop id.
+    + path (string) - Base value: "api.zbozi.cz" followed by a Zbozi's endpoint
+    
+### Get Request [GET /shops/{id}/zbozi/proxy/{path}]
+Returns response from Eshop-rychle API.
+
+**OAuth2 Scope:** shop.read
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            
+### Post Request [POST /shops/{id}/zbozi/proxy/{path}]
+Returns response from Zbozi API.
+
+**OAuth2 Scope:** shop.write
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Put Request [PUT /shops/{id}/zbozi/proxy/{path}]
+Returns response from Zbozi API.
+
+**OAuth2 Scope:** shop.write
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Delete Request [DELETE /shops/{id}/zbozi/proxy/{path}]
+Returns response from Zbozi.
+
+**OAuth2 Scope:** shop.write
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
 
 
 # Group Google
