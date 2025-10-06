@@ -6840,7 +6840,7 @@ This endpoint works as a proxy.
     + path (string) - Base value: "api.zbozi.cz" followed by a Zbozi's endpoint
     
 ### Get Request [GET /shops/{id}/zbozi/proxy/{path}]
-Returns response from Eshop-rychle API.
+Returns response from Zbozi API.
 
 **OAuth2 Scope:** shop.read
 
@@ -6874,6 +6874,66 @@ Returns response from Zbozi API.
 
 ### Delete Request [DELETE /shops/{id}/zbozi/proxy/{path}]
 Returns response from Zbozi.
+
+**OAuth2 Scope:** shop.write
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            
+
+# Group WooCommerce
+API for WooCommerce proxy
+
+## WooCommerce API Proxy [/shops/{id}/woo-commerce/proxy/{path}]
+The API is available to e-shops which use WooCommerce and fulfill API access conditions. The API is a RESTful JSON API. 
+You can find more information about the API in the [official documentation](https://woocommerce.github.io/woocommerce-rest-api-docs/).
+
+This endpoint works as a proxy. 
+
+
++ Attributes
+
+    + id (string) - Eshop id.
+    + path (string) - Uses WooCommerce's endpoints
+    
+### Get Request [GET /shops/{id}/woo-commerce/proxy/{path}]
+Returns response from WooCommerce API.
+
+**OAuth2 Scope:** shop.read
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            
+### Post Request [POST /shops/{id}/woo-commerce/proxy/{path}]
+Returns response from WooCommerce API.
+
+**OAuth2 Scope:** shop.write
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Put Request [PUT /shops/{id}/woo-commerce/proxy/{path}]
+Returns response from WooCommerce API.
+
+**OAuth2 Scope:** shop.write
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Delete Request [DELETE /shops/{id}/woo-commerce/proxy/{path}]
+Returns response from WooCommerce API.
 
 **OAuth2 Scope:** shop.write
 
