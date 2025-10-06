@@ -2,53 +2,66 @@ FORMAT: 1A9
 HOST: https://api.mergado.com
 
 # Mergado
-The Mergado API is based on REST principles. The request/response format is JSON. This documentation is a part of [Mergado Docs](https://mergado.github.io/docs/intro/the-basics.html). 
+The Mergado API is based on REST principles. The request/response format is JSON. This documentation is a part of [Mergado Docs](https://mergado.github.io/docs/intro/the-basics.html).
 
 ## Changelog
-### 24.9.2025
+### 2025-09-24
+#### Changed
+ * Endpoint `POST /shops/{id}/notifications/`
+    - Field `scope` now receives and returns `'eshop'|'owner'` instead of `'shop'|'owner`.
+    - Returned JSON contains new fields: `event`, `data`.
+    - Success response no longer contains `Location` header.
+ * Endpoint `GET /notifications/{id}/`
+    - Now requires scope `user.notify.read`.
+    - **Stricter access control**
+    - Returned JSON contains new fields: `event`, `data`.
+ * Endpoint `GET /users/{id}/notifications/`
+    - Structure for each notification in response's `data` list is now the same as what `GET /notifications/{id}/` returns.
+ * Endpoint `POST /users/{id}/notifications/`
+    - Success response no longer contains `Location` header.
+
+### 2025-09-24
 #### Added
  * Endpoint `/shops/{id}/eshop-rychle/proxy/{path}`
 
-### 22. 8. 2025
+### 2025-08-22
 #### Added
 * Endpoint `/shops/{id}/heureka/proxy/{path}`
 * Field `api_enabled` to `/shops/<id>/info`
 
-### 26. 3. 2025
+### 2025-03-23
 #### Added
     * `element_path` and `is_output` parameter for `/projects/{id}/elements/values` and `/projects/{id}/elements/values` endpoints
 
-### 13. 2. 2025
+### 2025-02-13
 #### Added
     * `is_hidden` parameter for `projects/{id}/products/` and `/queries/{id}/products/` endpoints
 
-### 29. 1. 2025
+### 2025-01-09
 #### Changed
     * Renamed the fields `xml_changed_at` and `xml_synced_at` to `data_changed_at` and `data_synced_at` in the `projects/id/` endpoint
 
-### 11. 9. 2024
+### 2024-09-11
 #### Added
 * `invoicing_validity_date`, `avatars`, and `phone` fields to the `/users/` and `/users/{id}/` endpoints, these endpoints are now also accessible with offline tokens
 * **POST** method for `/products/{id}/` endpoint to set the `is_dirty` field
 
-### 24. 7. 2024
+### 2024-07-24
 #### Added
 * `in_testing_mode` field in `/shops/{id}/projects/` and `/projects/{id}/` endpoints
 
 #### Removed
 * `created_at` field in `/projects/{id}/products/`, `/products/{id}/` and `/queries/{id}/products/` endpoints
 
-### 25. 1. 2024
+### 2024-01-25
 #### Added
 * `values_to_extract` parameter for `/queries/{id}/products/` endpoint
 
-### 10. 10. 2023
-
+### 2023-10-10
 #### Added
 * `values_to_extract` parameter for `projects/{id}/products/` endpoint
 
-### 14. 9. 2022
-
+### 2022-09-14
 #### Added
 * Endpoint `/formats/{format_id}`
 * Endpoint `/formats/{format_id}/specification`
@@ -217,7 +230,7 @@ Returns a list of IDs of all supported XML feed's formats.
 ### Get Format [GET /formats/{format_id}]
 Returns requested format by its ID.
 
-**Oauth2 Scope:** project.read or shop.read or user.formats.read
+**Oauth2 Scope:** `project.read`|`shop.read`|`user.formats.read`
 
 + Parameters
 
@@ -250,7 +263,7 @@ Returns requested format specification by its format ID.
 
 **Warning:** Format specifications could be changed to be up to date with the newest versions provided by the format authors.
 
-**Oauth2 Scope:** project.read or shop.read or user.formats.read
+**Oauth2 Scope:** `project.read`|`shop.read`|`user.formats.read`
 
 + Parameters
 
@@ -699,7 +712,7 @@ Information about yourself - current client accessing the API _(identified by ac
 
 Returns currently authenticated user.
 
-**OAuth2 Scope:** user.read
+**OAuth2 Scope:** `user.read`
 
 + Request
 
@@ -955,7 +968,7 @@ Billing is need for automatically billing via Fakturoid.
 ### Get User Billing [GET /users/{id}/billing/]
 Returns whole billing details for given user.
 
-**OAuth2 Scope:** user.billing.read
+**OAuth2 Scope:** `user.billing.read`
 
 + Parameters
 
@@ -1041,7 +1054,7 @@ Users with an account in Mergado.
 ### List Users [GET]
 Lists all users the authenticated client has access to.
 
-**OAuth2 Scope:** user.read
+**OAuth2 Scope:** `user.read`
 
 + Response 200
 
@@ -1091,7 +1104,7 @@ Lists all users the authenticated client has access to.
 ### Get User [GET /users/{id}/{?fields}]
 Returns a user.
 
-**OAuth2 Scope:** user.read
+**OAuth2 Scope:** `user.read`
 
 + Parameters
 
@@ -1138,7 +1151,7 @@ Returns a user.
 ### Get User Permissions [GET /users/{id}/permissions/{?limit,offset,fields,filter}]
 Lists all permissions (accesses to eshops) of a specific user.
 
-**OAuth2 Scope:** user.shops.read
+**OAuth2 Scope:** `user.shops.read`
 
 + Parameters
 
@@ -1178,7 +1191,7 @@ Lists all permissions (accesses to eshops) of a specific user.
 ### Get User Eshop Permissions [GET /users/{id}/permissions/eshop/{eshopId}]
 Returns user permission to given eshop.
 
-**OAuth2 Scope:** user.read
+**OAuth2 Scope:** `user.read`
 
 + Parameters
 
@@ -1211,7 +1224,7 @@ Returns user permission to given eshop.
 ### Get User Project Permissions [GET /users/{id}/permissions/project/{projectId}]
 Returns user permission to given project.
 
-**OAuth2 Scope:** user.read
+**OAuth2 Scope:** `user.read`
 
 + Parameters
 
@@ -1262,7 +1275,7 @@ Eshops in Mergado.
 ### List User Eshops [GET]
 Returns eshops the user can access.
 
-**OAuth2 Scope:** user.shops.read
+**OAuth2 Scope:** `user.shops.read`
 
 + Parameters
 
@@ -1305,7 +1318,7 @@ Returns eshops the user can access.
 ### Get an Eshop [GET /shops/{id}/{?fields}]
 Returns an eshop with the given ID.
 
-**OAuth2 Scope:** shop.read
+**OAuth2 Scope:** `shop.read`
 
 + Parameters
 
@@ -1341,7 +1354,7 @@ Returns an eshop with the given ID.
 ### Update an Eshop [PATCH /shops/{id}/{?fields}]
 Updates an eshop with the given ID.
 
-**OAuth2 Scope:** shop.write
+**OAuth2 Scope:** `shop.write`
 
 + Parameters
 
@@ -1391,7 +1404,7 @@ Updates an eshop with the given ID.
 ### Show Eshop Info [GET /shops/{id}/info/{?fields}]
 Show additional eshop information, statistics and keychain connections.
 
-**Oauth2 Scope:** shop.read
+**Oauth2 Scope:** `shop.read`
 
 + Parameters
 
@@ -1586,7 +1599,7 @@ and it is very common that one eshop has several projects each maaged for a diff
 ### List Shop Projects [GET]
 Returns projects of an eshop.
 
-**OAuth2 Scope:** shop.projects.read
+**OAuth2 Scope:** `shop.projects.read`
 
 + Parameters
 
@@ -1648,7 +1661,7 @@ Returns projects of an eshop.
 ### Get a Project [GET /projects/{id}/{?fields}]
 Returns a project with the given ID. If the requested project is not active, the endpoint returns 404
 
-**OAuth2 Scope:** project.read
+**OAuth2 Scope:** `project.read`
 
 + Parameters
 
@@ -1710,7 +1723,7 @@ For optimization reasons, this field is not returned in the response, and whethe
 has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
 Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
 
-**OAuth2 Scope:** project.write
+**OAuth2 Scope:** `project.write`
 
 + Parameters
 
@@ -1781,7 +1794,7 @@ Show additional project information and statistics.
 Returns the metadata that the user has set or none if user didn't set them.
 Supports regular format as well as custom format mapping.
 
-**Oauth2 Scope:** project.elements.read
+**Oauth2 Scope:** `project.elements.read`
 
 + Parameters
 
@@ -1825,7 +1838,7 @@ Supports regular format as well as custom format mapping.
 Show project elements mapping information.
 Returns the mapping of input, output and universal element name.
 
-**Oauth2 Scope:** project.elements.read
+**Oauth2 Scope:** `project.elements.read`
 
 + Parameters
 
@@ -1883,12 +1896,12 @@ The `is_hidden` parameter allows filtering products based on their visibility st
 
 ### List Project Products - GET  [GET /projects/{id}/products{?values_to_extract}]
 
-**OAuth2 Scope:** project.products.read
+**OAuth2 Scope:** `project.products.read`
 
 + Parameters
 
     + id (string) - ID of a project.
-    
+
 + Response 200
 
     + Headers
@@ -1981,7 +1994,7 @@ The `is_hidden` parameter allows filtering products based on their visibility st
 
 ### List Project Products - POST  [POST /projects/{id}/products]
 
-**OAuth2 Scope:** project.products.read
+**OAuth2 Scope:** `project.products.read`
 
 + Parameters
 
@@ -2084,11 +2097,11 @@ The `is_hidden` parameter allows filtering products based on their visibility st
                 "total_results": 1,
                 "offset": 0
             }
-            
+
 ## Get a Product [GET /products/{id}/{?fields}]
 Returns a product with the given ID.
 
-**OAuth2 Scope:** project.products.read
+**OAuth2 Scope:** `project.products.read`
 
 + Parameters
 
@@ -2182,7 +2195,7 @@ For optimization reasons, this field is not returned in the response, and whethe
 has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
 Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
 
-**OAuth2 Scope:** project.products.write
+**OAuth2 Scope:** `project.products.write`
 
 + Parameters
 
@@ -2238,7 +2251,7 @@ Nevertheless, it is acceptable to mark the product as dirty without prior checki
                 }
             }
 
-### Query Products [GET /queries/{id}/products/{?limit,offset,fields,filter, values_to_extract, is_hidden}]
+### Query Products [GET /queries/{id}/products/{?limit,offset,fields,filter,values_to_extract,is_hidden}]
 Returns products that satisfy a condition defined by the given query.
 
 If the `values_to_extract` parameter is provided,
@@ -2251,7 +2264,7 @@ The `is_hidden` parameter allows filtering products based on their visibility st
 + `false` – Returns only non-hidden products.
 + `null` (or omitted) – Returns all products, regardless of their visibility.
 
-**OAuth2 Scope:** projects.products.read
+**OAuth2 Scope:** `projects.products.read`
 
 + Parameters
 
@@ -2411,7 +2424,7 @@ For optimization reasons, nothing is returned in the response, and whether the p
 has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
 Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
 
-**OAuth2 Scope:** project.products.write
+**OAuth2 Scope:** `project.products.write`
 
 + Parameters
 
@@ -2442,7 +2455,7 @@ For optimization reasons, nothing is returned in the response, and whether the p
 has already been applied can be checked in the logs at `/projects/<id>/applylogs/`.
 Nevertheless, it is acceptable to mark the product as dirty without prior checking to see if it is even necessary.
 
-**OAuth2 Scope:** project.products.write
+**OAuth2 Scope:** `project.products.write`
 
 + Parameters
 
@@ -2476,7 +2489,7 @@ A pairing represents one item which has appeared at least once in an XML feed.
 ### List Pairings [GET]
 Returns project's pairings.
 
-**OAuth2 Scope:** project.products.read
+**OAuth2 Scope:** `project.products.read`
 
 + Parameters
 
@@ -2511,7 +2524,7 @@ Returns project's pairings.
 ### Get a Pairing [GET /pairings/{id}/{?fields}]
 Returns a pairing with the given ID.
 
-**OAuth2 Scope:** project.products.read
+**OAuth2 Scope:** `project.products.read`
 
 + Parameters
 
@@ -2558,7 +2571,7 @@ In the request, in case of
 * the element is being created in MERGADO 1, `order` is ignored,
 * the element is being created in MERGADO 1 and `is_attribute = true`, 409 will be returned.
 
-**OAuth2 Scope:** project.elements.write
+**OAuth2 Scope:** `project.elements.write`
 
 + Parameters
 
@@ -2600,7 +2613,7 @@ Lists all project's elements in a tree structure.
 
 **Note:** For MERGADO 1 the response doesn't contain the field `order`.
 
-**OAuth2 Scope:** project.elements.read
+**OAuth2 Scope:** `project.elements.read`
 
 + Parameters
 
@@ -2668,7 +2681,7 @@ Lists all project's elements in a tree structure.
 ### Get an Element [GET /elements/{id}/{?fields}]
 Returns an element.
 
-**OAuth2 Scope:** project.elements.read
+**OAuth2 Scope:** `project.elements.read`
 
 + Parameters
 
@@ -2694,7 +2707,7 @@ Returns an element.
 ### Delete an Element [DELETE /elements/{id}/{?fields}]
 Delete the specified element and all of its children.
 
-**OAuth2 Scope:** project.elements.write
+**OAuth2 Scope:** `project.elements.write`
 
 + Parameters
 
@@ -2712,15 +2725,15 @@ Delete the specified element and all of its children.
 
             Content-Type: application/json
 
-### Element Values - GET [GET /projects/{id}/elements/values{?element_path, is_output}]
-Returns all values from the project for the element whose element path is specified in the `element_path` URL parameter. The `element_path` parameter is required. 
+### Element Values - GET [GET /projects/{id}/elements/values{?element_path,is_output}]
+Returns all values from the project for the element whose element path is specified in the `element_path` URL parameter. The `element_path` parameter is required.
 
 The `is_output` parameter allows you to filter values ​​based on their occurrence. It supports the following values:
 + `true` – Returns output values.
 + `false` – Returns input values.
 + `null` (or omitted) – Returns output values.
 
-**OAuth2 Scope:** project.read
+**OAuth2 Scope:** `project.read`
 
 + Parameters
 
@@ -2766,15 +2779,15 @@ The `is_output` parameter allows you to filter values ​​based on their occur
                 "offset": 0
             }
 
-### Element Values - POST [POST /projects/{id}/elements/values{?element_path, is_output}]
-Returns all values from the project for the element whose element path is specified in the `element_path` field within the request body. The `element_path` parameter is required. 
+### Element Values - POST [POST /projects/{id}/elements/values{?element_path,is_output}]
+Returns all values from the project for the element whose element path is specified in the `element_path` field within the request body. The `element_path` parameter is required.
 
 The `is_output` field within the request body allows you to filter values based on their occurrence. It supports the following values:
 + `true` – Returns output values.
 + `false` – Returns input values.
 + `null` (or omitted) – Returns output values.
 
-**OAuth2 Scope:** project.read
+**OAuth2 Scope:** `project.read`
 
 + Parameters
 
@@ -2863,7 +2876,7 @@ expression to match only a part of a product's value.
 ### Create a Variable [POST]
 Creates a new variable inside a project.
 
-**OAuth2 Scope:** project.variables.write
+**OAuth2 Scope:** `project.variables.write`
 
 + Parameters
 
@@ -2908,7 +2921,7 @@ Creates a new variable inside a project.
 ### List Project Variables [GET /projects/{id}/variables/{?limit,offset,fields,filter}]
 Lists all project's variables.
 
-**OAuth2 Scope:** project.variables.read
+**OAuth2 Scope:** `project.variables.read`
 
 + Parameters
 
@@ -2943,7 +2956,7 @@ Lists all project's variables.
 ### Get a Variable [GET /variables/{id}/{?fields}]
 Returns a variable.
 
-**OAuth2 Scope:** project.variables.read
+**OAuth2 Scope:** `project.variables.read`
 
 + Parameters
 
@@ -2971,7 +2984,7 @@ Returns a variable.
 ### Delete a Variable [DELETE /variables/{id}/{?fields}]
 Delete the specified variable.
 
-**OAuth2 Scope:** project.variables.write
+**OAuth2 Scope:** `project.variables.write`
 
 + Parameters
 
@@ -2992,7 +3005,7 @@ Delete the specified variable.
 ### Update a Variable [PATCH /variables/{id}/]
 Performes update of variable's attributes.
 
-**OAuth2 Scope:** project.variables.write
+**OAuth2 Scope:** `project.variables.write`
 
 + Parameters
 
@@ -3074,7 +3087,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
 
 **Note:** The maximum length of the attribute `name` is 100 characters and cannot contain any special characters.
 
-**OAuth2 Scope:** project.rules.write
+**OAuth2 Scope:** `project.rules.write`
 
 + Parameters
 
@@ -3228,7 +3241,7 @@ then the value of *placement [before]* and lastly the value of *priority* itself
 ### List Project Rules [GET /projects/{id}/rules/{?limit,offset,fields,filter}]
 Lists all rules' instances that were created inside the specified project.
 
-**OAuth2 Scope:** project.rules.read
+**OAuth2 Scope:** `project.rules.read`
 
 + Parameters
 
@@ -3279,7 +3292,7 @@ Lists all rules' instances that were created inside the specified project.
 ### Get a Rule [GET /rules/{id}/{?fields}]
 Returns a specific rule instance.
 
-**OAuth2 Scope:** project.rules.read
+**OAuth2 Scope:** `project.rules.read`
 
 + Parameters
 
@@ -3313,7 +3326,7 @@ Returns a specific rule instance.
 ### Delete a Rule [DELETE /rules/{id}/{?fields}]
 Delete the specified rule.
 
-**OAuth2 Scope:** project.rules.write
+**OAuth2 Scope:** `project.rules.write`
 
 + Parameters
 
@@ -3338,7 +3351,7 @@ If an empty list is sent, 400 will be returned.
 
 **Note:** The maximum length of the attribute `name` is 100 characters and cannot contain any special characters.
 
-**OAuth2 Scope:** project.rules.write
+**OAuth2 Scope:** `project.rules.write`
 
 + Parameters
 
@@ -3391,7 +3404,7 @@ If an empty list is sent, 400 will be returned.
 Returns only the data of a specific rule instance. This can be helpful
 for one to many (O2M) rules with a lot of records.
 
-**OAuth2 Scope:** project.rules.read
+**OAuth2 Scope:** `project.rules.read`
 
 + Parameters
 
@@ -3442,7 +3455,7 @@ for one to many (O2M) rules with a lot of records.
 ### Create a Query [POST]
 Creates a new query inside the specified project.
 
-**OAuth2 Scope:** project.queries.write
+**OAuth2 Scope:** `project.queries.write`
 
 + Parameters
 
@@ -3487,7 +3500,7 @@ Creates a new query inside the specified project.
 ### Get a Query [GET /queries/{id}/{?fields}]
 Returns the requrested query.
 
-**OAuth2 Scope:** project.queries.read
+**OAuth2 Scope:** `project.queries.read`
 
 + Parameters
 
@@ -3516,7 +3529,7 @@ Returns the requrested query.
 ### Delete a Query [DELETE /queries/{id}/]
 Deletes a specific query.
 
-**OAuth2 Scope:** project.queries.write
+**OAuth2 Scope:** `project.queries.write`
 
 + Parameters
 
@@ -3537,7 +3550,7 @@ Deletes a specific query.
 ### Update a Query [PATCH /queries/{id}/]
 Performes update of the specified query.
 
-**OAuth2 Scope:** project.queries.write
+**OAuth2 Scope:** `project.queries.write`
 
 + Parameters
 
@@ -3579,7 +3592,7 @@ Performes update of the specified query.
 ### List Project Queries [GET /projects/{id}/queries/{?limit,offset,fields,filter}]
 Lists all queries that were created inside the specified project.
 
-**OAuth2 Scope:** project.queries.read
+**OAuth2 Scope:** `project.queries.read`
 
 + Parameters
 
@@ -3626,7 +3639,7 @@ Lists all queries that were created inside the specified project.
 ### List Rule Queries [GET /rules/{id}/queries/{?limit,offset,fields,filter}]
 Lists all queries that were created for the specified rule.
 
-**OAuth2 Scope:** project.queries.read
+**OAuth2 Scope:** `project.queries.read`
 
 + Parameters
 
@@ -3674,7 +3687,7 @@ Lists all queries that were created for the specified rule.
 Assigns a Query to a Rule. The query must exist, otherwise 400 (bad request) status is returned.
 The body parameters also must uniquely identify a query.
 
-**OAuth2 Scope:** project.rules.write
+**OAuth2 Scope:** `project.rules.write`
 
 + Parameters
 
@@ -3764,7 +3777,7 @@ The body parameters also must uniquely identify a query.
 ### Retract a Query from a Rule [DELETE /rules/{rid}/queries/{qid}]
 Retract a Query from a Rule.
 
-**OAuth2 Scope:** project.rules.write
+**OAuth2 Scope:** `project.rules.write`
 
 + Parameters
 
@@ -3787,33 +3800,71 @@ Notifications can be also made with different _priority_. Users can configure
 what notification and how often they want to receive each notification with
 given priority.
 
+### Reading notifications
+
+Notification can be read only by access tokens bound to a specific user, which
+must be the recipient of the notification.
+
+_Access token bound to a specific user_ is an access token that is either
+**online** token for user/e-shop/project Mergado platform app, or **offline**
+token for user-bound Mergado platform app.
+
+### Get a notification [GET /notifications/{id}/{?fields}]
+
+**OAuth2 Scope:** `user.notify.read`
+
++ Parameters
+
+    + id (string) - ID of a notification.
+    + fields (string, optional) - Comma separated list of field names to return.
+
 + Attributes
 
-    + title (string) - Subject or title of the notification.
-    + body (string) - Notification text.
+    + id
+    + event (string) - Type of event, e.g. `app_notify` for notifications sent by Mergado platform apps via API.
+    + created_at (string) - When was notification created.
     + channels (enum[string], optional) - List of channels.
-        + Default
-            + `frontend`
+        + Default: `frontend`
         + Members
-            + `email` - Notification is sent to the user's email.
             + `frontend` - Notification is shown in the Mergado's notification panel.
+            + `email` - Notification is sent to the user's email.
     + priority (enum[string], optional) - Priority of the notification.
-        + Default
-            + `medium`
+        + Default: `medium`
         + Members
             + `low`
             + `medium`
             + `high`
     + scope (enum[string], optional) - Scope of the notification.
-        + Default
-            + `shop`
+        + Default: `eshop`
         + Members
-            + `shop` - Notification is sent to all users who can access the eshop.
+            + `eshop` - Notification is sent to all users who can access the eshop.
             + `owner` - Notification is sent only to the owner of the eshop.
             + `user` - Notification is sent to single user.
+    + data (object) - JSON object containing data of a specific event.
+
++ Response 201
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "id": "30",
+                "event": "app_notify",
+                "data": {
+                    "title": "E-shop is happy",
+                    "body": "There seems not to be a problem with your eshop.",
+                },
+                "channels": ["frontend", "email"],
+                "created_at": "2016-05-11T14:43:18+00:00",
+                "priority": "high",
+                "scope": "owner"
+            }
 
 ### Notify Eshop Members [POST]
-**OAuth2 Scope:** shop.notify.write
+**OAuth2 Scope:** `shop.notify.write`
 
 + Parameters
 
@@ -3831,7 +3882,6 @@ given priority.
                 "title": "Eshop problem",
                 "body": "There seems to be a problem in your eshop.",
                 "channels": ["email"],
-                "created_at": "2016-05-11 14:43:18",
                 "priority": "high",
                 "scope": "owner"
             }
@@ -3841,22 +3891,24 @@ given priority.
     + Headers
 
             Content-Type: application/json
-            Location: "https://app.mergado.com/api/notifications/30/"
 
     + Body
 
             {
                 "id": "30",
-                "title": "Eshop problem",
-                "body": "There seems to be a problem in your eshop.",
+                "event": "app_notify",
+                "data": {
+                    "title": "Eshop problem",
+                    "body": "There seems to be a problem in your eshop.",
+                },
                 "channels": ["email"],
                 "created_at": "2016-05-11T14:43:18+00:00",
                 "priority": "high",
                 "scope": "owner"
             }
 
-### Notify a User [POST /users/{id}/notifications/]
-**OAuth2 Scope:** user.notify.write
+### Notify a user [POST /users/{id}/notifications/]
+**OAuth2 Scope:** `user.notify.write`
 
 + Parameters
 
@@ -3873,8 +3925,7 @@ given priority.
             {
                 "title": "User settings change",
                 "body": "Your settings has been updated.",
-                "channels": ["email"],
-                "created_at": "2016-05-11 14:43:18",
+                "channels": ["frontend"],
                 "priority": "high"
             }
 
@@ -3889,45 +3940,47 @@ given priority.
 
             {
                 "id": "32",
-                "title": "User settings change",
-                "body": "Your settings has been updated.",
+                "event": "app_notify",
+                "data": {
+                    "title": "Eshop problem",
+                    "body": "There seems to be a problem in your eshop.",
+                },
                 "channels": ["frontend"],
                 "created_at": "2016-05-11T14:43:18+00:00",
                 "priority": "low",
                 "scope": "user"
             }
 
-### Get a Notification [GET /notifications/{id}/{?fields}]
-**OAuth2 Scope:** shop.notify.read
+### Get user's notifications [GET /users/{id}/notifications/{?limit,offset,fields,filter}]
+**OAuth2 Scope:** `user.notify.read`
 
-+ Parameters
-
-    + id (string) - ID of a notification.
-
-+ Response 201
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-            {
-                "id": "30",
-                "title": "Eshop problem",
-                "body": "There seems to be a problem in your eshop.",
-                "channels": ["email"],
-                "created_at": "2016-05-11T14:43:18+00:00",
-                "priority": "high",
-                "scope": "owner"
-            }
-
-### Get Users Notifications [GET /users/{id}/notifications/{?fields}]
-**OAuth2 Scope:** user.notify.read
+- Examples of filtering by `created_at`:
+  - Older than `2025-09-05` _(not including)_:
+    ```
+    ?filter=[{"field":"created_at","op":"<","value":"2025-09-05"}]'
+    ```
+  - Newer than `2025-09-05` _(including)_:
+    ```
+    ?filter=[{"field":"created_at","op":">","value":"2025-09-05"}]'
+    ```
+  - Between `2025-09-05` _(including)_ and `2025-10-02` _(not including the whole day of `2025-10-02`)_:
+    ```
+    ?filter=[{"field":"created_at","op":">","value":"2025-09-05"},{"field":"created_at","op":"<","value":"2025-10-02"}]'
+    ```
+  - Between `2025-09-05` _(including)_ and `2025-10-02 23:59:59` _(including the whole day of `2025-10-02`)_:
+    ```
+    ?filter=[{"field":"created_at","op":">","value":"2025-09-05"},{"field":"created_at","op":"<=","value":"2025-10-02 23:59:59"}]'
+    ... or
+    ?filter=[{"field":"created_at","op":">","value":"2025-09-05"},{"field":"created_at","op":"<","value":"2025-10-03"}]'
+    ```
 
 + Parameters
 
     + id (string) - ID of a user.
+    + limit (number, optional)
+    + filter (JSON-string, optional)
+    + offset (number, optional)
+    + fields (string, optional)
 
 + Response 201
 
@@ -3940,25 +3993,38 @@ given priority.
             {
                 "data": [
                     {
-                        "address": "freddy.krueger@mergado.com",
-                        "channel": "email",
-                        "id": "1",
-                        "locale": null,
-                        "notification_id": "1",
-                        "resolve": "promptly",
-                        "resolved_at": "2016-04-13T15:58:51+00:00",
-                        "user_id": "1"
+                        "id": "30",
+                        "event": "app_notify",
+                        "scope": "eshop",
+                        "priority": "medium",
+                        "data": {
+                            "title": "E-shop is happy",
+                            "body": "There seems not to be a problem with your eshop.",
+                            "source": "some-mergado-platform-app"
+                        },
+                        "channels": [
+                            "frontend",
+                            "email"
+                        ],
+                        "created_at": "2025-09-19T11:32:26+00:00"
                     },
                     {
-                        "address": null,
-                        "channel": "frontend",
-                        "id": "2",
-                        "locale": null,
-                        "notification_id": "2",
-                        "resolve": "promptly",
-                        "resolved_at": null,
-                        "user_id": "1"
-                    }
+                        "id": "29",
+                        "event": "project_enabled",
+                        "scope": "eshop",
+                        "priority": "system",
+                        "data": {
+                            "project_url": "http:\/\/app.mergado.com\/projects\/456\/",
+                            "project_name": "Heureka.cz - produktov\u00fd [CZ]",
+                            "user_name": "Freddy Krueger",
+                            "shop_name": "My Lovely Shop",
+                            "shop_url": "http:\/\/app.mergado.com\/eshops\/123\/",
+                        },
+                        "channels": [
+                            "frontend"
+                        ],
+                        "created_at": "2025-09-05T10:36:42+00:00"
+                    },
                 ],
                 "limit": 10,
                 "total_results": 2,
@@ -3972,7 +4038,7 @@ service are logged separately. Note that each log entry is available only for 30
 ### Get an Import Log [GET /importlogs/{id}/{?fields}]
 Fetches an import log with the given ID.
 
-**OAuth2 Scope:** project.logs.read
+**OAuth2 Scope:** `project.logs.read`
 
 + Parameters
 
@@ -4002,7 +4068,7 @@ Fetches an import log with the given ID.
 ### Get Import Logs [GET /projects/{id}/importlogs/{?limit,offset,fields,filter}]
 Fetches all import logs for given project.
 
-**OAuth2 Scope:** project.logs.read
+**OAuth2 Scope:** `project.logs.read`
 
 + Parameters
 
@@ -4051,7 +4117,7 @@ Fetches all import logs for given project.
 ### Get an Apply Log [GET /applylogs/{id}/{?fields}]
 Fetches an apply log with the given ID.
 
-**OAuth2 Scope:** project.logs.read
+**OAuth2 Scope:** `project.logs.read`
 
 + Attributes
 
@@ -4096,7 +4162,7 @@ Fetches an apply log with the given ID.
 ### Get Apply Logs [GET /projects/{id}/applylogs/{?limit,offset,fields,filter}]
 Fetches all apply logs for given project.
 
-**OAuth2 Scope:** project.logs.read
+**OAuth2 Scope:** `project.logs.read`
 
 + Attributes
 
@@ -4169,7 +4235,7 @@ Fetches all apply logs for given project.
 ### Get an Export Log [GET /exportlogs/{id}/{?fields}]
 Fetches an export log with the given ID.
 
-**OAuth2 Scope:** project.logs.read
+**OAuth2 Scope:** `project.logs.read`
 
 + Parameters
 
@@ -4197,7 +4263,7 @@ Fetches an export log with the given ID.
 ### Get Export Logs [GET /projects/{id}/exportlogs/{?limit,offset,fields,filter}]
 Fetches all export logs for given project.
 
-**OAuth2 Scope:** project.logs.read
+**OAuth2 Scope:** `project.logs.read`
 
 + Parameters
 
@@ -4242,7 +4308,7 @@ Fetches all export logs for given project.
 ### Get an Access Log [GET /accesslogs/{id}/{?fields}]
 Fetches an access log with the given ID. If the related project has been deleted, 410 is returned instead.
 
-**OAuth2 Scope:** project.logs.read
+**OAuth2 Scope:** `project.logs.read`
 
 + Parameters
 
@@ -4285,7 +4351,7 @@ Fetches an access log with the given ID. If the related project has been deleted
 ### Get Access Logs [GET /projects/{id}/accesslogs/{?limit,offset,fields,filter}]
 Fetches all access logs for given project.
 
-**OAuth2 Scope:** project.logs.read
+**OAuth2 Scope:** `project.logs.read`
 
 + Parameters
 
@@ -4350,7 +4416,7 @@ Possible sources:
             - `created` - Connection to provider created
             - `deleted` - Connection to provider deleted
 
-**OAuth2 Scope:** eshop.read
+**OAuth2 Scope:** `eshop.read`
 
 + Parameters
 
@@ -4424,7 +4490,7 @@ Management of enabled apps by users.
 ### List User Apps [GET /users/{id}/apps/{?limit,offset,fields,filter}]
 Lists apps enabled by the given user.
 
-**OAuth2 Scope:** user.apps.read
+**OAuth2 Scope:** `user.apps.read`
 
 + Parameters
 
@@ -4459,7 +4525,7 @@ Lists apps enabled by the given user.
 ### Get User App [GET /users/{id}/apps/{name}/{?limit,offset,fields,filter}]
 Fetches an app enabled by the given user.
 
-**OAuth2 Scope:** user.apps.read
+**OAuth2 Scope:** `user.apps.read`
 
 + Parameters
 
@@ -4483,7 +4549,7 @@ Fetches an app enabled by the given user.
 ### Update User App [PATCH /users/{id}/apps/{name}/]
 Updates an app enabled by the given user.
 
-**OAuth2 Scope:** user.apps.write
+**OAuth2 Scope:** `user.apps.write`
 
 + Parameters
 
@@ -4519,7 +4585,7 @@ Updates an app enabled by the given user.
 ### List Shop Apps [GET /shops/{id}/apps/{?limit,offset,fields,filter}]
 Lists apps enabled for the given eshop.
 
-**OAuth2 Scope:** shop.apps.read
+**OAuth2 Scope:** `shop.apps.read`
 
 + Parameters
 
@@ -4554,7 +4620,7 @@ Lists apps enabled for the given eshop.
 ### Get Shop App [GET /shops/{id}/apps/{name}/{?limit,offset,fields,filter}]
 Fetches an app enabled for the given shop.
 
-**OAuth2 Scope:** shop.apps.read
+**OAuth2 Scope:** `shop.apps.read`
 
 + Parameters
 
@@ -4579,7 +4645,7 @@ Fetches an app enabled for the given shop.
 ### Update Shop App [PATCH /shops/{id}/apps/{name}/]
 Updates an app enabled for the given shop.
 
-**OAuth2 Scope:** shop.apps.write
+**OAuth2 Scope:** `shop.apps.write`
 
 + Parameters
 
@@ -4615,7 +4681,7 @@ Updates an app enabled for the given shop.
 ### List Project Apps [GET /projects/{id}/apps/{?limit,offset,fields,filter}]
 Lists apps enabled for the given project.
 
-**OAuth2 Scope:** project.apps.read
+**OAuth2 Scope:** `project.apps.read`
 
 + Parameters
 
@@ -4650,7 +4716,7 @@ Lists apps enabled for the given project.
 ### Get Project App [GET /projects/{id}/apps/{name}/{?limit,offset,fields,filter}]
 Fetches an app enabled by the given project.
 
-**OAuth2 Scope:** project.apps.read
+**OAuth2 Scope:** `project.apps.read`
 
 + Parameters
 
@@ -4674,7 +4740,7 @@ Fetches an app enabled by the given project.
 ### Update Project App [PATCH /projects/{id}/apps/{name}/]
 Updates an app enabled for the given project.
 
-**OAuth2 Scope:** project.apps.write
+**OAuth2 Scope:** `project.apps.write`
 
 + Parameters
 
@@ -4720,7 +4786,7 @@ comparison shopping services (Zboží.cz, Heureka.cz, etc.).
 ### Get Statistics [GET]
 Returns latest summarized statistics and other information of an eshop.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** `shop.stats.read`
 
 + Attributes
 
@@ -4882,7 +4948,7 @@ Returns latest summarized statistics and other information of an eshop.
 ### List All Sources [GET /shops/{id}/stats/sources/{?limit,offset,fields,filter}]
 Returns a list of all sources of a specific shop.
 
-**OAuth2 Scope:** shop.stats.source.read
+**OAuth2 Scope:** `shop.stats.source.read`
 
 + Attributes
 
@@ -4932,7 +4998,7 @@ Returns a list of all sources of a specific shop.
 ### Get a Source [GET /stats/sources/{id}/]
 Return a source of statistics.
 
-**OAuth2 Scope:** shop.stats.source.read
+**OAuth2 Scope:** `shop.stats.source.read`
 
 + Attributes
 
@@ -5100,7 +5166,7 @@ Note that `product_id` will not be included if mapping from `item_id` to `produc
 Returns a list of product statistics relevant to the project format.
 The stats are collected daily.
 
-**OAuth2 Scope:** project.stats.read
+**OAuth2 Scope:** `project.stats.read`
 
 + Parameters
 
@@ -5236,7 +5302,7 @@ If `filter_by` contains `_exists_` parameter (with json list of *stats* fields a
 only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
-**OAuth2 Scope:** project.stats.read
+**OAuth2 Scope:** `project.stats.read`
 
 + Parameters
 
@@ -5370,7 +5436,7 @@ If `filter_by` contains `_exists_` parameter (with json list of *stats* fields a
 only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
-**OAuth2 Scope:** project.stats.read
+**OAuth2 Scope:** `project.stats.read`
 
 + Request
 
@@ -5516,7 +5582,7 @@ If `filter_by` contains `_exists_` parameter (with json list of *stats* fields a
 only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** `shop.stats.read`
 
 + Parameters
 
@@ -5686,7 +5752,7 @@ If `filter_by` contains `_exists_` parameter (with json list of *stats* fields a
 only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** `shop.stats.read`
 
 + Request
 
@@ -5872,7 +5938,7 @@ A collection of statistics about categories.
 Returns latest statistics of feed's categories (for example number of paired products
 for given `CATEGORYTEXT`).
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** `shop.stats.read`
 
 + Parameters
 
@@ -5929,7 +5995,7 @@ positions of products on Heureka.
 ### List of Audits [GET /shops/{id}/stats/audits/{?fields,limit,offset}]
 Returns list of performed audits.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** `shop.stats.read`
 
 + Parameters
 
@@ -5970,7 +6036,7 @@ Returns list of performed audits.
 ### Get an Audit [GET /stats/audits/{id}/{?fields}]
 Returns a performed audit.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** `shop.stats.read`
 
 + Parameters
 
@@ -6053,7 +6119,7 @@ Returns a performed audit.
 ### List Issues [GET /stats/audits/{id}/issues/{?fields,limit,offset,filter_by,order_by}]
 Returns list of issues of an audit.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** `shop.stats.read`
 
 + Attributes
 
@@ -6101,7 +6167,7 @@ Returns list of issues of an audit.
 ### Get a Log of the Import of Statistics [GET /statslogs/{id}/{?fields}]
 Returns a *log* of the import of statistics with the given ID.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** `shop.stats.read`
 
 + Parameters
 
@@ -6130,7 +6196,7 @@ Returns a *log* of the import of statistics with the given ID.
 ### List All Logs of a Shop [GET /shops/{id}/statslogs/{?limit,offset,fields,filter}]
 Returns all *logs* of the import of statistics.
 
-**OAuth2 Scope:** shop.stats.read
+**OAuth2 Scope:** `shop.stats.read`
 
 + Parameters
 
@@ -6225,7 +6291,7 @@ Audit represents validation of an XML feed.
 ### Create a New Audit [POST]
 Creates and starts an audit. Feed type, web hook and shop id are optional.
 
-**OAuth2 Scope:** projects.feedaudit.write
+**OAuth2 Scope:** `projects.feedaudit.write`
 
 + Parameters
 
@@ -6315,7 +6381,7 @@ Returns list of all audits.
 ### Get an Audit [GET /feedaudits/{id}/{?fields]
 Returns the requested audit resource.
 
-**OAuth2 Scope:** projects.feedaudit.read
+**OAuth2 Scope:** `projects.feedaudit.read`
 
 + Parameters
 
@@ -6370,7 +6436,7 @@ the whole feed.
 ### List Audit Issues [GET]
 Returns all issues (problematic validations) of a specific audit.
 
-**OAuth2 Scope:** projects.feedaudit.read
+**OAuth2 Scope:** `projects.feedaudit.read`
 
 + Parameters
 
@@ -6408,7 +6474,7 @@ Returns all issues (problematic validations) of a specific audit.
 ### Get an Issue [GET /feedaudits/issues/{id}/{?fields}]
 Returns single issue with given `id`.
 
-**OAuth2 Scope:** projects.feedaudit.read
+**OAuth2 Scope:** `projects.feedaudit.read`
 
 + Parameters
 
@@ -6439,7 +6505,7 @@ Returns single issue with given `id`.
 ### List Product's Issues [GET /feedaudit/products/{id}/issues/{?limit,offset,fields,filter_by,order_by}]
 Returns all issues (problematic validations) of a specific product.
 
-**OAuth2 Scope:** projects.feedaudit.read
+**OAuth2 Scope:** `projects.feedaudit.read`
 
 + Parameters
 
@@ -6489,7 +6555,7 @@ XML feed's products for validation.
 ### List Audit Products [GET]
 Returns all products of a specific audit.
 
-**OAuth2 Scope:** projects.feedaudit.read
+**OAuth2 Scope:** `projects.feedaudit.read`
 
 + Parameters
 
@@ -6524,7 +6590,7 @@ Returns all products of a specific audit.
 ### Get a Product [GET /feedaudit/products/{id}{?fields}]
 Returns a single product resource.
 
-**OAuth2 Scope:** projects.feedaudit.read
+**OAuth2 Scope:** `projects.feedaudit.read`
 
 + Parameters
 
@@ -6553,7 +6619,7 @@ Returns a single product resource.
 API for various Heureka.cz helpers and resources.
 
 ## Heureka API Proxy [/shops/{id}/heureka/proxy/{path}]
-Heureka provides an API for reports and statistics. At the moment it doesn’t offer a lot of features, but we expect more to be added over time. 
+Heureka provides an API for reports and statistics. At the moment it doesn’t offer a lot of features, but we expect more to be added over time.
 You can find more information about currently avalible endpoints at [official documentation](https://api.heureka.group/v1/reports/docs).
 
 This endpoint works as a proxy. Some Heureka eshops can generate their own API key, which is then used for authentication. Mergado takes care of this step for you, the key is automatically added to the request header, so you don’t need to handle it manually. Apart from that, please follow the official documentation mentioned above regarding URL parameters, request bodies, and headers.
@@ -6564,22 +6630,22 @@ Note that this endpoint for Heureka will only work if the `/shops/<id>/info` end
 
     + id (string) - Eshop id.
     + path (string) - Relativ path according to Heureka documentation. For example you can use as path `"v1/reports/conversions"` which will allow you to access Heureka's conversion reports
-    
+
 ### Get Request [GET /shops/{id}/heureka/proxy/{path}]
 Returns response from Heureka API.
 
-**OAuth2 Scope:** shop.read
+**OAuth2 Scope:** `shop.read`
 
 + Response 200
 
     + Headers
 
             Content-Type: application/json
-            
+
 ### Post Request [POST /shops/{id}/heureka/proxy/{path}]
 Returns response from Heureka API.
 
-**OAuth2 Scope:** shop.read
+**OAuth2 Scope:** `shop.read`
 
 + Response 200
 
@@ -6590,7 +6656,7 @@ Returns response from Heureka API.
 ### Put Request [PUT /shops/{id}/heureka/proxy/{path}]
 Returns response from Heureka API.
 
-**OAuth2 Scope:** shop.read
+**OAuth2 Scope:** `shop.read`
 
 + Response 200
 
@@ -6601,7 +6667,7 @@ Returns response from Heureka API.
 ### Delete Request [DELETE /shops/{id}/heureka/proxy/{path}]
 Returns response from Heureka API.
 
-**OAuth2 Scope:** shop.read
+**OAuth2 Scope:** `shop.read`
 
 + Response 200
 
@@ -6709,7 +6775,7 @@ Returns a single Heureka category.
                 ]
             }
 
-### List Categories [GET /heureka/categories/{?limit,offset,fields,}]
+### List Categories [GET /heureka/categories/{?limit,offset,fields}]
 Returns list of all Heureka categories.
 
 
@@ -6759,17 +6825,17 @@ Returns list of all Heureka categories.
                     "min_cpcs": []
                 }
             ]
-            
+
 
 
 # Group Eshop-rychle
 API for Eshop-rychle.cz.
 
 ## Eshop-rychle API Proxy [/shops/{id}/eshop-rychle/proxy/{path}]
-Eshop-rychle provides an orders API to retrieve information about shop's orders. 
+Eshop-rychle provides an orders API to retrieve information about shop's orders.
 You can find more information about the API in the [official documentation](https://191992163.s1.eshop-rychle.cz/asset/doc/eshoprychle_objednavkove_api_2.pdf).
 
-This endpoint works as a proxy. 
+This endpoint works as a proxy.
 
 
 + Attributes
@@ -6777,22 +6843,22 @@ This endpoint works as a proxy.
     + id (string) - Eshop id.
     + path (string) - Fixed, required value: "request.php"
     + password (string) - Required query parameter
-    
+
 ### Get Request [GET /shops/{id}/eshop-rychle/proxy/{path}]
 Returns response from Eshop-rychle API.
 
-**OAuth2 Scope:** shop.read
+**OAuth2 Scope:** `shop.read`
 
 + Response 200
 
     + Headers
 
             Content-Type: application/json
-            
+
 ### Post Request [POST /shops/{id}/eshop-rychle/proxy/{path}]
 Returns response from Eshop-rychle API.
 
-**OAuth2 Scope:** shop.write
+**OAuth2 Scope:** `shop.write`
 
 + Response 200
 
@@ -6803,7 +6869,7 @@ Returns response from Eshop-rychle API.
 ### Put Request [PUT /shops/{id}/eshop-rychle/proxy/{path}]
 Returns response from Eshop-rychle API.
 
-**OAuth2 Scope:** shop.write
+**OAuth2 Scope:** `shop.write`
 
 + Response 200
 
@@ -6814,46 +6880,46 @@ Returns response from Eshop-rychle API.
 ### Delete Request [DELETE /shops/{id}/eshop-rychle/proxy/{path}]
 Returns response from Eshop-rychle API.
 
-**OAuth2 Scope:** shop.write
+**OAuth2 Scope:** `shop.write`
 
 + Response 200
 
     + Headers
 
             Content-Type: application/json
-            
+
 
 # Group Zbozi
 API for Zbozi.cz.cz.
 
 ## Zbozi API Proxy [/shops/{id}/zbozi/proxy/{path}]
-The API is available to e-shops which use Zbozí.cz and fulfill API access conditions. The API is a RESTful JSON API and uses HTTPS protocol only. 
+The API is available to e-shops which use Zbozí.cz and fulfill API access conditions. The API is a RESTful JSON API and uses HTTPS protocol only.
 Methods GET /v1/shop/bidding-info and GET /v1/shop/campaign/current are no longer available for shops that have been transferred to the Sklik advertising system. Please refer to the Sklik API documentation.
 You can find more information about the API in the [official documentation](api.zbozi.cz).
 
-This endpoint works as a proxy. 
+This endpoint works as a proxy.
 
 
 + Attributes
 
     + id (string) - Eshop id.
     + path (string) - Base value: "api.zbozi.cz" followed by a Zbozi's endpoint
-    
+
 ### Get Request [GET /shops/{id}/zbozi/proxy/{path}]
 Returns response from Zbozi API.
 
-**OAuth2 Scope:** shop.read
+**OAuth2 Scope:** `shop.read`
 
 + Response 200
 
     + Headers
 
             Content-Type: application/json
-            
+
 ### Post Request [POST /shops/{id}/zbozi/proxy/{path}]
 Returns response from Zbozi API.
 
-**OAuth2 Scope:** shop.write
+**OAuth2 Scope:** `shop.write`
 
 + Response 200
 
@@ -6864,7 +6930,7 @@ Returns response from Zbozi API.
 ### Put Request [PUT /shops/{id}/zbozi/proxy/{path}]
 Returns response from Zbozi API.
 
-**OAuth2 Scope:** shop.write
+**OAuth2 Scope:** `shop.write`
 
 + Response 200
 
@@ -6875,45 +6941,45 @@ Returns response from Zbozi API.
 ### Delete Request [DELETE /shops/{id}/zbozi/proxy/{path}]
 Returns response from Zbozi.
 
-**OAuth2 Scope:** shop.write
+**OAuth2 Scope:** `shop.write`
 
 + Response 200
 
     + Headers
 
             Content-Type: application/json
-            
+
 
 # Group WooCommerce
 API for WooCommerce proxy
 
 ## WooCommerce API Proxy [/shops/{id}/woo-commerce/proxy/{path}]
-The API is available to e-shops which use WooCommerce and fulfill API access conditions. The API is a RESTful JSON API. 
+The API is available to e-shops which use WooCommerce and fulfill API access conditions. The API is a RESTful JSON API.
 You can find more information about the API in the [official documentation](https://woocommerce.github.io/woocommerce-rest-api-docs/).
 
-This endpoint works as a proxy. 
+This endpoint works as a proxy.
 
 
 + Attributes
 
     + id (string) - Eshop id.
     + path (string) - Uses WooCommerce's endpoints
-    
+
 ### Get Request [GET /shops/{id}/woo-commerce/proxy/{path}]
 Returns response from WooCommerce API.
 
-**OAuth2 Scope:** shop.read
+**OAuth2 Scope:** `shop.read`
 
 + Response 200
 
     + Headers
 
             Content-Type: application/json
-            
+
 ### Post Request [POST /shops/{id}/woo-commerce/proxy/{path}]
 Returns response from WooCommerce API.
 
-**OAuth2 Scope:** shop.write
+**OAuth2 Scope:** `shop.write`
 
 + Response 200
 
@@ -6924,7 +6990,7 @@ Returns response from WooCommerce API.
 ### Put Request [PUT /shops/{id}/woo-commerce/proxy/{path}]
 Returns response from WooCommerce API.
 
-**OAuth2 Scope:** shop.write
+**OAuth2 Scope:** `shop.write`
 
 + Response 200
 
@@ -6935,7 +7001,7 @@ Returns response from WooCommerce API.
 ### Delete Request [DELETE /shops/{id}/woo-commerce/proxy/{path}]
 Returns response from WooCommerce API.
 
-**OAuth2 Scope:** shop.write
+**OAuth2 Scope:** `shop.write`
 
 + Response 200
 
@@ -6965,7 +7031,7 @@ Returns evaluated metrics for each *group* (default is `date`, see bellow) order
 value in ascending order. Groups of results can be created using `dimensions` query string.
 Uses only UTM parameters that were sent in the request.
 
-**OAuth2 Scope:** shop.ga.read
+**OAuth2 Scope:** `shop.ga.read`
 
 + Parameters
 
@@ -7041,7 +7107,7 @@ If user didn't set the UTM parameters (or the params are empty),
 medium is empty and source is set to a regex based on [this](https://gist.github.com/MichalJanik/721d23bd6036b9f67526b1e5305f3a5c)
 mapping (where the key corresponds to Project output format). Note the tilde at the start.
 
-**OAuth2 Scope:** project.ga.read
+**OAuth2 Scope:** `project.ga.read`
 
 + Parameters
 
@@ -7119,7 +7185,7 @@ Response content from GA is returned under `content`.
 Response code from GA is returned under `status` to allow different codes from
 Mergado API and GA API.
 
-**OAuth2 Scope:** shop.ga.read
+**OAuth2 Scope:** `shop.ga.read`
 
 + Parameters
 
@@ -7284,7 +7350,7 @@ Returns evaluated metrics for each *group* (default is `date`, see bellow) order
 value in ascending order. Groups of results can be created using `dimensions` query string.
 Uses only UTM parameters that were sent in the request.
 
-**OAuth2 Scope:** shop.ga.read
+**OAuth2 Scope:** `shop.ga.read`
 
 + Parameters
 
@@ -7356,7 +7422,7 @@ If user didn't set the UTM parameters (or the params are empty),
 medium is empty and source is set to a regex based on [this](https://gist.github.com/MichalJanik/721d23bd6036b9f67526b1e5305f3a5c)
 mapping (where the key corresponds to Project output format).
 
-**OAuth2 Scope:** project.ga.read
+**OAuth2 Scope:** `project.ga.read`
 
 + Parameters
 
@@ -7427,7 +7493,7 @@ The request is authorized by Mergado using Keychain Credentials (`property_name`
 Response content from GA is returned as raw string under `content`.
 Response code from GA is returned under `status` to allow different codes from Mergado API and GA API.
 
-**OAuth2 Scope:** shop.ga.read
+**OAuth2 Scope:** `shop.ga.read`
 
 + Parameters
 
@@ -7466,37 +7532,37 @@ Response code from GA is returned under `status` to allow different codes from M
 
             {
                 "content": "{
-                    \"dimensionHeaders\":[
+                    "dimensionHeaders":[
                         {
-                            \"name\":\"date\"
+                            "name":"date"
                         }
                     ],
-                    \"metricHeaders\":[
+                    "metricHeaders":[
                         {
-                            \"name\":\"sessions\",
-                            \"type\":\"TYPE_INTEGER\"
+                            "name":"sessions",
+                            "type":"TYPE_INTEGER"
                         }
                     ],
-                    \"rows\":[
+                    "rows":[
                         {
-                            \"dimensionValues\":[
+                            "dimensionValues":[
                                 {
-                                    \"value\":\"20221025\"
+                                    "value":"20221025"
                                 }
                             ],
-                            \"metricValues\":[
+                            "metricValues":[
                                 {
-                                    \"value\":\"16\"
+                                    "value":"16"
                                 }
                             ]
                         }
                     ],
-                    \"rowCount\":1,
-                    \"metadata\":{
-                        \"currencyCode\":\"CZK\",
-                        \"timeZone\":\"Europe/Prague\"
+                    "rowCount":1,
+                    "metadata":{
+                        "currencyCode":"CZK",
+                        "timeZone":"Europe/Prague"
                     },
-                    \"kind\":\"analyticsData#runReport\"
+                    "kind":"analyticsData#runReport"
                 }",
                 "status": 200
             }
