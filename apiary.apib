@@ -79,7 +79,7 @@ Various API resources that don't require any authentication.
             {
                 "version": "0.2"
             }
-            
+
 ## Maintenance [/maintenance]
 
 ### Show maintenance info [GET]
@@ -3661,14 +3661,9 @@ Returns latest summarized statistics and other information of an eshop.
       specified the cost of delivery on Heureka.
     + heureka_recommend_a_shop (object) - Contains answers for question:
       "Would you recommend this shop?" and number of people which selected the answer.
+
     + heureka_order_status (object) - Contains answers for question:
       "In what status if your order?" and number of people which selected the answer.
-    + heureka_delivery_time_satisfaction (number) - Average rating of the deliver
-      time of the product(s) ordered by the customer. Contains a number between
-      0 and 5 (bigger is better).
-    + heureka_pick_up_time_satisfaction (number) - Average rating of the time
-      for which the goods were ready to be picked up. Contains a number between
-      0 and 5 (bigger is better).
     + heureka_delivery_time (object) - Contains answers for question:
       "When did your goods arrive?" and number of people which selected the answer.
     + heureka_transportation_type (object) - Contains answers for question:
@@ -3684,9 +3679,6 @@ Returns latest summarized statistics and other information of an eshop.
     + heureka_shop_ux_clarity (number) - Average rating of the UX (User
       eXperience) about the eshop's websites from Heureka users. Contains
       a number between 0 and 5 (bigger is better).
-    + heureka_shop_communication_satisfaction (number) - Average rating of the eshop's
-      support and overall communication with the customer. Contains a number
-      between 0 and 5 (bigger is better).
     + heureka_customer_cancel_order_reason (object) - Contains answers for question:
       "Why did you cancel your order?" and number of people which selected the answer.
     + heureka_shop_cancel_order_reason (object) - Contains answers for question:
@@ -3694,9 +3686,6 @@ Returns latest summarized statistics and other information of an eshop.
     + heureka_shop_frequency_of_purchases (object) - Contains answers for question:
       "How many times have you shop in this store?" and number of people which
       selected the answer.
-    + heureka_overall_shop_satisfaction (number) - Average rating of the
-      overall satisfaction with the eshop from Heureka users. Contains a number
-      between 0 and 5 (bigger is better).
     + heureka_last_order_at (string) - The date of last order by any customer.
     + hledejceny_credit_amount (number) - The amount of credit available in
       the account under which the eshop is registered.
@@ -3770,8 +3759,6 @@ Returns latest summarized statistics and other information of an eshop.
                             "order_canceled_by_user": 40,
                             "order_canceled_by_shop": 11
                             },
-                        "heureka_delivery_time_satisfaction": 4.8,
-                        "heureka_pick_up_time_satisfaction": 4.7,
                         "heureka_delivery_time": {
                             "after_0_days": 4,
                             "after_1_days": 490,
@@ -3792,7 +3779,6 @@ Returns latest summarized statistics and other information of an eshop.
                         "heureka_goods_transportation_quality": 2.8,
                         "heureka_delivery_point_quality": 2.9,
                         "heureka_shop_ux_clarity": 3.7,
-                        "heureka_shop_communication_satisfaction": 5,
                         "heureka_customer_cancel_order_reason": {
                             "delivery_time_not_respected": 11,
                             "no_longer_interested": 9,
@@ -3809,7 +3795,6 @@ Returns latest summarized statistics and other information of an eshop.
                             "five_times_max": 1319,
                             "regular_customer": 633
                             },
-                        "heureka_overall_shop_satisfaction": 4.9,
                         "heureka_last_order_at": "2017-02-06",
                         "hledejceny_credit_amount": 1223.59,
                         "hledejceny_total_clicks": 12,
@@ -4183,8 +4168,8 @@ relevant to the project format are returned. Note that `product_id` is not retur
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
-If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
-only the products that have those fields defined will be returned. 
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value),
+only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** project.stats.read
@@ -4317,8 +4302,8 @@ relevant to the project format are returned. Note that `product_id` is not retur
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
-If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
-only the products that have those fields defined will be returned. 
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value),
+only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** project.stats.read
@@ -4463,8 +4448,8 @@ are returned. This can be changed by the query string parameter `date`. Note tha
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
-If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
-only the products that have those fields defined will be returned. 
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value),
+only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** shop.stats.read
@@ -4633,8 +4618,8 @@ are returned. This can be changed by the query string parameter `date`.
 `item_id` of the last product from the previous batch.
 The reason for using `after` is that high offset (> 10k)
 causes request timeouts on Elastic's side.
-If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value), 
-only the products that have those fields defined will be returned. 
+If `filter_by` contains `_exists_` parameter (with json list of *stats* fields as the param value),
+only the products that have those fields defined will be returned.
 For example: `filter_by={"_exists_":["heureka_cpc", "item_id"]}`
 
 **OAuth2 Scope:** shop.stats.read
@@ -5746,8 +5731,8 @@ Uses only UTM parameters that were sent in the request.
 ### Project Data [GET /projects/{id}/google/analytics/{?fields,limit,offset,start_date,end_date,metrics,dimensions,medium}]
 Returns evaluetad metrics for each *group* (default is `date`, see bellow) ordered by the *group*'s
 value in ascending order. Groups of results can be created using `dimensions` query string.
-If user didn't set the UTM parameters (or the params are empty), 
-medium is empty and source is set to a regex based on [this](https://gist.github.com/MichalJanik/721d23bd6036b9f67526b1e5305f3a5c) 
+If user didn't set the UTM parameters (or the params are empty),
+medium is empty and source is set to a regex based on [this](https://gist.github.com/MichalJanik/721d23bd6036b9f67526b1e5305f3a5c)
 mapping (where the key corresponds to Project output format). Note the tilde at the start.
 
 **OAuth2 Scope:** project.ga.read
