@@ -1254,6 +1254,76 @@ Returns user permission to given project.
                 "role": "writer"
             }
 
+### Get User Custom Formats [GET /users/{user_id}/formats/{format_id}]
+Returns user custom formats.
+
+**OAuth2 Scope:** user.formats.read
+
++ Parameters
+
+    + user_id (string) - ID of a user.
+    + format_id (string) - ID of a custom format.
+
++ Response 200
+
+    + Attributes
+        + user_id (string) - ID of the user the format relates to.
+        + url (string) - Link to feed that format is based on.
+        + name (string) - Name of the format.
+        + extension (string) - Formats extension (xml, csv..).
+        + visibility (boolean) - X
+        + country (string) - Formats country.
+        + mappings - List of FormatMappings.
+            + format_id (string) - Format id.
+            + xpath (string) - Xpath of given element.
+            + target (string) - Mergado target for given element.
+            + type (string) - Format mappings type.
+            + parent (string) - Xpath of elements parent.
+            + is_wrapper (boolean) - Tells us if the element wraps other elements.
+            + order (string) - Order of given element.
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+            'user_id': '1', 
+            'url': 'https://host.cz/feed.xml',
+            'name': 'custom1',
+            'extension': 'xml',
+            'visibility': False,
+            'country': 'cz',
+            'mappings': [
+                 {
+                    'format_id': '1',
+                    'xpath': '/ROOT',
+                    'target': 'CHANNEL',
+                    'type': 'keep',
+                    'parent': None,
+                    'is_wrapper': True,
+                    'order': 1
+                }, 
+                {
+                    'format_id': '1',
+                    'xpath': '/ROOT/ITEM', 
+                    'target': 'ITEM', 
+                    'type': 'keep', 
+                    'parent': '/ROOT', 
+                    'is_wrapper': True,
+                    'order': 2}
+                },
+                {
+                    'format_id': '1',
+                    'xpath': '/ROOT/ITEM/ITEM_ID', 
+                    'target': 'ITEM_ID', 
+                    'type': 'keep', 
+                    'parent': '/ROOT/ITEM', 
+                    'is_wrapper': False,
+                    'order': 3}
+                }]
+        }
 
 ## Eshops [/users/{id}/shops/{?limit,offset,fields,filter}]
 Eshops in Mergado.
