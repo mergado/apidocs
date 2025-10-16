@@ -7091,6 +7091,65 @@ Returns response from WooCommerce API.
     + Headers
 
             Content-Type: application/json
+            
+# Group Shopify
+API for Shopify proxy
+
+## Shopify API Proxy [/shops/{id}/shopify/proxy/{path}]
+The API is available to e-shops which use Shopify and fulfill API access conditions. The API supports the [legacy REST Admin API](https://shopify.dev/docs/api/admin-rest),
+and also the [GraphQL API](https://shopify.dev/docs/api/admin-graphql).
+
+This endpoint works as a proxy.
+
+
++ Attributes
+
+    + id (string) - Eshop id.
+    + path (string) - Uses Shopify's endpoints
+
+### Get Request [GET /shops/{id}/shopify/proxy/{path}]
+Returns response from Shopify API.
+
+**OAuth2 Scope:** `shop.read`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Post Request [POST /shops/{id}/shopify/proxy/{path}]
+Returns response from Shopify API.
+
+**OAuth2 Scope:** `shop.write`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Put Request [PUT /shops/{id}/shopify/proxy/{path}]
+Returns response from Shopify API.
+
+**OAuth2 Scope:** `shop.write`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Delete Request [DELETE /shops/{id}/shopify/proxy/{path}]
+Returns response from Shopify API.
+
+**OAuth2 Scope:** `shop.write`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
 
 
 # Group Google
