@@ -6,6 +6,10 @@ The Mergado API is based on REST principles. The request/response format is JSON
 
 ## Changelog
 ### 2025-09-24
+#### Added
+ * Endpoint `/shops/{id}/unas/proxy/{path}`
+
+### 2025-09-24
 #### Changed
  * Endpoint `POST /shops/{id}/notifications/`
     - Field `scope` now receives and returns `'eshop'|'owner'` instead of `'shop'|'owner'`.
@@ -7708,3 +7712,62 @@ Response code from GA is returned under `status` to allow different codes from M
                 }",
                 "status": 200
             }
+
+
+# Group UNAS
+API for UNAS proxy
+
+## UNAS API Proxy [/shops/{id}/unas/proxy/{path}]
+UNAS offers a comprehensive API that enables reading and modifying key e-shop data — including orders, products, customers, shipping options, and reviews. This endpoint serves as a proxy for communication with the UNAS API.
+
+This endpoint works as a proxy.
+
+
++ Attributes
+
+    + id (string) - Eshop id.
+    + path (string) - Uses UNAS's endpoints
+
+### Get Request [GET /shops/{id}/unas/proxy/{path}]
+Returns response from UNAS API.
+
+**OAuth2 Scope:** `shop.proxy.read`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Post Request [POST /shops/{id}/unas/proxy/{path}]
+Returns response from UNAS API.
+
+**OAuth2 Scope:** `shop.proxy.write`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Put Request [PUT /shops/{id}/unas/proxy/{path}]
+Returns response from UNAS API.
+
+**OAuth2 Scope:** `shop.proxy.write`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Delete Request [DELETE /shops/{id}/unas/proxy/{path}]
+Returns response from UNAS API.
+
+**OAuth2 Scope:** `shop.proxy.write`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
