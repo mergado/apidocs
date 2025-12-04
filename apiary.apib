@@ -5,6 +5,15 @@ HOST: https://api.mergado.com
 The Mergado API is based on REST principles. The request/response format is JSON. This documentation is a part of [Mergado Docs](https://mergado.github.io/docs/intro/the-basics.html).
 
 ## Changelog
+### 2025-12-03
+#### Changed
+ * Endpoint GET `/shops/{id}/info`
+    - Removed obsolete connections.
+    - Removed vague fields: `currency`, `status`, `valid_credentials` and `error` from connections.
+
+#### Added
+ * Endpoint `/shops/{id}/{connection}/validate`
+
 ### 2025-09-24
 #### Added
  * Endpoint `/shops/{id}/unas/proxy/{path}`
@@ -1525,10 +1534,12 @@ Show additional eshop information, statistics and keychain connections.
                         + heureka.cz
                         + heureka.sk
                         + zbozi.cz
-                        + srovname.cz
-                        + hledejceny.cz
-                        + google_analytics
+                        + google_analytics_4
                         + eshop-rychle.cz
+                        + unas.eu
+                        + shoptet.cz
+                        + shopify.com
+                        + woocommerce.com
                 + currency (string) - Currency in ISO 4217 or a `null` if the currency is not known.
                 + status (enum[string]) - Status of the connection.
                     + members
@@ -1608,28 +1619,62 @@ Show additional eshop information, statistics and keychain connections.
                 "connections": [
                     {
                         "name": "heureka.cz",
-                        "currency": "CZK",
-                        "error": null,
-                        "status": "ok",
                         "info": {
                             "heureka_id": "1234",
                             "name": "example.cz",
                             "url_slug": "example-cz-eshop",
-                            "username": "user@example.cz",
-                            "valid_credentials": true
+                            "username": "user@example.cz"
                         }
                     },
                     {
                         "name": "zbozi.cz",
-                        "currency": "CZK",
-                        "error": null,
-                        "status": "ok",
                         "info": {
                             "zbozi_id": "1234",
                             "name": "example.cz",
-                            "username": "user@example.cz",
-                            "valid_credentials": true
+                            "username": "user@example.cz"
                         }
+                    }
+                ]
+            }
+
+### Validate Keychain Connection [GET /shops/{id}/{connection}/validate]
+Validate a specific connection for an eshop. The connection name should match one of the connection names returned by the `/shops/{id}/info` endpoint.
+
+**Oauth2 Scope:** `shop.read`
+
++ Parameters
+
+    + id (string) - ID of an eshop.
+    + connection (string) - Name of the connection to validate (e.g., `heureka.cz`, `zbozi.cz`, `shoptet.cz`).
+
++ Response 200
+
+    + Attributes
+        + is_valid (boolean, nullable) - Whether the connection is valid. Can be `null` when an error occurs during validation that cannot be evaluated, which may indicate that the external service has an outage or is behaving unexpectedly.
+        + errors (array) - List of validation errors (empty if connection is valid).
+            + (object)
+                + error (string) - Error code.
+                + message (string) - Human-readable details of occured error.
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body (valid connection)
+
+            {
+                "is_valid": true,
+                "errors": []
+            }
+
+    + Body (invalid connection)
+
+            {
+                "is_valid": false,
+                "errors": [
+                    {
+                        "error": "invalid_credentials",
+                        "message": "Invalid username or password."
                     }
                 ]
             }
