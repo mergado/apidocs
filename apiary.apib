@@ -1302,41 +1302,41 @@ Returns user custom formats.
     + Body
 
             {
-            'user_id': '1', 
-            'url': 'https://host.cz/feed.xml',
-            'name': 'custom1',
-            'extension': 'xml',
-            'visibility': False,
-            'country': 'cz',
-            'mappings': [
-                 {
-                    'format_id': '1',
-                    'xpath': '/ROOT',
-                    'target': 'CHANNEL',
-                    'type': 'keep',
-                    'parent': None,
-                    'is_wrapper': True,
-                    'order': 1
-                }, 
-                {
-                    'format_id': '1',
-                    'xpath': '/ROOT/ITEM', 
-                    'target': 'ITEM', 
-                    'type': 'keep', 
-                    'parent': '/ROOT', 
-                    'is_wrapper': True,
-                    'order': 2}
-                },
-                {
-                    'format_id': '1',
-                    'xpath': '/ROOT/ITEM/ITEM_ID', 
-                    'target': 'ITEM_ID', 
-                    'type': 'keep', 
-                    'parent': '/ROOT/ITEM', 
-                    'is_wrapper': False,
-                    'order': 3}
-                }]
-        }
+                'user_id': '1', 
+                'url': 'https://host.cz/feed.xml',
+                'name': 'custom1',
+                'extension': 'xml',
+                'visibility': False,
+                'country': 'cz',
+                'mappings': [
+                     {
+                        'format_id': '1',
+                        'xpath': '/ROOT',
+                        'target': 'CHANNEL',
+                        'type': 'keep',
+                        'parent': None,
+                        'is_wrapper': True,
+                        'order': 1
+                    }, 
+                    {
+                        'format_id': '1',
+                        'xpath': '/ROOT/ITEM', 
+                        'target': 'ITEM', 
+                        'type': 'keep', 
+                        'parent': '/ROOT', 
+                        'is_wrapper': True,
+                        'order': 2}
+                    },
+                    {
+                        'format_id': '1',
+                        'xpath': '/ROOT/ITEM/ITEM_ID', 
+                        'target': 'ITEM_ID', 
+                        'type': 'keep', 
+                        'parent': '/ROOT/ITEM', 
+                        'is_wrapper': False,
+                        'order': 3}
+                    }]
+            }
 
 ## Eshops [/users/{user_identifier}/shops/{?limit,offset,fields,filter}]
 Eshops in Mergado.
@@ -1660,14 +1660,7 @@ Validate a specific connection for an eshop. The connection name should match on
 
             Content-Type: application/json
 
-    + Body (valid connection)
-
-            {
-                "is_valid": true,
-                "errors": []
-            }
-
-    + Body (invalid connection)
+    + Body
 
             {
                 "is_valid": false,
