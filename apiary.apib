@@ -5,6 +5,10 @@ HOST: https://api.mergado.com
 The Mergado API is based on REST principles. The request/response format is JSON. This documentation is a part of [Mergado Docs](https://mergado.github.io/docs/intro/the-basics.html).
 
 ## Changelog
+### 2025-12-17
+#### Added
+ * Endpoint `/shops/{id}/sklik_fenix/proxy/{path}`
+
 ### 2025-12-03
 #### Changed
  * Endpoint GET `/shops/{id}/info`
@@ -7801,6 +7805,67 @@ Returns response from UNAS API.
 
 ### Delete Request [DELETE /shops/{id}/unas/proxy/{path}]
 Returns response from UNAS API.
+
+**OAuth2 Scope:** `shop.proxy.write`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+            
+
+
+# Group Sklik - Fenix
+API for WooCommerce proxy
+
+## Sklik Fenix API Proxy [/shops/{id}/sklik_fenix/proxy/{path}]
+The API is available to e-shops which use Sklik Fenix and fulfill API access conditions. The API is a RESTful JSON API.
+You can find more information about the API in the [official documentation](https://api.sklik.cz/fenix/v1).
+
+This endpoint works as a proxy.
+
+
++ Attributes
+
+    + id (string) - Eshop id.
+    + path (string) - Uses Sklik's endpoints with query parameters if needed
+
+### Get Request [GET /shops/{id}/sklik_fenix/proxy/{path}]
+Returns response from Sklik Fenix API.
+
+**OAuth2 Scope:** `shop.proxy.read`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Post Request [POST /shops/{id}/sklik_fenix/proxy/{path}]
+Returns response from Sklik Fenix API.
+
+**OAuth2 Scope:** `shop.proxy.write`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Put Request [PUT /shops/{id}/sklik_fenix/proxy/{path}]
+Returns response from Sklik Fenix API.
+
+**OAuth2 Scope:** `shop.proxy.write`
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+### Delete Request [DELETE /shops/{id}/sklik_fenix/proxy/{path}]
+Returns response from Sklik Fenix API.
 
 **OAuth2 Scope:** `shop.proxy.write`
 
